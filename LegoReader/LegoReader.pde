@@ -14,7 +14,7 @@ PGraphics canvasColor;
 PGraphics lengedColor;
 
 int sizeCanvas = 480;
-int nblocks = 24;
+int nblocks = 12*2;
 PImage colorImage;
 PImage imageWrapped;
 PImage capture;
