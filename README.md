@@ -39,13 +39,13 @@ Once on calibration mode, to change the parameters is needed to press and drag t
 parameters.
 
 Modify white parameters and yellow bias on white
-![alt text](https://github.com/javierazd1305/CityScope/CSL_Lima/tree/master/LegoReader/data/img/white_result.png)
+![alt text](https://github.com/javierazd1305/CSL_Lima/blob/master/LegoReader/data/img/white_result.png)
 
 Modify black parameters and red bias on black
-![alt text](https://github.com/javierazd1305/CityScope/CSL_Lima/tree/master/LegoReader/data/img/black_result.png)
+![alt text](https://github.com/javierazd1305/CSL_Lima/blob/master/LegoReader/data/img/black_result.png)
 
 Modify color range limits for other colors
-![alt text](https://github.com/javierazd1305/CityScope/CSL_Lima/tree/master/LegoReader/data/img/hue_result.png)
+![alt text](https://github.com/javierazd1305/CSL_Lima/blob/master/LegoReader/data/img/hue_result.png)
 
 Once you calibrate the parameters press 's' to save configuration parameters.
 
