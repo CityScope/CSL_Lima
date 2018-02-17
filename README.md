@@ -6,6 +6,7 @@ Repository used by University del Pacifico in Lima for the design, development a
 For use this project is necessary to install [OpenCV](https://github.com/atduskgreg/opencv-processing). This library is in processing libraries list.
 
 ## **Getting start**
+To start using the Lego Reader, download the folder and press the play button. Then, make some configuration modifications (according to the context) to improve the color processing (detailed below).
 
 **1. Keyboard functionality in principal canvas :** arrows let reduce the image color noise.
 
@@ -49,3 +50,4 @@ Once you calibrate the parameters press 's' to save configuration parameters.
 
 **6. Final Results**: The final processing is seen in canvasColor
 ![alt text](https://github.com/javierazd1305/CSL_Lima/blob/master/LegoReader/data/img/canvasDescription.jpeg)
+
