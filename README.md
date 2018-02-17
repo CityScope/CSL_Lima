@@ -7,7 +7,7 @@ For use this project is necessary to install [OpenCV](https://github.com/atduskg
 
 ## **Getting start**
 
-**1. Keyboard functionality in principal canvas:** arrows let reduce the image color noise.
+**1. Keyboard functionality in principal canvas :** arrows let reduce the image color noise.
 
 |      Key        |                      Funcionality                                           |
 | ------------- | ----------------------------------------------------------- |
@@ -18,7 +18,7 @@ For use this project is necessary to install [OpenCV](https://github.com/atduskg
 |      s            | Save perspective points, brightness level, contrast level and color levels configurations |
 
 
-**2. Keyboard functionality in color canvas:** Change colors ranges.
+**2. Keyboard functionality in legendColor** Change colors ranges.
 
 |      Key      |                      Funcionality                             |
 | ------------- | ------------------------------------------------------------- |
@@ -46,3 +46,6 @@ Modify color range limits for other colors
 Once you calibrate the parameters press 's' to save configuration parameters.
 
 **5. n-blocks:** On Lego Reader _pde there_ is a _**nblocks**_ variable that set the number of blocks of the mesh. So, if more or less blocks is needed change this variable.
+
+**6. Final Results**: The final processing is seen in canvasColor
+![alt text](https://github.com/javierazd1305/CSL_Lima/blob/master/LegoReader/data/img/canvasDescription.jpeg)
