@@ -24,6 +24,7 @@ public class BloackReader extends PApplet {
   
   public void draw() {
     canvasColor.beginDraw();
+    canvasColor.background(255);
     mesh.draw(canvasColor, true);
     canvasColor.endDraw();
     image(canvasColor, 0, 0);

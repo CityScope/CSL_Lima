@@ -4,9 +4,16 @@ public class Configuration{
   ArrayList<Color> colorLimits;
   float saturationLevel;
   float brightnessLevel;
+  int nblocks; 
+  IntList resizeCanvas = new IntList();
   
   Configuration(String path){
     this.path = path;
+  }
+  public void actualizeSizeCanvas(int w, int h){
+    this.resizeCanvas= new IntList();
+    resizeCanvas.append(w);
+    resizeCanvas.append(h);
   }
   
   /**
@@ -139,10 +146,19 @@ public class Configuration{
       calibrationPoints.setJSONArray(str(i),calibrationPoint);
     }
     
+    JSONObject resize = new JSONObject();
+    for(int i=0; i < this.resizeCanvas.size(); i++){
+      resize.setInt("rWa", this.resizeCanvas.get(0));
+      resize.setInt("rHa", this.resizeCanvas.get(1));
+    }
+    
     calibrationParameters.setJSONObject("Calibration Points", calibrationPoints);
     calibrationParameters.setJSONObject("Color Limits",limitsColors);
     calibrationParameters.setFloat("Saturation",this.saturationLevel);
     calibrationParameters.setFloat("Brightness",this.brightnessLevel);
+    calibrationParameters.setInt("nblocks",nblocks);
+    calibrationParameters.setJSONObject("resizeCanvas",resize);
+    
     saveJSONObject(calibrationParameters,this.path,"compact");
     println("Calibration parameters uploaded"); 
   }
@@ -183,9 +199,12 @@ public class Configuration{
      JSONArray point = points.getJSONArray(str(i));
      calibrationPoints.add(new PVector(point.getFloat(0), point.getFloat(1)));
    }
-    
+   JSONObject resize = calibrationParameters.getJSONObject("resizeCanvas");
+   this.resizeCanvas.append(resize.getInt("rWa"));
+   this.resizeCanvas.append(resize.getInt("rHa"));
    this.contour = calibrationPoints ;
    this.colorLimits = colorConf;
+   this.nblocks = calibrationParameters.getInt("nblocks");
    this.saturationLevel = calibrationParameters.getFloat("Saturation");
    this.brightnessLevel = calibrationParameters.getFloat("Brightness");
  

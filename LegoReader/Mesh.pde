@@ -160,6 +160,14 @@ public class Mesh{
     this.create();
   }
   
+  public void actualize(int nblocks, int w){
+    this.nblocks = nblocks;
+    this.scl = w/nblocks;
+    this.malla = new PVector[nblocks+1][nblocks+1];
+    celdas = new ArrayList();
+    this.create();
+  }
+  
   
   /**
   * Create all the "n" blocks with a specific width

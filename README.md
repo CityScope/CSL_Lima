@@ -16,6 +16,8 @@ To start using the Lego Reader, download the folder and press the play button. T
 |     DOWN    | Decrease brightness level in 1                                   |
 |     RIGHT    | Increment saturation level in 1                                   |
 |     LEFT      | Decrease saturation level in 1                                    |
+|       +          | Add a new column and row in the mesh                    |
+|       -          | Delete a column and a row in the mesh                    |
 |      s            | Save perspective points, brightness level, contrast level and color levels configurations |
 
 
@@ -46,7 +48,7 @@ Modify color range limits for other colors
 
 Once you calibrate the parameters press 's' to save configuration parameters.
 
-**5. n-blocks:** On Lego Reader _pde there_ is a _**nblocks**_ variable that set the number of blocks of the mesh. So, if more or less blocks is needed change this variable.
+**5. n-blocks:** On Lego Reader the  _**nblocks**_ variable that set the number of blocks of the mesh. So, if more or less blocks is needed press the button "+" or "-" respectively.
 
 **6. Final Results**: The final processing is seen in canvasColor
 ![alt text](https://github.com/javierazd1305/CSL_Lima/blob/master/LegoReader/data/img/canvasDescription.jpeg)
