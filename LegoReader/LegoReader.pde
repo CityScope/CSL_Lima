@@ -13,8 +13,7 @@ PGraphics canvasOriginal;
 PGraphics canvasColor;
 PGraphics lengedColor;
 
-int sizeCanvas = 480;
-int nblocks = 12*2;
+int sizeCanvas = 480; 
 PImage colorImage;
 PImage imageWrapped;
 PImage capture;
@@ -45,10 +44,10 @@ void setup() {
     canvasOriginal = createGraphics(sizeCanvas, sizeCanvas);
     colorImage = createImage(sizeCanvas, sizeCanvas, HSB);
     imageWrapped = createImage(sizeCanvas, sizeCanvas, HSB);
-   
+
     config.loadConfiguration();
     
-    mesh = new Mesh(nblocks, canvas.width);
+    mesh = new Mesh(config.nblocks, canvas.width);
 
     wrappedPerspective = new WrappedPerspective(config.contour);
     
@@ -83,9 +82,11 @@ void draw() {
   //canvas with the color processing and wrapped image
   colorImage.updatePixels();
   opencv.loadImage(colorImage);
-  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas, sizeCanvas), imageWrapped);
+  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1)), imageWrapped);
   
   canvas.beginDraw();
+  canvas.background(255);
+  imageWrapped.resize(canvas.width - config.resizeCanvas.get(0), canvas.height - config.resizeCanvas.get(1));
   canvas.image(imageWrapped, 0, 0);
   mesh.getColors(canvas, config.colorLimits);
   mesh.draw(canvas, false);
@@ -121,9 +122,21 @@ void keyPressed(KeyEvent e) {
      case 's':
      config.safeConfiguration(colorRange.selectAll());
      break;
-   } 
+     
+     case '+':
+     config.nblocks ++;
+     mesh.actualize(config.nblocks, canvas.width);
+     config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
+     break;
+     
+     case '-':
+     config.nblocks--;
+     mesh.actualize(config.nblocks, canvas.width);
+     config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
+     break;
+     
+   }
 }
-
 
 void captureEvent(Capture cam){
   cam.read();
