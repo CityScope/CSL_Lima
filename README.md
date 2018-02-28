@@ -19,6 +19,7 @@ To start using the Lego Reader, download the folder and press the play button. T
 |       +          | Add a new column and row in the mesh                    |
 |       -          | Delete a column and a row in the mesh                    |
 |      s            | Save perspective points, brightness level, contrast level and color levels configurations |
+|       r          | Turn on/off the corner detection algorithm |
 
 
 **2. Keyboard functionality in legendColor** Change colors ranges.
