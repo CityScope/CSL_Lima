@@ -23,6 +23,13 @@ public class WrappedPerspective{
     }
   }
   
+  public void changeContours(ArrayList<PVector> calibrationPoints){
+    contour.clear();
+    for(int i=0; i<calibrationPoints.size();i++){
+      contour.add(calibrationPoints.get(i));
+    }
+  }
+  
   
   /**
   *change the coordinates of a point in the contour array
