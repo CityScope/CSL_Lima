@@ -12,6 +12,8 @@ PGraphics canvas;
 PGraphics canvasOriginal;
 PGraphics canvasColor;
 PGraphics lengedColor;
+PGraphics grayScale;
+
 
 int sizeCanvas = 480; 
 PImage colorImage;
@@ -19,8 +21,13 @@ PImage imageWrapped;
 PImage capture;
 float inc = 1;
 
+Boolean refresh = false;
+ArrayList<PVector> posibles = new ArrayList();
+ArrayList<PVector> calibrationPoints = new ArrayList();
+
 Capture cam;
 OpenCV opencv;
+Corners corners;
 WrappedPerspective wrappedPerspective;
 ColorRange colorRange;
 Mesh mesh;
@@ -36,14 +43,18 @@ void settings(){
 void setup() {
   colorMode(HSB,360,100,100);
   String[] cameras = Capture.list();
+  print(cameras.length);
   if (cameras.length == 0) {
     println("There are no cameras available for capture.");
     exit();
   } else {
     canvas = createGraphics(sizeCanvas,sizeCanvas);
     canvasOriginal = createGraphics(sizeCanvas, sizeCanvas);
+    grayScale = createGraphics(sizeCanvas, sizeCanvas);
     colorImage = createImage(sizeCanvas, sizeCanvas, HSB);
     imageWrapped = createImage(sizeCanvas, sizeCanvas, HSB);
+    
+    corners = new Corners(grayScale);
 
     config.loadConfiguration();
     
@@ -69,13 +80,19 @@ void setup() {
 
 
 void draw() {
+  
+  corners.applyHCD(refresh, wrappedPerspective);
+  
   canvasOriginal.beginDraw();
   config.flip(canvasOriginal, cam, true);
   wrappedPerspective.draw(canvasOriginal);
   config.SBCorrection(canvasOriginal,config.brightnessLevel,config.saturationLevel);
+  corners.drawCalibrationPoints(canvasOriginal, refresh);
+
   canvasOriginal.endDraw();
   image(canvasOriginal, 0, 0);
   
+
   //Filter colors with specific ranges
   config.applyFilter(canvasOriginal,colorImage);
   
@@ -123,6 +140,11 @@ void keyPressed(KeyEvent e) {
      config.safeConfiguration(colorRange.selectAll());
      break;
      
+
+     case 'r':
+     print(true);
+     refresh = !refresh;
+
      case '+':
      config.nblocks ++;
      mesh.actualize(config.nblocks, canvas.width);
@@ -133,9 +155,9 @@ void keyPressed(KeyEvent e) {
      config.nblocks--;
      mesh.actualize(config.nblocks, canvas.width);
      config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
-     break;
-     
+     break;    
    }
+
 }
 
 void captureEvent(Capture cam){
@@ -143,7 +165,9 @@ void captureEvent(Capture cam){
 }
 
 void mouseClicked(){
-  print("\n",hue(this.get(mouseX,mouseY)),saturation(this.get(mouseX,mouseY)),brightness(this.get(mouseX,mouseY)));
+  //print("\n",hue(this.get(mouseX,mouseY)),saturation(this.get(mouseX,mouseY)),brightness(this.get(mouseX,mouseY)));
+  print("\n", calibrationPoints);
+  print("\n",mouseX,mouseY);
 }
 void mousePressed(){
   wrappedPerspective.selected(mouseX,mouseY,5);
