@@ -1,5 +1,11 @@
+/**
+* estadictic_graphics - templates for different kinds of graphics changing with time
+* @author        Vanesa Alcantara
+* @version       2.0
+*/
+
 Calibration calibration;
-//PRUEBA
+
 
 public void settings(){
   size(300,300);
@@ -12,8 +18,10 @@ public void setup(){
   PApplet.runSketch(cali,calibration);
   
 
+  
 }
 
 public void draw(){
+
   
 }
