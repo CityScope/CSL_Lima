@@ -193,7 +193,7 @@ public class Plan {
   public void drawParameter(PGraphics canvas,int id){
     for(int x=0; x<2;x++){
       for(int y=0; y<2;y++){
-        color c = buildings.get(id).asignColor(x, y,2,2);
+        color c = buildings.get(id).assignColor(x, y,2,2);
         canvas.fill(c);canvas.stroke(#000000);canvas.strokeWeight(1);
         canvas.rect(width/3+x*30, height/3+y*30,30,30);
       }
@@ -301,7 +301,7 @@ public class Building {
             PVector pos = new PVector(loc.x + x*ratio, loc.z + z*ratio, loc.y+ y *ratio);
             canvas.pushMatrix();
             canvas.fill(this.select_color);
-            if (y == numFloors-1) canvas.fill(asignColor(x, z, (int)roomSide, (int)roomSide));            
+            if (y == numFloors-1) canvas.fill(assignColor(x, z, (int)roomSide, (int)roomSide));            
             canvas.translate(pos.x, pos.y, pos.z);
             canvas.box(ratio);
             canvas.popMatrix();
@@ -323,7 +323,7 @@ public class Building {
             PVector pos = new PVector(x*ratio,y *ratio,z*ratio);
             canvas.pushMatrix();
             canvas.fill(this.select_color);
-            if (y == 0) canvas.fill(asignColor(x+floor(roomSide/2), z+floor(roomSide/2), (int)roomSide, (int)roomSide));
+            if (y == 0) canvas.fill(assignColor(x+floor(roomSide/2), z+floor(roomSide/2), (int)roomSide, (int)roomSide));
             canvas.translate(pos.x,pos.y,pos.z);
             canvas.box(ratio);
             canvas.popMatrix();            
@@ -337,7 +337,7 @@ public class Building {
   * Asign each cube a color depending its position
   * corners woth the parameter and the other with the color to select it
   */
-  public color asignColor(int x, int y, int limitX, int limitY) {
+  public color assignColor(int x, int y, int limitX, int limitY) {
     color col = this.select_color;
     if (x == 0 && y == 0) col = cells.get(0).ownColor;
     if (x == limitX-1 && y == 0) col = cells.get(1).ownColor;
