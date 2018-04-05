@@ -18,6 +18,7 @@ This file is part of LegoReader.
     You should have received a copy of the GNU Affero General Public License
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
+
 public class Patterns extends PApplet{
   int w;
   int h;
@@ -37,6 +38,7 @@ public class Patterns extends PApplet{
     colorMode(HSB,360,100,100);
     canvasPattern = createGraphics(this.w, this.h);
     patternBlocks = new PatternBlocks(canvasPattern, 10);
+    patternBlocks.getColorString();
   }
   
   public void draw(){
@@ -65,7 +67,7 @@ public class Patterns extends PApplet{
       this.ownColor = color(config.colorLimits.get(0).getColor());
       //colors = config.colorLimits.get(0).name;
       this.colors = colorName;
-      this.getColorFromName();      
+      this.getColorFromName();  
     }
     
     void getColorFromName(){

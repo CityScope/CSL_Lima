@@ -1,7 +1,28 @@
+/**
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+This file is part of LegoReader.
+
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 public class Color{
   int id;
   float maxHue;
-  JSONArray stdColor;
+  color stdColor;
   String name;
   Boolean selectionMode;
   int n;
@@ -16,7 +37,7 @@ public class Color{
   /**
   *Constructure for colors in hue scale
   **/
-  public Color(int id, float maxHue, JSONArray stdColor, String name){
+  public Color(int id, float maxHue, color stdColor, String name){
     this.n = 0;
     this.id = id;
     this.maxHue = maxHue;
@@ -28,7 +49,7 @@ public class Color{
   /**
   *Constructure for white
   **/
-  public Color(int id,float maxHue, JSONArray stdColor, String name, float satMax, float briMin, float satMax2, float hueMin){
+  public Color(int id,float maxHue, color stdColor, String name, float satMax, float briMin, float satMax2, float hueMin){
     this.n = 0;
     this.id = id;
     this.maxHue = maxHue;
@@ -44,7 +65,7 @@ public class Color{
   /**
   *Constructure for black
   **/
-  public Color(int id,float maxHue, JSONArray stdColor, String name, float briMax, float briMax2, float satMax){
+  public Color(int id,float maxHue, color stdColor, String name, float briMax, float briMax2, float satMax){
     this.n = 0;
     this.id = id;
     this.maxHue = maxHue;
@@ -60,8 +81,8 @@ public class Color{
   /**
   *Return a PVector with hue,saturation and brightness respectively
   **/   
-   public PVector getColor(){
-     return new PVector(this.stdColor.getInt(0),this.stdColor.getInt(1),this.stdColor.getInt(2));
+   public color getColor(){
+     return this.stdColor;
    }
    
    

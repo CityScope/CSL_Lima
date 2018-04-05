@@ -1,3 +1,24 @@
+/**
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+This file is part of LegoReader.
+
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 public class ColorRange extends PApplet{
  ArrayList<Color> colorLimits = new ArrayList();
  int w;
@@ -8,7 +29,7 @@ public class ColorRange extends PApplet{
  int mx;
  int my;
  int scale = 6;
- int control =5;
+ int control = 5;
 
   public ColorRange(ArrayList<Color> colorLimits, int w, int h){
     this.colorLimits = colorLimits;
@@ -39,7 +60,18 @@ public class ColorRange extends PApplet{
    lengedColor.colorMode(HSB,360,100,100);
       
    if(white){
-     for(int x=0;x<w;x++){
+      controlPanelWhite();   
+   }else if(black){
+      controlPanelBlack();  
+   }else{
+      controlPanelOthers(); 
+   }
+   lengedColor.endDraw();
+   image(lengedColor,0,0);   
+  }
+  
+  void controlPanelWhite(){
+    for(int x=0;x<w;x++){
        for(int y=0;y<h;y++){
          float max = map(y,0,h,0,100);
          if(x<w/5){ //SatMax
@@ -79,9 +111,11 @@ public class ColorRange extends PApplet{
          lengedColor.text("Modify white parameters",w/5,h+15);
          lengedColor.text("Modify yellow bias",(7*w)/10,h+15);
        }
-     }      
-   }else if(black){
-     for(int x=0;x<w/2;x++){
+     }    
+  }
+  
+  void controlPanelBlack(){
+    for(int x=0;x<w/2;x++){
        for(int y=0;y<h;y++){
          float max = map(x,0,w/2,0,100);
          lengedColor.stroke(0,0,max);
@@ -106,9 +140,11 @@ public class ColorRange extends PApplet{
          lengedColor.text("Modify black parameters ",w/4,h+15);
          lengedColor.text("Modify red bias",(3*w)/4,h+15);
        }
-     }
-   }else{
-      for(int x=0; x<w;x++){
+     }    
+  }
+  
+  void controlPanelOthers(){
+    for(int x=0; x<w;x++){
         for(int y=0; y<h; y++){
            float i = map(x,0,w,0,360);
            lengedColor.stroke(i,y,100);
@@ -122,11 +158,9 @@ public class ColorRange extends PApplet{
         lengedColor.rect(x,0,control,h);
         lengedColor.text("x = Modify color limits", w/2,h+15);
       }
-      
-   }
-   lengedColor.endDraw();
-   image(lengedColor,0,0);   
   }
+  
+  
 
   /**
   *White: Select a color rect to change hue, saturation and brightness

@@ -1,3 +1,24 @@
+/**
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+This file is part of LegoReader.
+
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 public class Configuration{
   String path;
   ArrayList<PVector> contour;
@@ -6,10 +27,14 @@ public class Configuration{
   float brightnessLevel;
   int nblocks; 
   IntList resizeCanvas = new IntList();
+  int actualSize;
+  ArrayList<ArrayList<String>> patterns = new ArrayList<ArrayList<String>>();
   
-  Configuration(String path){
+  Configuration(int actualSize,String path){
+    this.actualSize = actualSize;
     this.path = path;
   }
+  
   public void actualizeSizeCanvas(int w, int h){
     this.resizeCanvas= new IntList();
     resizeCanvas.append(w);
@@ -75,7 +100,7 @@ public class Configuration{
     for(int x=0; x<cam.width;x++){
       for(int y=0; y<cam.height;y++){
         
-        PVector colors = new PVector();
+        color colors = color(0,0,0);
         float hue = hue(cam.get(x,y));
         float brightness = brightness(cam.get(x,y));
         float saturation = saturation(cam.get(x,y));
@@ -103,9 +128,8 @@ public class Configuration{
             }
           }
         }
-        if(!breakLoop) colors = new PVector(colorLimits.get(2).getColor().x,colorLimits.get(2).getColor().y,colorLimits.get(2).getColor().z);
-       
-        colorimage.set(x,y,color(colors.x,colors.y,colors.z));
+        if(!breakLoop) colors = colorLimits.get(2).getColor();
+        colorimage.set(x,y,colors);
       }
      }
    }
@@ -120,8 +144,12 @@ public class Configuration{
     for(Color col :colors){
         JSONObject limitColor = new JSONObject();
         limitColor.setInt("id",col.id);
-        limitColor.setFloat("maxHue",col.maxHue);
-        limitColor.setJSONArray("standarHSV",col.stdColor);
+        limitColor.setFloat("maxHue",col.maxHue); 
+        JSONArray values = new JSONArray();
+          values.setFloat(0,hue(col.stdColor));
+          values.setFloat(1,saturation(col.stdColor));
+          values.setFloat(2,brightness(col.stdColor));
+        limitColor.setJSONArray("standarHSV",values );
         limitColor.setString("name",col.name);
         if(col.name.equals("white")){
               limitColor.setFloat("satMax",col.satMax);
@@ -151,15 +179,29 @@ public class Configuration{
       resize.setInt("rWa", this.resizeCanvas.get(0));
       resize.setInt("rHa", this.resizeCanvas.get(1));
     }
-    
+
+    JSONObject patternsLatent = new JSONObject();
+    int index = 0;
+    for(ArrayList<String> pattern : patternBlocks.patternString){
+      JSONArray patternValues = new JSONArray();
+      int indexP = 0;
+      for(String pat : pattern){
+        patternValues.setString(indexP,pat);
+        indexP += 1;
+      }
+      patternsLatent.setJSONArray(str(index), patternValues);
+      index += 1;
+    }    
     calibrationParameters.setJSONObject("Calibration Points", calibrationPoints);
-    calibrationParameters.setJSONObject("Color Limits",limitsColors);
-    calibrationParameters.setFloat("Saturation",this.saturationLevel);
-    calibrationParameters.setFloat("Brightness",this.brightnessLevel);
-    calibrationParameters.setInt("nblocks",nblocks);
-    calibrationParameters.setJSONObject("resizeCanvas",resize);
+    calibrationParameters.setInt("Canvas size", actualSize);  
+    calibrationParameters.setJSONObject("Color Limits", limitsColors);
+    calibrationParameters.setFloat("Saturation", this.saturationLevel);
+    calibrationParameters.setFloat("Brightness", this.brightnessLevel);
+    calibrationParameters.setInt("nblocks", nblocks);
+    calibrationParameters.setJSONObject("resizeCanvas", resize);
+    calibrationParameters.setJSONObject("Patterns", patternsLatent);
     
-    saveJSONObject(calibrationParameters,this.path,"compact");
+    saveJSONObject(calibrationParameters, this.path, "compact");
     println("Calibration parameters uploaded"); 
   }
   
@@ -168,6 +210,7 @@ public class Configuration{
   * load colors ranges, saturation, brightness and perspective calibration points.
   **/
   public void loadConfiguration(){
+   ArrayList<ArrayList<String>> patternsLatent = new ArrayList<ArrayList<String>>();
    ArrayList<Color> colorConf = new ArrayList();
    ArrayList<PVector> calibrationPoints = new ArrayList();
    JSONObject calibrationParameters =  loadJSONObject(this.path);
@@ -176,7 +219,8 @@ public class Configuration{
      int id = colorLimits.getJSONObject(str(i)).getInt("id");
      String name = colorLimits.getJSONObject(str(i)).getString("name");
      float  maxHue = colorLimits.getJSONObject(str(i)).getFloat("maxHue");
-     JSONArray stdColor = colorLimits.getJSONObject(str(i)).getJSONArray("standarHSV");
+     JSONArray stdColorp = colorLimits.getJSONObject(str(i)).getJSONArray("standarHSV");
+     color stdColor = color(stdColorp.getInt(0),stdColorp.getInt(1),stdColorp.getInt(2));
 
      if(name.equals("white")){
        float satMax = colorLimits.getJSONObject(str(i)).getFloat("satMax");
@@ -193,13 +237,24 @@ public class Configuration{
        colorConf.add(new Color(id, maxHue, stdColor, name));
      }
    }
-   
+   int canvasSize = calibrationParameters.getInt("Canvas size");
+   int factor = this.actualSize / canvasSize ;
    JSONObject points = calibrationParameters.getJSONObject("Calibration Points");
    for(int i=0; i<points.size(); i++){
      JSONArray point = points.getJSONArray(str(i));
-     calibrationPoints.add(new PVector(point.getFloat(0), point.getFloat(1)));
+     calibrationPoints.add(new PVector(point.getFloat(0) * factor , point.getFloat(1) * factor));
    }
    JSONObject resize = calibrationParameters.getJSONObject("resizeCanvas");
+   JSONObject patterns = calibrationParameters.getJSONObject("Patterns");
+   for(int i= 0; i < patterns.size(); i++){
+     ArrayList<String> latent = new ArrayList<String>();
+     JSONArray pattern = patterns.getJSONArray(str(i));
+     for(int j = 0; j < pattern.size(); j++){
+       latent.add(pattern.getString(j));
+     }
+     patternsLatent.add(latent);
+   }
+   this.patterns = patternsLatent;
    this.resizeCanvas.append(resize.getInt("rWa"));
    this.resizeCanvas.append(resize.getInt("rHa"));
    this.contour = calibrationPoints ;
@@ -207,7 +262,6 @@ public class Configuration{
    this.nblocks = calibrationParameters.getInt("nblocks");
    this.saturationLevel = calibrationParameters.getFloat("Saturation");
    this.brightnessLevel = calibrationParameters.getFloat("Brightness");
- 
    println("Calibration parameters loaded");
   } 
 

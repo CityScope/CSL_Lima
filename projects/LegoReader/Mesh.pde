@@ -1,3 +1,24 @@
+/**
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+This file is part of LegoReader.
+
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 public class Cells{
   ArrayList<PVector> corners = new ArrayList();
   color ownColor;
@@ -74,7 +95,7 @@ public class Cells{
   public color gettingColor(int index, ArrayList<Color> colorLimits){
     Color col = colorLimits.get(index);
     this.colorName = col.name;                        ///////<-- CAMBIAR-->/////////
-    color newCol = color(col.getColor().x,col.getColor().y,col.getColor().z);
+    color newCol = col.getColor();
     return newCol;
   }
   
@@ -126,7 +147,7 @@ public class Cells{
          int loc = x + y * canvas.width;      
          color c = canvas.pixels[loc];
          for(Color colorL:colorLimits){
-           if(c == color(colorL.getColor().x,colorL.getColor().y,colorL.getColor().z)){
+           if(c == colorL.getColor()){
              colorL.n ++;
              break;
            }         
@@ -167,6 +188,12 @@ public class Mesh{
     this.setSizePattern();
   }
   
+  public void actualizeString(){
+    for(patternBlock p : patternBlocks){
+      p.setColorPattern();
+    }
+  }
+
   public void actualize(int nblocks, int w){
     this.nblocks = nblocks;
     this.scl = w/nblocks;
@@ -243,6 +270,7 @@ public class Mesh{
         cont++;
      }
     }
+    
     //println(cont);
     
   }
@@ -310,18 +338,8 @@ public class patternBlock{
   }
   
   public void setColorPattern(){
-    ArrayList<String> colorPattern1 = new ArrayList<String>(){{add("white"); add("blue"); add("white"); add("white");}};
-    ArrayList<String> colorPattern2 = new ArrayList<String>(){{add("green"); add("white"); add("white"); add("white");}};
-    ArrayList<String> colorPattern3 = new ArrayList<String>(){{add("white"); add("white"); add("green"); add("white");}};
-    ArrayList<String> colorPattern4 = new ArrayList<String>(){{add("green"); add("green"); add("green"); add("green");}};
-    ArrayList<String> colorPattern5 = new ArrayList<String>(){{add("white"); add("blue"); add("green"); add("white");}};
-    ArrayList<String> colorPattern6 = new ArrayList<String>(){{add("blue"); add("yellow"); add("blue"); add("red");}};
-    colorPatterns.add(colorPattern1);
-    colorPatterns.add(colorPattern2);
-    colorPatterns.add(colorPattern3);
-    colorPatterns.add(colorPattern4);
-    colorPatterns.add(colorPattern5);
-    colorPatterns.add(colorPattern6);
+    colorPatterns = config.patterns;
+
   }
   
   public void checkPattern(){
