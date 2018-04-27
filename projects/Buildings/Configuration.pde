@@ -34,7 +34,6 @@ public class Configuration{
     this.actualSize = actualSize;
     this.path = path;
   }
-  
   public void actualizeSizeCanvas(int w, int h){
     this.resizeCanvas= new IntList();
     resizeCanvas.append(w);

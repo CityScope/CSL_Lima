@@ -18,7 +18,6 @@ This file is part of LegoReader.
     You should have received a copy of the GNU Affero General Public License
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
-
 public class Cells{
   ArrayList<PVector> corners = new ArrayList();
   color ownColor;
@@ -173,28 +172,29 @@ public class Cells{
 }
 
 
-public class Mesh{
+public class Mesh {
   int scl;
   PVector[][] malla;
+  ArrayList<Color> colorLimits;
   ArrayList<Cells> celdas = new ArrayList();
   int nblocks;  
   ArrayList<patternBlock> patternBlocks = new ArrayList<patternBlock>();
-  
-  public Mesh(int nblocks, int w){
+
+  public Mesh(int nblocks, int w) {
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.malla = new PVector[nblocks+1][nblocks+1];
     this.create();
     this.setSizePattern();
   }
-  
+
   public void actualizeString(){
     for(patternBlock p : patternBlocks){
       p.setColorPattern();
     }
   }
-
-  public void actualize(int nblocks, int w){
+  
+  public void actualize(int nblocks, int w) {
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.malla = new PVector[nblocks+1][nblocks+1];
@@ -203,94 +203,101 @@ public class Mesh{
     this.create();
     this.setSizePattern();
   }
-  
-  
+
+
   /**
-  * Create all the "n" blocks with a specific width
-  **/
-  public void create(){
+   * Create all the "n" blocks with a specific width
+   **/
+  public void create() {
     int id = 0;
-    for(int w = 0; w < this.malla.length; w++){
-       for(int h = 0; h < this.malla.length; h++){
+    for (int w = 0; w < this.malla.length; w++) {
+      for (int h = 0; h < this.malla.length; h++) {
         int puntox = w*scl;
         int puntoy = h*scl;
-        malla[w][h] = new PVector(puntox,puntoy);
-      } 
+        malla[w][h] = new PVector(puntox, puntoy);
+      }
     }
-      for(int i = 0; i < this.nblocks; i++){
-        for(int y = 0; y < this.nblocks; y++){
-          ArrayList<PVector> cornersTemp = new ArrayList();
-          cornersTemp.add(malla[y][i]);
-          cornersTemp.add(malla[y][i+1]);
-          cornersTemp.add(malla[y+1][i+1]);
-          cornersTemp.add(malla[y+1][i]);
-          celdas.add(new Cells(id,cornersTemp));
-          id++;
-        }
+    for (int i = 0; i < this.nblocks; i++) {
+      for (int y = 0; y < this.nblocks; y++) {
+        ArrayList<PVector> cornersTemp = new ArrayList();
+        cornersTemp.add(malla[y][i]);
+        cornersTemp.add(malla[y][i+1]);
+        cornersTemp.add(malla[y+1][i+1]);
+        cornersTemp.add(malla[y+1][i]);
+        celdas.add(new Cells(id, cornersTemp));
+        id++;
+      }
     }
   }  
-  
-  
+
+
   /**
-  * draw the mesh
-  * if withColor is false, only the mesh is rendered
-  * if withColor is true, the mesh with its color is rendered
-  **/
-  void draw(PGraphics canvas, boolean withColor){
-    for(Cells i : celdas){
+   * draw the mesh
+   * if withColor is false, only the mesh is rendered
+   * if withColor is true, the mesh with its color is rendered
+   **/
+  void draw(PGraphics canvas, boolean withColor) {
+    for (Cells i : celdas) {
       i.draw(canvas, withColor);
     }
   }
-   
-   
+
+
+  void drawBlockReader(PGraphics canvasColor) {
+    canvasColor.beginDraw();
+    canvasColor.background(255);
+    this.draw(canvasColor, true);
+    this.checkPattern();
+    this.drawPattern(canvasColor);
+    canvasColor.endDraw();
+  }
+
+
   /**
-  * get colors with specific ranges in the canvas
-  **/
-  public void getColors(PGraphics canvas, ArrayList<Color> colors){
-    for (Cells cell: celdas){
+   * get colors with specific ranges in the canvas
+   **/
+  public void getColors(PGraphics canvas, ArrayList<Color> colors) {
+    for (Cells cell : celdas) {
       cell.getColor(canvas, colors);
     }
   }
-  
+
   /**
-  **/
-  public void setSizePattern(){
-    int n = config.nblocks;
+   **/
+  public void setSizePattern() {
+    int n = this.nblocks;
     int cont = 0;
-    for(int i = 0; i < n*(n-1); i+=n*2){
-      for(int j = 0; j < n; j+=2){
+    for (int i = 0; i < n*(n-1); i+=n*2) {
+      for (int j = 0; j < n; j+=2) {
         ArrayList<Cells> latent = new ArrayList<Cells>();
         latent.add(celdas.get(j+i));
         latent.add(celdas.get(j+i+1));
         latent.add(celdas.get(j+i+n));
         latent.add(celdas.get(j+i+n+1));
-        patternBlocks.add(new patternBlock(cont,latent));
+        patternBlocks.add(new patternBlock(cont, latent));
         //print(j+i," ",j+i+1," ",j+i+n," ", j+i+n+1);
         //println();
         cont++;
-     }
+      }
     }
-    
     //println(cont);
-    
   }
-  
-  /**
-  
-  */
 
-  public void drawPattern(PGraphics canvas){
-    for(patternBlock pattern : patternBlocks){
+  /**
+   
+   */
+
+  public void drawPattern(PGraphics canvas) {
+    for (patternBlock pattern : patternBlocks) {
       pattern.draw(canvas);
     }
   }
-  
-  public void checkPattern(){
-    for(patternBlock pattern : patternBlocks){
+
+  public void checkPattern() {
+    for (patternBlock pattern : patternBlocks) {
       pattern.checkPattern();
     }
   }
-  
 }
 
 public class patternBlock{
@@ -336,10 +343,17 @@ public class patternBlock{
         canvas.text(str(indexPattern), celda.center.x, celda.center.y);
       }
   }
+
+  void draw(PGraphics canvas, boolean colors) {
+    fill(0);
+    for (Cells celda : cells) {
+      celda.draw(canvas, colors);
+    }
+    fill(#FFFFFF);
+  }  
   
   public void setColorPattern(){
     colorPatterns = config.patterns;
-
   }
   
   public void checkPattern(){

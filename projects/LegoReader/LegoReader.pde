@@ -1,3 +1,24 @@
+/**
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+This file is part of LegoReader.
+
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 import processing.video.*;
 import gab.opencv.*;
 import org.opencv.imgproc.Imgproc;
@@ -13,6 +34,7 @@ PGraphics canvasOriginal;
 PGraphics canvasColor;
 PGraphics lengedColor;
 PGraphics grayScale;
+PGraphics canvasPattern;
 
 
 int sizeCanvas = 480; 
@@ -32,8 +54,9 @@ WrappedPerspective wrappedPerspective;
 ColorRange colorRange;
 Mesh mesh;
 BloackReader blockReader;
-Configuration config = new Configuration("data/calibrationParameters.json");
-
+Configuration config = new Configuration(sizeCanvas, "data/calibrationParameters.json");
+PatternBlocks patternBlocks;
+Patterns patterns;
 
 void settings(){
   size(sizeCanvas*2, sizeCanvas);
@@ -67,10 +90,13 @@ void setup() {
 
     String[] args = {"Animation"};
     String[] name = {"color"};
+    String[] pattern = {"Patterns"};
     blockReader = new BloackReader(sizeCanvas,sizeCanvas);
     colorRange = new ColorRange(config.colorLimits, 600, 100);
+    patterns = new Patterns(canvasPattern, 480,350);
     PApplet.runSketch(name,colorRange);
     PApplet.runSketch(args, blockReader);
+    PApplet.runSketch(pattern, patterns);
     
     opencv = new OpenCV(this, cam);
     opencv.useColor(HSB);
@@ -99,7 +125,7 @@ void draw() {
   //canvas with the color processing and wrapped image
   colorImage.updatePixels();
   opencv.loadImage(colorImage);
-  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1)), imageWrapped);
+  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
   
   canvas.beginDraw();
   canvas.background(255);
@@ -164,11 +190,7 @@ void captureEvent(Capture cam){
   cam.read();
 }
 
-void mouseClicked(){
-  //print("\n",hue(this.get(mouseX,mouseY)),saturation(this.get(mouseX,mouseY)),brightness(this.get(mouseX,mouseY)));
-  print("\n", calibrationPoints);
-  print("\n",mouseX,mouseY);
-}
+
 void mousePressed(){
   wrappedPerspective.selected(mouseX,mouseY,5);
 }

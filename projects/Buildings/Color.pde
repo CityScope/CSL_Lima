@@ -19,6 +19,7 @@ This file is part of LegoReader.
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+
 public class Color{
   int id;
   float maxHue;

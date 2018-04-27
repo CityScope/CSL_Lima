@@ -1,3 +1,24 @@
+/**
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+This file is part of LegoReader.
+
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 public class Corners{
   PGraphics grayScale;
   int blocksize = 5;
@@ -22,7 +43,7 @@ public class Corners{
     grayScale.background(0);
     config.flip(grayScale,cam,true);
     grayScale.filter(GRAY);
-    grayScale.filter(BLUR,3);
+    grayScale.filter(BLUR,3.5);
     grayScale.loadPixels();
     
     for(int i=0; i < grayScale.width-blocksize-speed; i += speed){
@@ -141,7 +162,7 @@ public class Corners{
     
     R = detM - k* pow(traceM,2);
     
-    if(R>1000000){
+    if(R>9000000){
       return true;
     }else{
       return false;  

@@ -2,7 +2,7 @@
 ** @copyright: Copyright (C) 2018
 ** @authors:   Javier Zárate & Vanesa Alcántara
 ** @version:   1.0
-** @legal :
+** @legal:
 This file is part of LegoReader.
 
     LegoReader is free software: you can redistribute it and/or modify
@@ -19,6 +19,11 @@ This file is part of LegoReader.
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+/**
+* estadictic_graphics - templates for different kinds of graphics changing with time
+* @author        Vanesa Alcantara & Javier Zarate
+* @version       2.0
+*/
 public class WrappedPerspective{
   ArrayList<PVector> contour = new ArrayList();
   PVector pointSelected;
