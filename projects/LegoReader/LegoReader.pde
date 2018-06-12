@@ -32,7 +32,7 @@ import java.util.Collections;
 PGraphics canvas;
 PGraphics canvasOriginal;
 PGraphics canvasColor;
-PGraphics lengedColor;
+PGraphics legendColor;
 PGraphics grayScale;
 PGraphics canvasPattern;
 
@@ -80,6 +80,9 @@ void setup() {
     corners = new Corners(grayScale);
 
     config.loadConfiguration();
+    String[] pattern = {"Patterns"};
+    patterns = new Patterns(canvasPattern, 480,350);
+    PApplet.runSketch(pattern, patterns);
     
     mesh = new Mesh(config.nblocks, canvas.width);
 
@@ -90,13 +93,12 @@ void setup() {
 
     String[] args = {"Animation"};
     String[] name = {"color"};
-    String[] pattern = {"Patterns"};
+    
     blockReader = new BloackReader(sizeCanvas,sizeCanvas);
     colorRange = new ColorRange(config.colorLimits, 600, 100);
-    patterns = new Patterns(canvasPattern, 480,350);
+    
     PApplet.runSketch(name,colorRange);
     PApplet.runSketch(args, blockReader);
-    PApplet.runSketch(pattern, patterns);
     
     opencv = new OpenCV(this, cam);
     opencv.useColor(HSB);
@@ -118,7 +120,6 @@ void draw() {
   canvasOriginal.endDraw();
   image(canvasOriginal, 0, 0);
   
-
   //Filter colors with specific ranges
   config.applyFilter(canvasOriginal,colorImage);
   
@@ -166,19 +167,22 @@ void keyPressed(KeyEvent e) {
      config.safeConfiguration(colorRange.selectAll());
      break;
      
-
+     case 'e':
+     config.exportGrid(mesh.patternBlocks);
+     break;
+     
      case 'r':
      print(true);
      refresh = !refresh;
 
      case '+':
-     config.nblocks ++;
+     config.nblocks += 4;
      mesh.actualize(config.nblocks, canvas.width);
      config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;
      
      case '-':
-     config.nblocks--;
+     config.nblocks-=4;
      mesh.actualize(config.nblocks, canvas.width);
      config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;    

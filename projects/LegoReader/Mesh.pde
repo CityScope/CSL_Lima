@@ -21,6 +21,8 @@ This file is part of LegoReader.
 
 public class Cells{
   ArrayList<PVector> corners = new ArrayList();
+  //Color ownColor;
+  Color col;
   color ownColor;
   PVector center;
   int[] counter; 
@@ -28,12 +30,15 @@ public class Cells{
   IntList indexes;
   int id;
   String colorName;
+  String acron;
     
   public Cells(int id, ArrayList<PVector> corners){
       this.corners = corners;
       this.id = id;
       setCenter();
       this.ownColor = color(random(0,255),random(0,255),random(0,255));
+      this.colorName = "";
+      this.acron = "";
       this.settingCounter(config.colorLimits);
       this.indexes = new IntList();
   }
@@ -76,7 +81,7 @@ public class Cells{
   /**
   * Get the most frequent color  
   **/
-  public color movilAverage(){
+  public void movilAverage(){
     int indexMax = 0;
     int maxCount = 0;
     for(int i = 0; i < this.counter.length; i++){
@@ -85,35 +90,23 @@ public class Cells{
         indexMax = i;
       }
     }
-    return this.gettingColor(indexMax, config.colorLimits);
+    this.col = config.colorLimits.get(indexMax);
   }
-  
-  
-  /**
-  *Get the color "i" in colorLimits
   **/
-  public color gettingColor(int index, ArrayList<Color> colorLimits){
-    Color col = colorLimits.get(index);
-    this.colorName = col.name;                        ///////<-- CAMBIAR-->/////////
-    color newCol = col.getColor();
-    return newCol;
-  }
-  
-  
+   
   /**
   *draw the cells with its own color in the canvas
   *depend of the value of withColor to render its color or none.
   **/
   void draw(PGraphics canvas, boolean withColor){
-    canvas.stroke(1);
+    canvas.stroke(0,60);
     canvas.fill(ownColor);
     if(!withColor) canvas.noFill();
     canvas.beginShape();
     canvas.vertex(this.corners.get(0).x,this.corners.get(0).y);
     canvas.vertex(this.corners.get(1).x,this.corners.get(1).y);
     canvas.vertex(this.corners.get(2).x,this.corners.get(2).y);
-    canvas.vertex(this.corners.get(3).x,this.corners.get(3).y);
-    //canvas.text(str(id), center.x, center.y);
+    canvas.vertex(this.corners.get(3).x,this.corners.get(3).y); 
     canvas.endShape(CLOSE);
   }
  
@@ -165,7 +158,10 @@ public class Cells{
       if(colorL.n == maximo){
         this.addingCounter(colorL.id, 1);
         this.checkMovilAverage(30, -1);
-        this.ownColor = movilAverage();
+        movilAverage();
+        this.ownColor = col.stdColor;
+        this.colorName = col.name;
+        this.acron = col.acron;
       } 
     }
   }
@@ -264,15 +260,10 @@ public class Mesh{
         latent.add(celdas.get(j+i+1));
         latent.add(celdas.get(j+i+n));
         latent.add(celdas.get(j+i+n+1));
-        patternBlocks.add(new patternBlock(cont,latent));
-        //print(j+i," ",j+i+1," ",j+i+n," ", j+i+n+1);
-        //println();
+        patternBlocks.add(new patternBlock(cont,latent, j/2, i/(n*2)));
         cont++;
      }
     }
-    
-    //println(cont);
-    
   }
   
   /**
@@ -296,14 +287,19 @@ public class Mesh{
 public class patternBlock{
   ArrayList<Cells> cells = new ArrayList<Cells>();
   ArrayList<PVector> corners = new ArrayList<PVector>();
+  ArrayList<BlockGroup> colorPatterns = new ArrayList();
+  BlockGroup blockGroup;
+  PVector coords = new PVector();
   int id;
-  color ownColor = color(random(0,255),random(0,255),random(0,255));
-  ArrayList colorPatterns = new ArrayList();
   int indexPattern = -1;
+  int dif = 7;
+  color ownColor = color(random(0,255),random(0,255),random(0,255));  
   boolean pattern = false;
+  PVector center = new PVector();
   
-  public patternBlock(int id, ArrayList<Cells> cells){
+  public patternBlock(int id, ArrayList<Cells> cells, int x, int y){
     this.id =id; 
+    this.coords.x =  x; this.coords.y = y;
     this.cells = cells;
     this.getCorners();
     this.setColorPattern();
@@ -313,12 +309,14 @@ public class patternBlock{
   public void getCorners(){
     PVector latent1 = cells.get(0).corners.get(0);
     PVector latent2 = cells.get(1).corners.get(3);
-    PVector latent3 = cells.get(2).corners.get(1);
-    PVector latent4 = cells.get(3).corners.get(2);
+    PVector latent3 = cells.get(3).corners.get(2);
+    PVector latent4 = cells.get(2).corners.get(1);
     this.corners.add(latent1);
     this.corners.add(latent2);
     this.corners.add(latent3);
     this.corners.add(latent4);
+    this.center = cells.get(0).corners.get(2);
+    this.dif = int(cells.get(0).corners.get(2).y - cells.get(0).corners.get(0).y);
   }
   
   void draw(PGraphics canvas){
@@ -328,17 +326,32 @@ public class patternBlock{
         canvas.ellipse(vector.x,vector.y,20,20);
       }
       */
+      
+      canvas.fill(0);canvas.stroke(0);
+      canvas.textSize(dif/1.5); canvas.textAlign(CENTER, CENTER);
+      //canvas.text(str(indexPattern), corners.get(2).x, corners.get(2).y);
+      //for(Cells cell: cells){
+      //  canvas.text(cell.acron,cell.center.x, cell.center.y);
+      //}
+      canvas.strokeWeight(1.25); canvas.noFill(); 
+      canvas.beginShape();
+      canvas.vertex(corners.get(0).x, corners.get(0).y);
+      canvas.vertex(corners.get(1).x, corners.get(1).y);
+      canvas.vertex(corners.get(2).x, corners.get(2).y);
+      canvas.vertex(corners.get(3).x, corners.get(3).y);
+      canvas.endShape(CLOSE);
+      canvas.rectMode(CENTER); 
+      if(indexPattern != -1) canvas.fill(255);
+      else canvas.fill(215);
+      canvas.rect(center.x,center.y, dif,dif);
       canvas.fill(0);
-      for(Cells celda : cells){
-        //canvas.fill(this.ownColor);
-        //canvas.ellipse(celda.center.x,celda.center.y,10,10);
-        canvas.textSize(7);
-        canvas.text(str(indexPattern), celda.center.x, celda.center.y);
-      }
+      canvas.text(str(indexPattern), center.x, center.y);
+      
   }
+
   
   public void setColorPattern(){
-    colorPatterns = config.patterns;
+    colorPatterns = patternBlocks.groups;
 
   }
   
@@ -346,47 +359,47 @@ public class patternBlock{
     this.pattern = false;
     int index = 0;
     for(int i = 0; i < colorPatterns.size(); i++){
-      ArrayList<String> colorPattern = (ArrayList<String>)colorPatterns.get(i);
+      BlockGroup colorPattern = colorPatterns.get(i);
       boolean correct1 = true;
       boolean correct2 = true;
       boolean correct3 = true;
-      boolean correct4 = true;
+      boolean correct4 = true;        
       
       //check 0123
-      for(int j = 0 ; j < colorPattern.size(); j++){
-        String namePattern = colorPattern.get(j);
-        String nameCelda = cells.get(j).colorName;
-        if(!namePattern.equals(nameCelda)){
+      for(int j = 0 ; j < colorPattern.blocks.size(); j++){
+        Block cPattern = colorPattern.blocks.get(j);
+        Cells cCelda = cells.get(j);
+        if(cPattern.col != cCelda.col ){
           correct1 = false;
           break;
         }
       }
       
       //check 3210
-      for(int j = 0 ; j < colorPattern.size(); j++){
-        String namePattern = colorPattern.get(colorPattern.size()-1-j);
-        String nameCelda = cells.get(j).colorName;
-        if(!namePattern.equals(nameCelda)){
+      for(int j = 0 ; j < colorPattern.blocks.size(); j++){
+        Block cPattern = colorPattern.blocks.get(colorPattern.blocks.size()-1-j);
+        Cells cCelda = cells.get(j);
+        if(cPattern.col != cCelda.col){
           correct2 = false;
           break;
         }
       }
 
       //check 1302
-      if(colorPattern.size() == 4){
-        boolean verify1 =  colorPattern.get(1).equals(cells.get(0).colorName);
-        boolean verify2 =  colorPattern.get(3).equals(cells.get(1).colorName);
-        boolean verify3 =  colorPattern.get(0).equals(cells.get(2).colorName);
-        boolean verify4 =  colorPattern.get(2).equals(cells.get(3).colorName);
+      if(colorPattern.blocks.size() == 4){
+        boolean verify1 =  colorPattern.blocks.get(1).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(3).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(0).col == (cells.get(2).col);
+        boolean verify4 =  colorPattern.blocks.get(2).col == (cells.get(3).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct3 = false;}
       }
       
       //check 2031
-      if(colorPattern.size() == 4){
-        boolean verify1 =  colorPattern.get(2).equals(cells.get(0).colorName);
-        boolean verify2 =  colorPattern.get(0).equals(cells.get(1).colorName);
-        boolean verify3 =  colorPattern.get(3).equals(cells.get(2).colorName);
-        boolean verify4 =  colorPattern.get(1).equals(cells.get(3).colorName);
+      if(colorPattern.blocks.size() == 4){
+        boolean verify1 =  colorPattern.blocks.get(2).equals(cells.get(0).colorName);
+        boolean verify2 =  colorPattern.blocks.get(0).equals(cells.get(1).colorName);
+        boolean verify3 =  colorPattern.blocks.get(3).equals(cells.get(2).colorName);
+        boolean verify4 =  colorPattern.blocks.get(1).equals(cells.get(3).colorName);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct4 = false;}
       }
       

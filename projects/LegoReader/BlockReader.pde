@@ -44,6 +44,7 @@ public class BloackReader extends PApplet {
   public void draw() {
     canvasColor.beginDraw();
     canvasColor.background(255);
+    canvasColor.strokeWeight(1);
     mesh.draw(canvasColor, true);
     mesh.checkPattern();
     mesh.drawPattern(canvasColor);
@@ -54,6 +55,7 @@ public class BloackReader extends PApplet {
   void mouseClicked(){
   color selected = canvasColor.get(mouseX,mouseY);
   println(hue(selected), saturation(selected), brightness(selected));
+  println(red(selected), green(selected), blue(selected));
   }
   
 }

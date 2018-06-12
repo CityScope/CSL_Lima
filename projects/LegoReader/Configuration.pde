@@ -134,6 +134,32 @@ public class Configuration{
      }
    }
 
+  /**
+  *Export a JSONfile with pattern and cells color name
+  **/
+  public void exportGrid(ArrayList<patternBlock> patternBlocks){
+    JSONObject mesh = new JSONObject();
+    JSONArray grid = new JSONArray();
+    int i=0;
+    for(patternBlock pb : patternBlocks){
+      JSONObject grid1 = new JSONObject();
+      grid1.setFloat("type",pb.indexPattern);
+      grid1.setFloat("x",pb.coords.x);
+      grid1.setFloat("y",pb.coords.y);
+      JSONArray col = new JSONArray();
+      for(int y = 0; y < pb.cells.size(); y++){
+        col.setString(y,pb.cells.get(y).col.acron);
+      }
+      grid1.setJSONArray("ColorPattern",col);
+      grid1.setInt("rot", 180); 
+      grid.setJSONObject(i, grid1);
+      i++;
+    }
+    mesh.setJSONArray("grid",grid);
+    mesh.setFloat("timestamp",millis());
+    saveJSONObject(mesh, "data/grid.json","compact");
+    println("Grid saved");
+  }
   
   /**
   * Safe colors ranges, saturation, brightness and perspective calibration points.
@@ -151,6 +177,7 @@ public class Configuration{
           values.setFloat(2,brightness(col.stdColor));
         limitColor.setJSONArray("standarHSV",values );
         limitColor.setString("name",col.name);
+        limitColor.setString("acronym",col.acron);
         if(col.name.equals("white")){
               limitColor.setFloat("satMax",col.satMax);
               limitColor.setFloat("briMin",col.briMin);
@@ -218,23 +245,24 @@ public class Configuration{
    for(int i=0; i<colorLimits.size(); i++){
      int id = colorLimits.getJSONObject(str(i)).getInt("id");
      String name = colorLimits.getJSONObject(str(i)).getString("name");
+     String acron = colorLimits.getJSONObject(str(i)).getString("acronym");
      float  maxHue = colorLimits.getJSONObject(str(i)).getFloat("maxHue");
      JSONArray stdColorp = colorLimits.getJSONObject(str(i)).getJSONArray("standarHSV");
      color stdColor = color(stdColorp.getInt(0),stdColorp.getInt(1),stdColorp.getInt(2));
-
+  
      if(name.equals("white")){
        float satMax = colorLimits.getJSONObject(str(i)).getFloat("satMax");
        float briMin = colorLimits.getJSONObject(str(i)).getFloat("briMin");
        float satMax2 = colorLimits.getJSONObject(str(i)).getFloat("satMax2");
        float hueMin = colorLimits.getJSONObject(str(i)).getFloat("hueMin");
-       colorConf.add(new Color(id,maxHue, stdColor, name, satMax, briMin, satMax2,hueMin));    
+       colorConf.add(new Color(id,maxHue, stdColor, name,acron, satMax, briMin, satMax2,hueMin));    
      }else if(name.equals("black")){
        float briMax = colorLimits.getJSONObject(str(i)).getFloat("briMax");
        float briMax2 = colorLimits.getJSONObject(str(i)).getFloat("briMax2");
        float satMax = colorLimits.getJSONObject(str(i)).getFloat("satMax");
-       colorConf.add(new Color(id, maxHue, stdColor, name, briMax, briMax2, satMax));  
+       colorConf.add(new Color(id, maxHue, stdColor, name, acron, briMax, briMax2, satMax));  
      }else{
-       colorConf.add(new Color(id, maxHue, stdColor, name));
+       colorConf.add(new Color(id, maxHue, stdColor, name, acron));
      }
    }
    int canvasSize = calibrationParameters.getInt("Canvas size");

@@ -4,17 +4,14 @@
 ** @version:   1.0
 ** @legal:
 This file is part of LegoReader.
-
     LegoReader is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
     LegoReader is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
-
     You should have received a copy of the GNU Affero General Public License
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
@@ -23,7 +20,7 @@ public class Patterns extends PApplet{
   int w;
   int h;
   PGraphics canvasPattern;
-  //PatternBlock patternBlocks;
+
   public Patterns(PGraphics canvasPattern, int w, int h){
     this.w = w;
     this.h = h;
@@ -44,7 +41,6 @@ public class Patterns extends PApplet{
   public void draw(){
     canvasPattern.beginDraw();
     canvasPattern.background(255);
-    //createPallet(canvasPattern, 9);
     patternBlocks.draw(canvasPattern);
     canvasPattern.endDraw();
     image(canvasPattern, 0, 0);
@@ -57,30 +53,27 @@ public class Patterns extends PApplet{
 
   public class Block{
     ArrayList<PVector> corners = new ArrayList<PVector>();
-    String colors;
-    color ownColor = color(255);
+    Color col;
     int id;
     int colorIndex = 0;
     public Block(int id, ArrayList<PVector> corners, String colorName){
       this.id = id;
       this.corners = corners;
-      this.ownColor = color(config.colorLimits.get(0).getColor());
-      //colors = config.colorLimits.get(0).name;
-      this.colors = colorName;
-      this.getColorFromName();  
+      this.getColorFromName(colorName);  
     }
     
-    void getColorFromName(){
+    void getColorFromName(String colorName){
       for(Color col : config.colorLimits){
-        if(col.name.equals(this.colors)){
-          this.ownColor = col.stdColor;
+        if(col.name.equals(colorName)){
+          this.col = col;
+          this.colorIndex = col.id;
         }
       }
     }
     
     void draw(PGraphics canvas){
       canvas.stroke(0);
-      canvas.fill(ownColor);
+      canvas.fill(col.stdColor);
       canvas.beginShape();
       canvas.vertex(this.corners.get(0).x,this.corners.get(0).y);
       canvas.vertex(this.corners.get(1).x,this.corners.get(1).y);
@@ -100,8 +93,7 @@ public class Patterns extends PApplet{
         }else{
           this.colorIndex +=1;
         }
-        this.ownColor = color(config.colorLimits.get(colorIndex).getColor());
-        this.colors = config.colorLimits.get(colorIndex).name;
+        this.col = config.colorLimits.get(colorIndex);
         patternBlocks.getColorString();
       }
     }
@@ -131,7 +123,7 @@ public class BlockGroup{
         block.draw(canvas);
         canvas.fill(0);
         canvas.textSize(8);
-        canvas.text(block.colors + " ",this.cornerBL.x + spaceText, cornerBL.y + 10 );
+        canvas.text(block.col.name + " ",this.cornerBL.x + spaceText, cornerBL.y + 10 );
         spaceText += 30;
       }
     }
@@ -148,6 +140,7 @@ public class BlockGroup{
     ArrayList<BlockGroup> groups = new ArrayList<BlockGroup>();
     ArrayList<ArrayList<String>> patternString = new ArrayList<ArrayList<String>>();
     PGraphics canvas;
+    
     public PatternBlocks(PGraphics canvas, int blocks){
       this.canvas = canvas;
       this.createPallet(canvas, blocks);
@@ -158,7 +151,7 @@ public class BlockGroup{
       for(BlockGroup blockGroup : groups){
         ArrayList<String> patternLatent = new ArrayList<String>();
         for (Block block : blockGroup.blocks){
-          patternLatent.add(block.colors);
+          patternLatent.add(block.col.name);
         }
         this.patternString.add(patternLatent);
       }
