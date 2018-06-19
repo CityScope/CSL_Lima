@@ -79,15 +79,8 @@ new BlockReader(int w, int h)
 ```java
 new ColorRange(int w, int h)
 ```
+2. Description: This **_sketch_** shows the control panel color .
 
-###########################################################################################################################################################
-
-/*
-* Creates a pattern with 4 blocks. Safe its position in order *
-*  0 -- 1
-*  |    |
-*  3 -- 2
-*/
 
 ## **Patterns (Class extends PApplet)**
 1. Constructor
