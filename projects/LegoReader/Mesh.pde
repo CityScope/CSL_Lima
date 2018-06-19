@@ -92,7 +92,6 @@ public class Cells{
     }
     this.col = config.colorLimits.get(indexMax);
   }
-  **/
    
   /**
   *draw the cells with its own color in the canvas
