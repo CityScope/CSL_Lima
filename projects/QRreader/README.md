@@ -1,17 +1,5 @@
 # **QRreader**
-## **Required libraries**
-To use this project it is necessary to install [Zxing](http://cagewebdev.com/zxing4processing-processing-library/). This library can be found in processing's library list.
-
-## **Getting started**
-**1. Keyboard functionality in principal canvas**
-
-|      Key      |                      Functionality                            |
-| ------------- | ------------------------------------------------------------- |
-|       s       | Save calibration points to the JSON file                      | 
-|    spacebar   | Detect QR codes                                               |
-
-**2. Perspective calibration**
-The four points represent the control perspective coordinates. To change the coordinates of a point, press on the point and drag the           mouse. These four points are going to work as the new (0,0)/ (width,0) / (width,height) / (0,height) points on the second canvas.
+Creates a mesh with nblocks x nblocks (number of blocks), assign a QR value to each block, if it exist, reading what the camera sees.
 
 ## **Contact Info**
 **Vanesa Alcántara**: v.alcantarapanta@alum.up.edu.pe | https://github.com/vaap1997 .
@@ -58,6 +46,9 @@ new Mesh(int id, ArrayList<PVector> coords, PVector canvasCoords)
 new Mesh(int nblocks, int w)
 ```
 2. Methods
+    - *`addBlock()`*: Add a new blow to the mesh.
+    - *`deleteBlock()`*: Delete one block from the mesh.
+    - *`uploadMesh(int nblocks)`*: Upload configuration related to each cell.
     - *`create()`*: Creates the grid.
     - *`checkPattern(PImage im0)`*: Whenever called, the function resets the values of each cell in the grid. Then, scans the image for QR codes and gets the stored values in them, prints these values enumerated to the console and if the coordinate of the QR is within the boundaries of a cell, sets the pattern of said cell equal to the decoded value.
     - *`exportGrid()`*: Creates a JSON file that will store the coordinates of the QR codes along with their values.
