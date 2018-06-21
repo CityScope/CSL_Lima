@@ -102,12 +102,12 @@ public class Corners{
     }   
  }
 
- public void applyHCD(Boolean refresh, WrappedPerspective wrappedPerspective ){
+ public void applyHCD(Boolean refresh, WarpedPerspective warpedPerspective ){
     if(refresh){
       this.updateCorners(config, cam);
       calibrationPoints = this.getCalibrationPoints();   
       posibles = this.getPosiblesCorners();
-      wrappedPerspective.changeContours(calibrationPoints);
+      warpedPerspective.changeContours(calibrationPoints);
     }
  }
 

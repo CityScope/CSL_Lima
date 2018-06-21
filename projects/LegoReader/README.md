@@ -21,6 +21,10 @@ new Configuration(String path)
 - *`loadConfiguration()`*: Charge configuration.
 - *`applyFilter(PGraphics canvas, PImage imageWrapped)`*: Apply color filters in *HSB* considering the **_maxHue_** condition in  **_Color_** objects.
 - *`SBCorrection(PGraphics canvas, float s, float b)`*: Modify **_saturation_** and **_brightness_** values on a specific **_canvas_**.
+- *`flip(PGraphics canvas, Capture cam, boolean flip)`*: Flip an image
+- *`fact(int num)`*: Takes factorial of num
+- *`possiblePatterns()`*: Checks if there is any other possible combination for create a new pattern
+
 
 ## **Mesh (Class)**
 1. Constructor
@@ -85,7 +89,7 @@ new ColorRange(int w, int h)
 ## **Patterns (Class extends PApplet)**
 1. Constructor
 ```java
-new Patterns(PGraphics canvasPattern, int w, int h)
+new Patterns(PGraphics canvasPattern, Configuration config)
 ```
 2. Methods
     - *`selected(int x, int y)`*: Change pattern block color.
@@ -117,4 +121,6 @@ new PatternBlocks(PGraphics canvas, int blocks)
 2. Methods
     - *`getColorString()`*: Upload the patterns array so it can be safe on the JSONfile.
     - *`selected(int x, int y)`*: Select a pattern and a block inside it. Change the color of the selected block to the follow in the main list.
+    - *`createPallet(PGraphics canvas)`*: Creates a new pattern and assign it an standar W-W-W-W parameter
+    - *`deletePallet(PGraphics canvas)`*: Delete the last parameter in the parameters list
     - *`createPallet(PGraphics canvas, int blocks)`*: Reads an ArrayList with the patterns colors's name. Creates blocks and BlockGroups.

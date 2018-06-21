@@ -20,11 +20,14 @@ public class Patterns extends PApplet{
   int w;
   int h;
   PGraphics canvasPattern;
+  final int blockSize = 20;
+  Configuration config;
 
-  public Patterns(PGraphics canvasPattern, int w, int h){
-    this.w = w;
-    this.h = h;
+  public Patterns(PGraphics canvasPattern, Configuration config){
+    this.w = 480;
+    this.h = blockSize * 4 * config.patterns.size()/3;
     this.canvasPattern = canvasPattern;
+    this.config = config;
   }
   
   public void settings(){
@@ -34,11 +37,12 @@ public class Patterns extends PApplet{
   public void setup(){
     colorMode(HSB,360,100,100);
     canvasPattern = createGraphics(this.w, this.h);
-    patternBlocks = new PatternBlocks(canvasPattern, 10);
+    patternBlocks = new PatternBlocks(canvasPattern, this.config, blockSize);
     patternBlocks.getColorString();
   }
   
   public void draw(){
+    background(255);
     canvasPattern.beginDraw();
     canvasPattern.background(255);
     patternBlocks.draw(canvasPattern);
@@ -49,6 +53,36 @@ public class Patterns extends PApplet{
   public void mouseClicked(){
     patternBlocks.selected(mouseX,mouseY);
   }
+  
+  
+  public void keyPressed(KeyEvent e){
+   switch(e.getKeyCode()){
+     case UP:     
+     if(config.posiblePatterns()){
+       if((config.patterns.size() % 3 == 0) ) {
+         this.h += blockSize * 4;
+         surface.setSize(this.w, this.h); 
+         canvasPattern.setSize(width, height);
+       }
+       patternBlocks.createPattern(canvasPattern);
+     }
+     break;
+     
+     case DOWN:     
+     if(config.patterns.size() > 1){
+       if( ( (config.patterns.size()-1) % 3 == 0 )){
+         this.h -= blockSize * 4;
+         surface.setSize(this.w, this.h );
+         canvasPattern.setSize(width, height);
+       }
+     patternBlocks.deletePattern(canvasPattern);
+     }
+     break;
+     
+   }
+  }
+    
+  
 }
 
   public class Block{
@@ -61,7 +95,10 @@ public class Patterns extends PApplet{
       this.corners = corners;
       this.getColorFromName(colorName);  
     }
-    
+
+    /*
+    * Assign a Color to a block depending of its name.
+    */     
     void getColorFromName(String colorName){
       for(Color col : config.colorLimits){
         if(col.name.equals(colorName)){
@@ -81,7 +118,10 @@ public class Patterns extends PApplet{
       canvas.vertex(this.corners.get(3).x,this.corners.get(3).y);
       canvas.endShape(CLOSE);
     }
-    
+
+    /*
+    * Change the color to the follow in the main list.
+    */     
     void selected(int x, int y){
       PVector ul = corners.get(0);
       PVector ur = corners.get(1);
@@ -127,7 +167,10 @@ public class BlockGroup{
         spaceText += 30;
       }
     }
-    
+
+    /*
+    * Change the color of the selected block to the follow in the main list.
+    */     
    public void selected(int x, int y){
      for (Block b : this.blocks){
        b.selected(x,y);
@@ -139,13 +182,21 @@ public class BlockGroup{
   public class PatternBlocks{
     ArrayList<BlockGroup> groups = new ArrayList<BlockGroup>();
     ArrayList<ArrayList<String>> patternString = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> patternConf = new ArrayList<ArrayList<String>>();
     PGraphics canvas;
+    final int sizeBlock;
+    Configuration config;
     
-    public PatternBlocks(PGraphics canvas, int blocks){
+    public PatternBlocks(PGraphics canvas, Configuration config, int sizeBlock){
       this.canvas = canvas;
-      this.createPallet(canvas, blocks);
+      this.config = config;
+      this.sizeBlock = sizeBlock;
+      this.createPallet(canvas);
     }
-    
+
+    /*
+    * Upload the patterns array so it can be safe on the JSONfile.
+    */
     public void getColorString(){
       this.patternString = new ArrayList<ArrayList<String>>();
       for(BlockGroup blockGroup : groups){
@@ -157,74 +208,101 @@ public class BlockGroup{
       }
     }
     
+    /*
+    * Creates a new pattern and assign it an standar W-W-W-W parameter
+    */
+    public void createPattern(PGraphics canvas){
+      ArrayList<String> pred = new ArrayList();
+      pred.add(this.config.colorLimits.get(0).name);
+      pred.add(this.config.colorLimits.get(0).name);
+      pred.add(this.config.colorLimits.get(0).name);
+      pred.add(this.config.colorLimits.get(0).name);
+      this.config.patterns.add(pred);
+      this.createPallet(canvas);
+    }   
+
+    /*
+    * Delete the last parameter in the parameters list
+    */    
+    public void deletePattern(PGraphics canvas){
+      this.config.patterns.remove(this.config.patterns.size()-1);
+      this.createPallet(canvas);
+    } 
+    
     void draw(PGraphics canvas){
       for(BlockGroup blockGroup : groups){
         blockGroup.draw(canvas);
       }
     }
     
+   /*
+   * Change the color of the selected block inside an specific parameter
+   */
    public void selected(int x, int y){
      for (BlockGroup b : this.groups){
        b.selected(x,y);
      }
-     config.patterns = this.patternString;
-     mesh.actualizeString();
+     this.config.patterns = this.patternString;
+     mesh.updateString();
    }
    
-   
-   
-   public void createPallet(PGraphics canvas, int blocks){
-     int sizeT = 160;
-     int xStep = canvas.width / sizeT;
-     int yStep = canvas.height / sizeT;
-     int sizeBlock = 20;
-     PVector initP = new PVector(10,60);
+   /*
+   * Creates blocks, blockGroups and patterns
+   */
+   public void createPallet(PGraphics canvas){
+     this.groups.clear();
+     this.patternConf = this.config.patterns;
+     int xStep = 3;
+     int sizeT = floor(float(canvas.width)/float(xStep));
+     int yStep = ceil(float(patternConf.size())/float(xStep));
+     PVector initP = new PVector(10,sizeBlock);     
      int index= 0;
      
      for(int j = 0; j < yStep; j++){
        for(int i = 0; i < xStep; i ++){
-         ArrayList<String> colorNames = config.patterns.get(index);
-         
-         ArrayList<Block> bloques = new ArrayList<Block>();
-         
-         ArrayList<PVector> corners = new ArrayList<PVector>();
-         corners.add(new PVector(initP.x,initP.y));
-         corners.add(new PVector(initP.x+sizeBlock,initP.y));
-         corners.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
-         corners.add(new PVector(initP.x,initP.y+sizeBlock));
-         Block latent1 = new Block(1,corners, colorNames.get(0));
-         
-         ArrayList<PVector> corners2 = new ArrayList<PVector>();
-         corners2.add(new PVector(initP.x+sizeBlock,initP.y));
-         corners2.add(new PVector(initP.x+sizeBlock*2,initP.y));
-         corners2.add(new PVector(initP.x+sizeBlock*2,initP.y+sizeBlock));
-         corners2.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
-         Block latent2 = new Block(1,corners2,colorNames.get(1));
-         
-         ArrayList<PVector> corners3 = new ArrayList<PVector>();
-         corners3.add(new PVector(initP.x,initP.y+sizeBlock));
-         corners3.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
-         corners3.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock*2));
-         corners3.add(new PVector(initP.x,initP.y+sizeBlock*2));
-         Block latent3 = new Block(1,corners3, colorNames.get(2));
-      
-         ArrayList<PVector> corners4 = new ArrayList<PVector>();
-         corners4.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
-         corners4.add(new PVector(initP.x+sizeBlock*2,initP.y+sizeBlock));
-         corners4.add(new PVector(initP.x+sizeBlock*2,initP.y+sizeBlock*2));
-         corners4.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock*2));
-         Block latent4 = new Block(1,corners4, colorNames.get(3));
-         bloques.add(latent1);
-         bloques.add(latent2);
-         bloques.add(latent3);
-         bloques.add(latent4);
-         BlockGroup b = new BlockGroup(index, bloques);
-         this.groups.add(b);
-         index ++;
-         initP.x += sizeT;
+         if(index < patternConf.size()){
+           ArrayList<String> colorNames = config.patterns.get(index);           
+           ArrayList<Block> bloques = new ArrayList<Block>();
+           
+           ArrayList<PVector> corners = new ArrayList<PVector>();
+           corners.add(new PVector(initP.x,initP.y));
+           corners.add(new PVector(initP.x+sizeBlock,initP.y));
+           corners.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
+           corners.add(new PVector(initP.x,initP.y+sizeBlock));
+           Block latent1 = new Block(1,corners, colorNames.get(0));
+           
+           ArrayList<PVector> corners2 = new ArrayList<PVector>();
+           corners2.add(new PVector(initP.x+sizeBlock,initP.y));
+           corners2.add(new PVector(initP.x+sizeBlock*2,initP.y));
+           corners2.add(new PVector(initP.x+sizeBlock*2,initP.y+sizeBlock));
+           corners2.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
+           Block latent2 = new Block(1,corners2,colorNames.get(1));
+           
+           ArrayList<PVector> corners3 = new ArrayList<PVector>();
+           corners3.add(new PVector(initP.x,initP.y+sizeBlock));
+           corners3.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
+           corners3.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock*2));
+           corners3.add(new PVector(initP.x,initP.y+sizeBlock*2));
+           Block latent3 = new Block(1,corners3, colorNames.get(2));
+        
+           ArrayList<PVector> corners4 = new ArrayList<PVector>();
+           corners4.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock));
+           corners4.add(new PVector(initP.x+sizeBlock*2,initP.y+sizeBlock));
+           corners4.add(new PVector(initP.x+sizeBlock*2,initP.y+sizeBlock*2));
+           corners4.add(new PVector(initP.x+sizeBlock,initP.y+sizeBlock*2));
+           Block latent4 = new Block(1,corners4, colorNames.get(3));
+           bloques.add(latent1);
+           bloques.add(latent2);
+           bloques.add(latent3);
+           bloques.add(latent4);
+           BlockGroup b = new BlockGroup(index, bloques);
+           this.groups.add(b);
+           index ++;
+           initP.x += sizeT;
+         }
        }
        initP.x = 10;
-       initP.y += sizeT;
+       initP.y += sizeBlock * 4;
      }
     }
   }

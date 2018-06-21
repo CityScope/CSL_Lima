@@ -183,13 +183,13 @@ public class Mesh{
     this.setSizePattern();
   }
   
-  public void actualizeString(){
+  public void updateString(){
     for(patternBlock p : patternBlocks){
       p.setColorPattern();
     }
   }
 
-  public void actualize(int nblocks, int w){
+  public void update(int nblocks, int w){
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.malla = new PVector[nblocks+1][nblocks+1];

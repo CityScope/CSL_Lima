@@ -19,12 +19,12 @@ This file is part of LegoReader.
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-public class WrappedPerspective{
+public class WarpedPerspective{
   ArrayList<PVector> contour = new ArrayList();
   PVector pointSelected;
   boolean selected;
   
-  public WrappedPerspective(ArrayList<PVector> contour){
+  public WarpedPerspective(ArrayList<PVector> contour){
     this.contour = contour;
     this.selected = false;
   }

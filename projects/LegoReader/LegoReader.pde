@@ -50,7 +50,7 @@ ArrayList<PVector> calibrationPoints = new ArrayList();
 Capture cam;
 OpenCV opencv;
 Corners corners;
-WrappedPerspective wrappedPerspective;
+WarpedPerspective warpedPerspective;
 ColorRange colorRange;
 Mesh mesh;
 BloackReader blockReader;
@@ -81,12 +81,12 @@ void setup() {
 
     config.loadConfiguration();
     String[] pattern = {"Patterns"};
-    patterns = new Patterns(canvasPattern, 480,350);
+    patterns = new Patterns(canvasPattern, config);
     PApplet.runSketch(pattern, patterns);
     
     mesh = new Mesh(config.nblocks, canvas.width);
 
-    wrappedPerspective = new WrappedPerspective(config.contour);
+    warpedPerspective = new WarpedPerspective(config.contour);
     
     cam = new Capture(this,canvas.width, canvas.height, cameras[0]);
     cam.start();
@@ -109,11 +109,11 @@ void setup() {
 
 void draw() {
   
-  corners.applyHCD(refresh, wrappedPerspective);
+  corners.applyHCD(refresh, warpedPerspective);
   
   canvasOriginal.beginDraw();
   config.flip(canvasOriginal, cam, true);
-  wrappedPerspective.draw(canvasOriginal);
+  warpedPerspective.draw(canvasOriginal);
   config.SBCorrection(canvasOriginal,config.brightnessLevel,config.saturationLevel);
   corners.drawCalibrationPoints(canvasOriginal, refresh);
 
@@ -126,7 +126,7 @@ void draw() {
   //canvas with the color processing and wrapped image
   colorImage.updatePixels();
   opencv.loadImage(colorImage);
-  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
+  opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
   
   canvas.beginDraw();
   canvas.background(255);
@@ -177,14 +177,14 @@ void keyPressed(KeyEvent e) {
 
      case '+':
      config.nblocks += 4;
-     mesh.actualize(config.nblocks, canvas.width);
-     config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
+     mesh.update(config.nblocks, canvas.width);
+     config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;
      
      case '-':
      config.nblocks-=4;
-     mesh.actualize(config.nblocks, canvas.width);
-     config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
+     mesh.update(config.nblocks, canvas.width);
+     config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;    
    }
 
@@ -196,13 +196,13 @@ void captureEvent(Capture cam){
 
 
 void mousePressed(){
-  wrappedPerspective.selected(mouseX,mouseY,5);
+  warpedPerspective.selected(mouseX,mouseY,5);
 }
 
 void mouseReleased(){
-  wrappedPerspective.unSelect();
+  warpedPerspective.unSelect();
 }
 
 void mouseDragged(){
-  wrappedPerspective.move(mouseX,mouseY);
+  warpedPerspective.move(mouseX,mouseY);
 }

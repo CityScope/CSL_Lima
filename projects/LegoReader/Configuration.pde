@@ -35,7 +35,7 @@ public class Configuration{
     this.path = path;
   }
   
-  public void actualizeSizeCanvas(int w, int h){
+  public void updateSizeCanvas(int w, int h){
     this.resizeCanvas= new IntList();
     resizeCanvas.append(w);
     resizeCanvas.append(h);
@@ -55,6 +55,22 @@ public class Configuration{
     }
   }
   
+  /*
+  * Takes factorial of num
+  */
+  public final int fact(int num) {
+    return num == 1? 1 : fact(num - 1)*num;
+  }
+  
+  /*
+  * Checks if there is any other possible combination for create a new pattern
+  */
+  public boolean possiblePatterns(){
+    int total = fact(6)/(fact(4)*fact(2));
+    if(config.patterns.size() < total) return true;
+    return false;
+  }
+    
   /**
   *Increase/decrease the brightness and saturation of the canvas
   **/
