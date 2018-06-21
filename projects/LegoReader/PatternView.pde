@@ -58,7 +58,7 @@ public class Patterns extends PApplet{
   public void keyPressed(KeyEvent e){
    switch(e.getKeyCode()){
      case UP:     
-     if(config.posiblePatterns()){
+     if(config.possiblePatterns()){
        if((config.patterns.size() % 3 == 0) ) {
          this.h += blockSize * 4;
          surface.setSize(this.w, this.h); 
