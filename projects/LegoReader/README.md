@@ -1,8 +1,9 @@
 # **Calibration Mode (Matrix)**
 
 ## **Contact Info**
-**Javier Zárate**: javierazd1305@gmail.com | https://github.com/javierazd1305 .
 **Vanesa Alcántara**: v.alcantarapanta@alum.up.edu.pe | https://github.com/vaap1997 .
+**Javier Zárate**: javierazd1305@gmail.com | https://github.com/javierazd1305 .
+
 
 
 ## **Legal Description**
@@ -15,10 +16,15 @@ This code uses GNU Affero General Public License v3.0. For more information: htt
 new Configuration(String path)
 ```
 2. Methods
+- *`exportGrid(ArrayList<patternBlock> patternBlocks)`*: Export a JSONfile with patterns and cells color name
 - *`safeConfiguration()`*: Safe perspective points changes in **_WrappedPerspective_**, **_brightness_** y **_saturation_**.
 - *`loadConfiguration()`*: Charge configuration.
 - *`applyFilter(PGraphics canvas, PImage imageWrapped)`*: Apply color filters in *HSB* considering the **_maxHue_** condition in  **_Color_** objects.
 - *`SBCorrection(PGraphics canvas, float s, float b)`*: Modify **_saturation_** and **_brightness_** values on a specific **_canvas_**.
+- *`flip(PGraphics canvas, Capture cam, boolean flip)`*: Flip an image
+- *`fact(int num)`*: Takes factorial of num
+- *`possiblePatterns()`*: Checks if there is any other possible combination for create a new pattern
+
 
 ## **Mesh (Class)**
 1. Constructor
@@ -77,3 +83,44 @@ new BlockReader(int w, int h)
 ```java
 new ColorRange(int w, int h)
 ```
+2. Description: This **_sketch_** shows the control panel color .
+
+
+## **Patterns (Class extends PApplet)**
+1. Constructor
+```java
+new Patterns(PGraphics canvasPattern, Configuration config)
+```
+2. Methods
+    - *`selected(int x, int y)`*: Change pattern block color.
+
+## **Block**
+1. Constructor
+```java
+new Block(int id, ArrayList<PVector> corners, String colorName)
+```
+2. Methods
+    - *`getColorFromName(String colorName)`*: Assign a Color to a block depending of its name.
+    - *`draw(PGraphics canvas)`*: Draws one block, part of the pattern.
+    - *`selected(int x, int y)`*: Change the color to the follow in the main list.
+
+## **Block**
+1. Constructor
+```java
+new BlockGroup(int id, ArrayList<Block> blocks)
+```
+2. Methods
+    - *`draw(PGraphics canvas)`*: Draws every block of the pattern.
+    - *`selected(int x, int y)`*: Change the color of the selected block to the follow in the main list.
+
+## **PatternBlocks**
+1. Constructor
+```java
+new PatternBlocks(PGraphics canvas, int blocks)
+```
+2. Methods
+    - *`getColorString()`*: Upload the patterns array so it can be safe on the JSONfile.
+    - *`selected(int x, int y)`*: Select a pattern and a block inside it. Change the color of the selected block to the follow in the main list.
+    - *`createPallet(PGraphics canvas)`*: Creates a new pattern and assign it an standar W-W-W-W parameter
+    - *`deletePallet(PGraphics canvas)`*: Delete the last parameter in the parameters list
+    - *`createPallet(PGraphics canvas, int blocks)`*: Reads an ArrayList with the patterns colors's name. Creates blocks and BlockGroups.

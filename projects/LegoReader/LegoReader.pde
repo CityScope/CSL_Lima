@@ -32,7 +32,7 @@ import java.util.Collections;
 PGraphics canvas;
 PGraphics canvasOriginal;
 PGraphics canvasColor;
-PGraphics lengedColor;
+PGraphics legendColor;
 PGraphics grayScale;
 PGraphics canvasPattern;
 
@@ -50,7 +50,7 @@ ArrayList<PVector> calibrationPoints = new ArrayList();
 Capture cam;
 OpenCV opencv;
 Corners corners;
-WrappedPerspective wrappedPerspective;
+WarpedPerspective warpedPerspective;
 ColorRange colorRange;
 Mesh mesh;
 BloackReader blockReader;
@@ -80,23 +80,25 @@ void setup() {
     corners = new Corners(grayScale);
 
     config.loadConfiguration();
+    String[] pattern = {"Patterns"};
+    patterns = new Patterns(canvasPattern, config);
+    PApplet.runSketch(pattern, patterns);
     
     mesh = new Mesh(config.nblocks, canvas.width);
 
-    wrappedPerspective = new WrappedPerspective(config.contour);
+    warpedPerspective = new WarpedPerspective(config.contour);
     
     cam = new Capture(this,canvas.width, canvas.height, cameras[0]);
     cam.start();
 
     String[] args = {"Animation"};
     String[] name = {"color"};
-    String[] pattern = {"Patterns"};
+    
     blockReader = new BloackReader(sizeCanvas,sizeCanvas);
     colorRange = new ColorRange(config.colorLimits, 600, 100);
-    patterns = new Patterns(canvasPattern, 480,350);
+    
     PApplet.runSketch(name,colorRange);
     PApplet.runSketch(args, blockReader);
-    PApplet.runSketch(pattern, patterns);
     
     opencv = new OpenCV(this, cam);
     opencv.useColor(HSB);
@@ -107,25 +109,24 @@ void setup() {
 
 void draw() {
   
-  corners.applyHCD(refresh, wrappedPerspective);
+  corners.applyHCD(refresh, warpedPerspective);
   
   canvasOriginal.beginDraw();
   config.flip(canvasOriginal, cam, true);
-  wrappedPerspective.draw(canvasOriginal);
+  warpedPerspective.draw(canvasOriginal);
   config.SBCorrection(canvasOriginal,config.brightnessLevel,config.saturationLevel);
   corners.drawCalibrationPoints(canvasOriginal, refresh);
 
   canvasOriginal.endDraw();
   image(canvasOriginal, 0, 0);
   
-
   //Filter colors with specific ranges
   config.applyFilter(canvasOriginal,colorImage);
   
   //canvas with the color processing and wrapped image
   colorImage.updatePixels();
   opencv.loadImage(colorImage);
-  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
+  opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
   
   canvas.beginDraw();
   canvas.background(255);
@@ -166,21 +167,24 @@ void keyPressed(KeyEvent e) {
      config.safeConfiguration(colorRange.selectAll());
      break;
      
-
+     case 'e':
+     config.exportGrid(mesh.patternBlocks);
+     break;
+     
      case 'r':
      print(true);
      refresh = !refresh;
 
      case '+':
-     config.nblocks ++;
-     mesh.actualize(config.nblocks, canvas.width);
-     config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
+     config.nblocks += 4;
+     mesh.update(config.nblocks, canvas.width);
+     config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;
      
      case '-':
-     config.nblocks--;
-     mesh.actualize(config.nblocks, canvas.width);
-     config.actualizeSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
+     config.nblocks-=4;
+     mesh.update(config.nblocks, canvas.width);
+     config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;    
    }
 
@@ -192,13 +196,13 @@ void captureEvent(Capture cam){
 
 
 void mousePressed(){
-  wrappedPerspective.selected(mouseX,mouseY,5);
+  warpedPerspective.selected(mouseX,mouseY,5);
 }
 
 void mouseReleased(){
-  wrappedPerspective.unSelect();
+  warpedPerspective.unSelect();
 }
 
 void mouseDragged(){
-  wrappedPerspective.move(mouseX,mouseY);
+  warpedPerspective.move(mouseX,mouseY);
 }

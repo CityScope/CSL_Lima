@@ -24,6 +24,7 @@ public class Color{
   float maxHue;
   color stdColor;
   String name;
+  String acron;
   Boolean selectionMode;
   int n;
   float satMax;
@@ -37,19 +38,20 @@ public class Color{
   /**
   *Constructure for colors in hue scale
   **/
-  public Color(int id, float maxHue, color stdColor, String name){
+  public Color(int id, float maxHue, color stdColor, String name, String acron){
     this.n = 0;
     this.id = id;
     this.maxHue = maxHue;
     this.stdColor = stdColor;
     this.name = name;
     this.selectionMode = false;
+    this.acron = acron;
   }
 
   /**
   *Constructure for white
   **/
-  public Color(int id,float maxHue, color stdColor, String name, float satMax, float briMin, float satMax2, float hueMin){
+  public Color(int id,float maxHue, color stdColor, String name, String acron, float satMax, float briMin, float satMax2, float hueMin){
     this.n = 0;
     this.id = id;
     this.maxHue = maxHue;
@@ -60,12 +62,13 @@ public class Color{
     this.briMin = briMin;
     this.satMax2 = satMax2;
     this.hueMin = hueMin;
+    this.acron = acron;
   }
 
   /**
   *Constructure for black
   **/
-  public Color(int id,float maxHue, color stdColor, String name, float briMax, float briMax2, float satMax){
+  public Color(int id,float maxHue, color stdColor, String name, String acron, float briMax, float briMax2, float satMax){
     this.n = 0;
     this.id = id;
     this.maxHue = maxHue;
@@ -75,6 +78,7 @@ public class Color{
     this.briMax = briMax;
     this.briMax2 = briMax2;
     this.satMax = satMax;
+    this.acron = acron;
   }
 
   
