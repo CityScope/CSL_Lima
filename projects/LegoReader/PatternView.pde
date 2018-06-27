@@ -25,7 +25,7 @@ public class Patterns extends PApplet{
 
   public Patterns(PGraphics canvasPattern, Configuration config){
     this.w = 480;
-    this.h = blockSize * 4 * config.patterns.size()/3;
+    this.h = blockSize * 4 * ceil(float(config.patterns.size())/3);
     this.canvasPattern = canvasPattern;
     this.config = config;
   }
@@ -218,6 +218,7 @@ public class BlockGroup{
       pred.add(this.config.colorLimits.get(0).name);
       pred.add(this.config.colorLimits.get(0).name);
       this.config.patterns.add(pred);
+      patternString.add(pred);
       this.createPallet(canvas);
     }   
 
@@ -226,6 +227,7 @@ public class BlockGroup{
     */    
     public void deletePattern(PGraphics canvas){
       this.config.patterns.remove(this.config.patterns.size()-1);
+      patternString.remove(patternString.size()-1);
       this.createPallet(canvas);
     } 
     
