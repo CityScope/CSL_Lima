@@ -195,7 +195,7 @@ public class BlockGroup{
     }
 
     /*
-    * Upload the patterns array so it can be safe on the JSONfile.
+    * Upload the patterns array so it can be save on the JSONfile.
     */
     public void getColorString(){
       this.patternString = new ArrayList<ArrayList<String>>();

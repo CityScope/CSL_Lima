@@ -192,7 +192,7 @@ public class Configuration{
   /**
   * Safe colors ranges, saturation, brightness and perspective calibration points.
   **/
-  public void safeConfiguration(ArrayList<Color> colors){ 
+  public void saveConfiguration(ArrayList<Color> colors){ 
     JSONObject calibrationParameters = new JSONObject();
     JSONObject limitsColors = new JSONObject();
     for(Color col :colors){
