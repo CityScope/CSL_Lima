@@ -43,7 +43,7 @@ PImage imageWrapped;
 PImage capture;
 float inc = 1;
 
-Boolean refresh = false;
+Boolean refresh = false, flipped = true;
 ArrayList<PVector> posibles = new ArrayList();
 ArrayList<PVector> calibrationPoints = new ArrayList();
 
@@ -53,7 +53,7 @@ Corners corners;
 WarpedPerspective warpedPerspective;
 ColorRange colorRange;
 Mesh mesh;
-BloackReader blockReader;
+BlockReader blockReader;
 Configuration config = new Configuration(sizeCanvas, "data/calibrationParameters.json");
 PatternBlocks patternBlocks;
 Patterns patterns;
@@ -94,7 +94,7 @@ void setup() {
     String[] args = {"Animation"};
     String[] name = {"color"};
     
-    blockReader = new BloackReader(sizeCanvas,sizeCanvas);
+    blockReader = new BlockReader(sizeCanvas,sizeCanvas);
     colorRange = new ColorRange(config.colorLimits, 600, 100);
     
     PApplet.runSketch(name,colorRange);
@@ -112,7 +112,7 @@ void draw() {
   corners.applyHCD(refresh, warpedPerspective);
   
   canvasOriginal.beginDraw();
-  config.flip(canvasOriginal, cam, true);
+  config.flip(canvasOriginal, cam, flipped);
   warpedPerspective.draw(canvasOriginal);
   config.SBCorrection(canvasOriginal,config.brightnessLevel,config.saturationLevel);
   corners.drawCalibrationPoints(canvasOriginal, refresh);
@@ -164,7 +164,7 @@ void keyPressed(KeyEvent e) {
    
    switch(key){
      case 's':
-     config.safeConfiguration(colorRange.selectAll());
+     config.saveConfiguration(colorRange.selectAll());
      break;
      
      case 'e':
@@ -174,6 +174,12 @@ void keyPressed(KeyEvent e) {
      case 'r':
      print(true);
      refresh = !refresh;
+
+     //flips the image in the canvas
+     case 'f':
+     flipped = !flipped;
+     config.flip(canvasOriginal, cam, flipped);
+     break;
 
      case '+':
      config.nblocks += 4;

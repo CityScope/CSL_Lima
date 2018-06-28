@@ -19,12 +19,12 @@ This file is part of LegoReader.
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-public class BloackReader extends PApplet {
+public class BlockReader extends PApplet {
   int w;
   int h;
   color actualColor;
 
-  public BloackReader(int w, int h){
+  public BlockReader(int w, int h){
     this.w = w;
     this.h = h;
     actualColor = color(0,0,0);

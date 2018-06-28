@@ -171,7 +171,7 @@ public class Cells{
 public class Mesh{
   int scl;
   PVector[][] malla;
-  ArrayList<Cells> celdas = new ArrayList();
+  ArrayList<Cells> cells = new ArrayList();
   int nblocks;  
   ArrayList<patternBlock> patternBlocks = new ArrayList<patternBlock>();
   
@@ -193,7 +193,7 @@ public class Mesh{
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.malla = new PVector[nblocks+1][nblocks+1];
-    celdas = new ArrayList();
+    cells = new ArrayList();
     patternBlocks = new ArrayList<patternBlock>();
     this.create();
     this.setSizePattern();
@@ -219,7 +219,7 @@ public class Mesh{
           cornersTemp.add(malla[y][i+1]);
           cornersTemp.add(malla[y+1][i+1]);
           cornersTemp.add(malla[y+1][i]);
-          celdas.add(new Cells(id,cornersTemp));
+          cells.add(new Cells(id,cornersTemp));
           id++;
         }
     }
@@ -232,7 +232,7 @@ public class Mesh{
   * if withColor is true, the mesh with its color is rendered
   **/
   void draw(PGraphics canvas, boolean withColor){
-    for(Cells i : celdas){
+    for(Cells i : cells){
       i.draw(canvas, withColor);
     }
   }
@@ -242,7 +242,7 @@ public class Mesh{
   * get colors with specific ranges in the canvas
   **/
   public void getColors(PGraphics canvas, ArrayList<Color> colors){
-    for (Cells cell: celdas){
+    for (Cells cell: cells){
       cell.getColor(canvas, colors);
     }
   }
@@ -255,10 +255,10 @@ public class Mesh{
     for(int i = 0; i < n*(n-1); i+=n*2){
       for(int j = 0; j < n; j+=2){
         ArrayList<Cells> latent = new ArrayList<Cells>();
-        latent.add(celdas.get(j+i));
-        latent.add(celdas.get(j+i+1));
-        latent.add(celdas.get(j+i+n));
-        latent.add(celdas.get(j+i+n+1));
+        latent.add(cells.get(j+i));
+        latent.add(cells.get(j+i+1));
+        latent.add(cells.get(j+i+n));
+        latent.add(cells.get(j+i+n+1));
         patternBlocks.add(new patternBlock(cont,latent, j/2, i/(n*2)));
         cont++;
      }
@@ -367,8 +367,8 @@ public class patternBlock{
       //check 0123
       for(int j = 0 ; j < colorPattern.blocks.size(); j++){
         Block cPattern = colorPattern.blocks.get(j);
-        Cells cCelda = cells.get(j);
-        if(cPattern.col != cCelda.col ){
+        Cells cCell = cells.get(j);
+        if(cPattern.col != cCell.col ){
           correct1 = false;
           break;
         }
@@ -377,8 +377,8 @@ public class patternBlock{
       //check 3210
       for(int j = 0 ; j < colorPattern.blocks.size(); j++){
         Block cPattern = colorPattern.blocks.get(colorPattern.blocks.size()-1-j);
-        Cells cCelda = cells.get(j);
-        if(cPattern.col != cCelda.col){
+        Cells cCell = cells.get(j);
+        if(cPattern.col != cCell.col){
           correct2 = false;
           break;
         }

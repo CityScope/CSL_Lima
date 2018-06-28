@@ -2,6 +2,7 @@
 
 ## **Contact Info**
 **Vanesa Alcántara**: v.alcantarapanta@alum.up.edu.pe | https://github.com/vaap1997 .
+**Jesús García**: jesusgarciaruiz1004@gmail.com | https://github.com/JesusGarcia98 .
 **Javier Zárate**: javierazd1305@gmail.com | https://github.com/javierazd1305 .
 
 
@@ -17,7 +18,7 @@ new Configuration(String path)
 ```
 2. Methods
 - *`exportGrid(ArrayList<patternBlock> patternBlocks)`*: Export a JSONfile with patterns and cells color name
-- *`safeConfiguration()`*: Safe perspective points changes in **_WrappedPerspective_**, **_brightness_** y **_saturation_**.
+- *`saveConfiguration()`*: Save perspective points changes in **_WrappedPerspective_**, **_brightness_** y **_saturation_**.
 - *`loadConfiguration()`*: Charge configuration.
 - *`applyFilter(PGraphics canvas, PImage imageWrapped)`*: Apply color filters in *HSB* considering the **_maxHue_** condition in  **_Color_** objects.
 - *`SBCorrection(PGraphics canvas, float s, float b)`*: Modify **_saturation_** and **_brightness_** values on a specific **_canvas_**.
@@ -32,7 +33,7 @@ new Configuration(String path)
 new Mesh(int nblocks, int width)
 ```
 2. Methods
-   - *`create()`* : Obtain each **_Cell_** coordinates and safe them on an **_ArrayList_**.
+   - *`create()`* : Obtain each **_Cell_** coordinates and save them on an **_ArrayList_**.
    - *`draw(PGraphics canvas)`* : Iterate inside **_Cells_** list and call its **_draw(PGraphics canvas)_** method.
    - *`getColors(PGraphics canvas, ArrayList<Color> colorLimits)`*:  Iterate inside a **_Cells_** list and call its **_getColors(PGraphics canvas, ArrayList<Color> colorLimits)_** method.
 
@@ -119,7 +120,7 @@ new BlockGroup(int id, ArrayList<Block> blocks)
 new PatternBlocks(PGraphics canvas, int blocks)
 ```
 2. Methods
-    - *`getColorString()`*: Upload the patterns array so it can be safe on the JSONfile.
+    - *`getColorString()`*: Upload the patterns array so it can be save on the JSONfile.
     - *`selected(int x, int y)`*: Select a pattern and a block inside it. Change the color of the selected block to the follow in the main list.
     - *`createPallet(PGraphics canvas)`*: Creates a new pattern and assign it an standar W-W-W-W parameter
     - *`deletePallet(PGraphics canvas)`*: Delete the last parameter in the parameters list

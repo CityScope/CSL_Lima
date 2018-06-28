@@ -36,7 +36,7 @@ public class Color{
   
   
   /**
-  *Constructure for colors in hue scale
+  *Constructor for colors in hue scale
   **/
   public Color(int id, float maxHue, color stdColor, String name, String acron){
     this.n = 0;
@@ -49,7 +49,7 @@ public class Color{
   }
 
   /**
-  *Constructure for white
+  *Constructor for white
   **/
   public Color(int id,float maxHue, color stdColor, String name, String acron, float satMax, float briMin, float satMax2, float hueMin){
     this.n = 0;
@@ -66,7 +66,7 @@ public class Color{
   }
 
   /**
-  *Constructure for black
+  *Constructor for black
   **/
   public Color(int id,float maxHue, color stdColor, String name, String acron, float briMax, float briMax2, float satMax){
     this.n = 0;
