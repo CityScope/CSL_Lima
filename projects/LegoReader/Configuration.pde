@@ -153,26 +153,38 @@ public class Configuration{
   /**
   *Export a JSONfile with pattern and cells color name
   **/
-  public void exportGrid(ArrayList<patternBlock> patternBlocks){
+  public void exportGrid(ArrayList<patternBlock> patternBlocks, Patterns patterns){
     JSONObject mesh = new JSONObject();
+    JSONObject meta = new JSONObject();
+    meta.setString("id","AOpifOF");
+    meta.setFloat("timestamp",millis());
+    meta.setString("apiv","2.1.0");
+    JSONObject header = new JSONObject();
+    header.setString("name","virtual_table");
+    JSONObject spacial = new JSONObject();
+    spacial.setInt("nrows",this.nblocks);
+    spacial.setInt("ncols",this.nblocks);
+    spacial.setInt("cellSize", patterns.blockSize);
+    spacial.setInt("rotation",0);
+    header.setJSONObject("spacial",spacial);
+    JSONArray block = new JSONArray();
+    block.setString(0,"type");
+    block.setString(1,"rotation");
+    header.setJSONArray("block", block);
     JSONArray grid = new JSONArray();
     int i=0;
     for(patternBlock pb : patternBlocks){
-      JSONObject grid1 = new JSONObject();
-      grid1.setFloat("type",pb.indexPattern);
-      grid1.setFloat("x",pb.coords.x);
-      grid1.setFloat("y",pb.coords.y);
-      JSONArray col = new JSONArray();
-      for(int y = 0; y < pb.cells.size(); y++){
-        col.setString(y,pb.cells.get(y).col.acron);
-      }
-      grid1.setJSONArray("ColorPattern",col);
-      grid1.setInt("rot", 180); 
-      grid.setJSONObject(i, grid1);
+      JSONArray grid1 = new JSONArray();
+      grid1.setFloat(0,pb.indexPattern);
+      grid.setJSONArray(i, grid1);
+      grid1.setInt(1, 0); 
       i++;
     }
-    mesh.setJSONArray("grid",grid);
-    mesh.setFloat("timestamp",millis());
+    header.setJSONArray("grid",grid);
+    JSONObject objects = new JSONObject();
+    mesh.setJSONObject("meta", meta);
+    mesh.setJSONObject("header", header);
+    mesh.setJSONObject("objects",objects);
     saveJSONObject(mesh, "data/grid.json","compact");
     println("Grid saved");
   }

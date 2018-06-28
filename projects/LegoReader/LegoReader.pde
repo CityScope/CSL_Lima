@@ -168,7 +168,7 @@ void keyPressed(KeyEvent e) {
      break;
      
      case 'e':
-     config.exportGrid(mesh.patternBlocks);
+     config.exportGrid(mesh.patternBlocks,patterns);
      break;
      
      case 'r':
