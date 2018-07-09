@@ -218,17 +218,17 @@ public class BlockGroup{
       pred.add(this.config.colorLimits.get(0).name);
       pred.add(this.config.colorLimits.get(0).name);
       this.config.patterns.add(pred);
-      patternString.add(pred);
       this.createPallet(canvas);
+      getColorString();
     }   
 
     /*
     * Delete the last parameter in the parameters list
     */    
     public void deletePattern(PGraphics canvas){
-      this.config.patterns.remove(this.config.patterns.size()-1);
-      patternString.remove(patternString.size()-1);
+      this.config.patterns.remove(patternString.size()-1);
       this.createPallet(canvas);
+      getColorString();
     } 
     
     void draw(PGraphics canvas){

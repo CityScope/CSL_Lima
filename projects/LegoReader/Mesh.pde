@@ -328,10 +328,6 @@ public class patternBlock{
       
       canvas.fill(0);canvas.stroke(0);
       canvas.textSize(dif/1.5); canvas.textAlign(CENTER, CENTER);
-      //canvas.text(str(indexPattern), corners.get(2).x, corners.get(2).y);
-      //for(Cells cell: cells){
-      //  canvas.text(cell.acron,cell.center.x, cell.center.y);
-      //}
       canvas.strokeWeight(1.25); canvas.noFill(); 
       canvas.beginShape();
       canvas.vertex(corners.get(0).x, corners.get(0).y);
@@ -351,7 +347,6 @@ public class patternBlock{
   
   public void setColorPattern(){
     colorPatterns = patternBlocks.groups;
-
   }
   
   public void checkPattern(){
@@ -362,46 +357,42 @@ public class patternBlock{
       boolean correct1 = true;
       boolean correct2 = true;
       boolean correct3 = true;
-      boolean correct4 = true;        
-      
-      //check 0123
-      for(int j = 0 ; j < colorPattern.blocks.size(); j++){
-        Block cPattern = colorPattern.blocks.get(j);
-        Cells cCell = cells.get(j);
-        if(cPattern.col != cCell.col ){
-          correct1 = false;
-          break;
-        }
+      boolean correct4 = true; 
+      //check 0123  0132
+      if(colorPattern.blocks.size() == 4){
+        boolean verify1 =  colorPattern.blocks.get(0).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(1).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(3).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(2).col == (cells.get(2).col);
+        if(!(verify1 && verify2 && verify3 && verify4)){ correct1 = false;}
       }
       
-      //check 3210
-      for(int j = 0 ; j < colorPattern.blocks.size(); j++){
-        Block cPattern = colorPattern.blocks.get(colorPattern.blocks.size()-1-j);
-        Cells cCell = cells.get(j);
-        if(cPattern.col != cCell.col){
-          correct2 = false;
-          break;
-        }
+      //check 3210 2013
+      if(colorPattern.blocks.size() == 4){
+        boolean verify1 =  colorPattern.blocks.get(2).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(0).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(1).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(3).col == (cells.get(2).col);
+        if(!(verify1 && verify2 && verify3 && verify4)){ correct2 = false;}
       }
 
-      //check 1302
+      //check 1302  3201
       if(colorPattern.blocks.size() == 4){
-        boolean verify1 =  colorPattern.blocks.get(1).col == (cells.get(0).col);
-        boolean verify2 =  colorPattern.blocks.get(3).col == (cells.get(1).col);
-        boolean verify3 =  colorPattern.blocks.get(0).col == (cells.get(2).col);
-        boolean verify4 =  colorPattern.blocks.get(2).col == (cells.get(3).col);
+        boolean verify1 =  colorPattern.blocks.get(3).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(2).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(0).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(1).col == (cells.get(2).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct3 = false;}
       }
       
-      //check 2031
+      //check 2031 1320
       if(colorPattern.blocks.size() == 4){
-        boolean verify1 =  colorPattern.blocks.get(2).equals(cells.get(0).colorName);
-        boolean verify2 =  colorPattern.blocks.get(0).equals(cells.get(1).colorName);
-        boolean verify3 =  colorPattern.blocks.get(3).equals(cells.get(2).colorName);
-        boolean verify4 =  colorPattern.blocks.get(1).equals(cells.get(3).colorName);
+        boolean verify1 =  colorPattern.blocks.get(1).col ==(cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(3).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(2).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(0).col ==(cells.get(2).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct4 = false;}
-      }
-      
+      }    
       if(correct1 || correct2 || correct3 || correct4){this.indexPattern = index; this.pattern = true; break;}
       index += 1;
     }

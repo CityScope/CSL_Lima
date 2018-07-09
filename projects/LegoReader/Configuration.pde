@@ -154,39 +154,47 @@ public class Configuration{
   *Export a JSONfile with pattern and cells color name
   **/
   public void exportGrid(ArrayList<patternBlock> patternBlocks, Patterns patterns){
+    print("exporting grid ...");
     JSONObject mesh = new JSONObject();
     JSONObject meta = new JSONObject();
     meta.setString("id","AOpifOF");
     meta.setFloat("timestamp",millis());
     meta.setString("apiv","2.1.0");
     JSONObject header = new JSONObject();
-    header.setString("name","virtual_table");
+    header.setString("name","cityscope_lima");
     JSONObject spacial = new JSONObject();
     spacial.setInt("nrows",this.nblocks);
     spacial.setInt("ncols",this.nblocks);
+    spacial.setFloat("physical_longitude",-77);
+    spacial.setFloat("physical_latitude",12);
+    spacial.setFloat("longitude",-77);
+    spacial.setFloat("latitude",12);
     spacial.setInt("cellSize", patterns.blockSize);
     spacial.setInt("rotation",0);
-    header.setJSONObject("spacial",spacial);
+    header.setJSONObject("spatial",spacial);
+    JSONObject owner = new JSONObject();
+    owner.setString("name","Vanesa and Jesus");
+    owner.setString("title","Researchers");
+    owner.setString("institute","Pacific's University");
+    header.setJSONObject("owner", owner);
     JSONArray block = new JSONArray();
     block.setString(0,"type");
-    block.setString(1,"rotation");
+    block.setString(1,"height");
+    block.setString(2,"rotation");
     header.setJSONArray("block", block);
-    JSONArray grid = new JSONArray();
+    JSONObject type = new JSONObject();
+    JSONObject mapping = new JSONObject();
     int i=0;
     for(patternBlock pb : patternBlocks){
-      JSONArray grid1 = new JSONArray();
-      grid1.setFloat(0,pb.indexPattern);
-      grid.setJSONArray(i, grid1);
-      grid1.setInt(1, 0); 
+      type.setFloat(str(i), pb.indexPattern);
       i++;
     }
-    header.setJSONArray("grid",grid);
-    JSONObject objects = new JSONObject();
+    mapping.setJSONObject("type",type);
+    header.setJSONObject("mapping", mapping);
     mesh.setJSONObject("meta", meta);
     mesh.setJSONObject("header", header);
-    mesh.setJSONObject("objects",objects);
-    saveJSONObject(mesh, "data/grid.json","compact");
-    println("Grid saved");
+    saveJSONObject(mesh, "data/grid.json");
+    println("Grid exported.");
   }
   
   /**
