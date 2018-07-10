@@ -51,24 +51,26 @@ public class ColorRange extends PApplet {
    *Create the manual control to change colors limits while running
    **/
   public void draw() {
-    legendColor.beginDraw();
-    legendColor.background(255);
-    legendColor.fill(0);
-    legendColor.rect(0, h, w, 20);
-    legendColor.fill(255);
-    legendColor.textAlign(CENTER); 
-    legendColor.rectMode(CORNER);
-    legendColor.colorMode(HSB, 360, 100, 100);
-
-    if (white) {
-      controlPanelWhite();
-    } else if (black) {
-      controlPanelBlack();
-    } else {
-      controlPanelOthers();
+    if(!done){
+      legendColor.beginDraw();
+      legendColor.background(255);
+      legendColor.fill(0);
+      legendColor.rect(0, h, w, 20);
+      legendColor.fill(255);
+      legendColor.textAlign(CENTER); 
+      legendColor.rectMode(CORNER);
+      legendColor.colorMode(HSB, 360, 100, 100);
+  
+      if (white) {
+        controlPanelWhite();
+      } else if (black) {
+        controlPanelBlack();
+      } else {
+        controlPanelOthers();
+      }
+      legendColor.endDraw();
+      image(legendColor, 0, 0);
     }
-    legendColor.endDraw();
-    image(legendColor, 0, 0);
   }
 
   void controlPanelWhite() {

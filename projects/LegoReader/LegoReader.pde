@@ -43,7 +43,7 @@ PImage imageWrapped;
 PImage capture;
 float inc = 1;
 
-Boolean refresh = false, flipped = true;
+Boolean refresh = false, flipped = true, done = false ;
 ArrayList<PVector> posibles = new ArrayList();
 ArrayList<PVector> calibrationPoints = new ArrayList();
 
@@ -108,34 +108,35 @@ void setup() {
 
 
 void draw() {
+  if(!done){
+    corners.applyHCD(refresh, warpedPerspective);
+    
+    canvasOriginal.beginDraw();
+    config.flip(canvasOriginal, cam, flipped);
+    warpedPerspective.draw(canvasOriginal);
+    config.SBCorrection(canvasOriginal,config.brightnessLevel,config.saturationLevel);
+    corners.drawCalibrationPoints(canvasOriginal, refresh);
   
-  corners.applyHCD(refresh, warpedPerspective);
-  
-  canvasOriginal.beginDraw();
-  config.flip(canvasOriginal, cam, flipped);
-  warpedPerspective.draw(canvasOriginal);
-  config.SBCorrection(canvasOriginal,config.brightnessLevel,config.saturationLevel);
-  corners.drawCalibrationPoints(canvasOriginal, refresh);
-
-  canvasOriginal.endDraw();
-  image(canvasOriginal, 0, 0);
-  
-  //Filter colors with specific ranges
-  config.applyFilter(canvasOriginal,colorImage);
-  
-  //canvas with the color processing and wrapped image
-  colorImage.updatePixels();
-  opencv.loadImage(colorImage);
-  opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
-  
-  canvas.beginDraw();
-  canvas.background(255);
-  imageWrapped.resize(canvas.width - config.resizeCanvas.get(0), canvas.height - config.resizeCanvas.get(1));
-  canvas.image(imageWrapped, 0, 0);
-  mesh.getColors(canvas, config.colorLimits);
-  mesh.draw(canvas, false);
-  canvas.endDraw();
-  image(canvas, canvas.width, 0);
+    canvasOriginal.endDraw();
+    image(canvasOriginal, 0, 0);
+    
+    //Filter colors with specific ranges
+    config.applyFilter(canvasOriginal,colorImage);
+    
+    //canvas with the color processing and wrapped image
+    colorImage.updatePixels();
+    opencv.loadImage(colorImage);
+    opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
+    
+    canvas.beginDraw();
+    canvas.background(255);
+    imageWrapped.resize(canvas.width - config.resizeCanvas.get(0), canvas.height - config.resizeCanvas.get(1));
+    canvas.image(imageWrapped, 0, 0);
+    mesh.getColors(canvas, config.colorLimits);
+    mesh.draw(canvas, false);
+    canvas.endDraw();
+    image(canvas, canvas.width, 0);
+  }
 }
 
 
@@ -174,11 +175,16 @@ void keyPressed(KeyEvent e) {
      case 'r':
      print(true);
      refresh = !refresh;
+     break;
 
      //flips the image in the canvas
      case 'f':
      flipped = !flipped;
      config.flip(canvasOriginal, cam, flipped);
+     break;
+
+     case 'd':
+     done = ! done;
      break;
 
      case '+':
@@ -192,6 +198,7 @@ void keyPressed(KeyEvent e) {
      mesh.update(config.nblocks, canvas.width);
      config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;    
+       
    }
 
 }
