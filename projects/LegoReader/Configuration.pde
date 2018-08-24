@@ -104,7 +104,7 @@ public class Configuration {
     spatial.setInt("rotation", 0);
     header.setJSONObject("spatial", spatial);
     JSONObject owner = new JSONObject();
-    owner.setString("name", "Vanesa");
+    owner.setString("name", "Vanesa and Jesús");
     owner.setString("title", "Researcher");
     owner.setString("institute", "Pacific´s University");
     header.setJSONObject("owner", owner);
@@ -123,9 +123,9 @@ public class Configuration {
     header.setJSONObject("mapping", mapping);
     int k = 0;
     JSONArray grid = new JSONArray();
-    for (int w = 0; w < config.patterns.size(); w++) {
+    for (int w = 0; w < patternBlocks.size(); w++) {
       JSONObject arrayValue = new JSONObject();
-      arrayValue.setFloat("type", w);
+      arrayValue.setFloat("type", patternBlocks.get(w).indexPattern);
       arrayValue.setFloat("rotation", 0);
       grid.setJSONObject(k, arrayValue);
       k++;

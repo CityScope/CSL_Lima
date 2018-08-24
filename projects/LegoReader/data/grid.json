@@ -2,11 +2,11 @@
   "meta": {
     "apiv": "2.1.0",
     "id": "AOpifOF",
-    "timestamp": 6910
+    "timestamp": 32069
   },
   "header": {
     "owner": {
-      "name": "Vanesa",
+      "name": "Vanesa and Jesús",
       "institute": "Pacific´s University",
       "title": "Researcher"
     },
@@ -21,7 +21,43 @@
     "grid": [
       {
         "rotation": 0,
-        "type": 0
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
       },
       {
         "rotation": 0,
@@ -29,19 +65,983 @@
       },
       {
         "rotation": 0,
-        "type": 2
+        "type": 1
       },
       {
         "rotation": 0,
-        "type": 3
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 4
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 5
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": 1
+      },
+      {
+        "rotation": 0,
+        "type": 1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": 1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
+      },
+      {
+        "rotation": 0,
+        "type": -1
       }
     ],
     "name": "cityscope_lima",
