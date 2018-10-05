@@ -64,7 +64,7 @@ void setup() {
     println("There are no cameras available for capture.");
     exit();
   } else {
-    canvas = createGraphics(sizeCanvas, sizeCanvas);
+    canvas = createGraphics(sizeCanvas, sizeCanvas,P3D);
     canvasOriginal = createGraphics(sizeCanvas, sizeCanvas, P3D);
     imageWarped = createImage(sizeCanvas, sizeCanvas, HSB);
 

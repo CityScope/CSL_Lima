@@ -30,11 +30,11 @@ public class BlockReader extends PApplet {
   }
 
   public void settings() {
-    size(this.w, this.h);
+    size(this.w, this.h,P3D);
   }
 
   public void setup() {
-    canvasColor = createGraphics(this.w, this.h);
+    canvasColor = createGraphics(this.w, this.h,P3D);
     colorMode(HSB, 360, 100, 100);
   }
 
