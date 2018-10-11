@@ -1,128 +1,117 @@
 /**
 ** @copyright: Copyright (C) 2018
-** @authors:   Javier Zárate & Vanesa Alcántara & Jesús García
+** @authors:   Javier Zárate & Vanesa Alcántara
 ** @version:   1.0
-** @legal:
-    This file is part of LegoReader.
+** @legal :
+This file is part of LegoReader.
+
     LegoReader is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-    
+
     LegoReader is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
-    
+
     You should have received a copy of the GNU Affero General Public License
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-public class WarpedPerspective {
+public class WarpedPerspective{
   ArrayList<PVector> contour = new ArrayList();
   PVector pointSelected;
   boolean selected;
-
-  public WarpedPerspective(ArrayList<PVector> contour) {
+  
+  public WarpedPerspective(ArrayList<PVector> contour){
     this.contour = contour;
     this.selected = false;
   }
   
+  
   /**
-    *Create vertices on the canvas to select a certain part of it  
+  *select the contour point if the distance is less than a threshold
   **/
-  public PImage applyPerspective(PGraphics img){
-    PGraphics canvas = createGraphics(img.width, img.height, P3D);
-    canvas.beginDraw();
-    canvas.background(155);
-    canvas.pushMatrix();
-    canvas.noStroke();
-    canvas.beginShape();
-    canvas.texture(img);
-    canvas.vertex(0, 0, 0, contour.get(0).x, contour.get(0).y);
-    canvas.vertex(canvas.width, 0, 0, contour.get(1).x, contour.get(1).y);
-    canvas.vertex(canvas.width, canvas.height, 0, contour.get(2).x, contour.get(2).y);
-    canvas.vertex(0, canvas.height, 0, contour.get(3).x, contour.get(3).y);
-    canvas.endShape();
-    canvas.popMatrix();    
-    canvas.endDraw();
-    return canvas.get();
-  }
-
-  public void draw(PGraphics canvas, PImage img, boolean warp) {
-    if (warp) {
-      PImage imgPortion;
-      imgPortion = img.get(int(contour.get(1).x), int(contour.get(1).y), int(abs(contour.get(1).x - contour.get(0).x)), int(abs(contour.get(1).y - contour.get(2).y)));
-      canvas.background(155);
-      canvas.pushMatrix();
-      canvas.noStroke();
-      canvas.beginShape();
-      canvas.texture(imgPortion);
-      canvas.vertex(0, 0, 0, 0, 0);
-      canvas.vertex(canvas.width, 0, 0, imgPortion.width, 0);
-      canvas.vertex(canvas.width, canvas.height, 0, imgPortion.width, imgPortion.height);
-      canvas.vertex(0, canvas.height, 0, 0, imgPortion.height);
-      canvas.endShape();
-      canvas.popMatrix();
-    } else {
-      canvas.image(img.get(), 0, 0);
-      for (PVector i : contour) {
-        canvas.strokeWeight(1.5);
-        canvas.stroke(0, 155, 0);
-        canvas.fill(0);
-        if (i == pointSelected) {
-          canvas.fill(255);
-        }
-        canvas.ellipse(i.x, i.y, 5, 5);
-      }
-    }
-  }
-
-  /**
-    *When a contour point is clicked on, it's status will changed to selected
-  **/
-  public void selected(int x, int y, int threshold) {
-    for (PVector i : contour) {
+  public void selected(int x, int y, int threshold){
+    for(PVector i : contour){
       float distance = dist(i.x, i.y, x, y);
-      if (distance < threshold) {
+      if(distance < threshold){
         selected = true;
         this.pointSelected = i;
         break;
       }
     }
   }
-
+  
+  public void changeContours(ArrayList<PVector> calibrationPoints){
+    contour.clear();
+    for(int i=0; i<calibrationPoints.size();i++){
+      contour.add(calibrationPoints.get(i));
+    }
+  }
+  
+  
   /**
-    *If selected, the contour point will move following the mouse
+  *change the coordinates of a point in the contour array
   **/
-  public void move(int x, int y) {
-    for (PVector i : contour) {
-      if (i == pointSelected) {
+  public void move(int x, int y){
+    for(PVector i: contour){
+      if(i == pointSelected){
         i.x = x;
         i.y = y;
         break;
       }
     }
   }
-
+  
+  
   /**
-    *Resets a contour point status to unselected
+  *unselect any point
   **/
-  public void unselect() {
+  public void unSelect(){
     selected = false;
     pointSelected = null;
   }
-
+  
+  
   /**
-   *Draw the contour points in the canvas
+  *draw the contour points in the canvas
   **/
-  public void draw(PGraphics canvas) {
-    for (PVector i : contour) {
+  public void draw(PGraphics canvas){
+    for(PVector i: contour){
       canvas.fill(0);
-      if (i == pointSelected) {
+      if(i == pointSelected){
         canvas.fill(255);
       }
-      canvas.ellipse(i.x, i.y, 5, 5);
+      canvas.ellipse(i.x, i.y, 5,5);
     }
+  }
+  
+  
+  Mat getPerspectiveTransformation(ArrayList<PVector> inputPoints, int w, int h) {
+    Point[] canonicalPoints = new Point[4];
+    canonicalPoints[0] = new Point(w, 0);
+    canonicalPoints[1] = new Point(0, 0);
+    canonicalPoints[2] = new Point(0, h);
+    canonicalPoints[3] = new Point(w, h);
+  
+    MatOfPoint2f canonicalMarker = new MatOfPoint2f();
+    canonicalMarker.fromArray(canonicalPoints);
+  
+    Point[] points = new Point[4];
+    for (int i = 0; i < 4; i++) {
+      points[i] = new Point(inputPoints.get(i).x, inputPoints.get(i).y);
+    }
+    MatOfPoint2f marker = new MatOfPoint2f(points);
+    return Imgproc.getPerspectiveTransform(marker, canonicalMarker);
+  }
+  
+  
+  Mat warpPerspective( int w, int h, OpenCV opencv) {
+    Mat transform = getPerspectiveTransformation(this.contour, w, h);
+    Mat unWarpedMarker = new Mat(w, h, CvType.CV_8UC1);    
+    Imgproc.warpPerspective(opencv.getColor(), unWarpedMarker, transform, new Size(w, h));
+    return unWarpedMarker;
   }
 }

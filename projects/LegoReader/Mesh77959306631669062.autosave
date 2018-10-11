@@ -3,22 +3,21 @@
 ** @authors:   Javier Zárate & Vanesa Alcántara
 ** @version:   1.0
 ** @legal:
-This file is part of LegoReader.
-
+    This file is part of LegoReader.
     LegoReader is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
+    
     LegoReader is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
-
+    
     You should have received a copy of the GNU Affero General Public License
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
-
+ 
 public class Cells{
   int id;
   int threshold = 30;
@@ -26,8 +25,7 @@ public class Cells{
   int[] counter;
   IntList indexes = new IntList();
   int sclCell;
-  Color c = config.colorLimits.get(0);
-    
+  Color c = config.colorW;
   public Cells(int id,PVector initPoint, int sclCell){
     this.id = id;
     this.initPoint = initPoint;
@@ -35,54 +33,14 @@ public class Cells{
     this.settingCounter(config.colorLimits);
   }
   
-  
   /**
-  * Set the counter of the Cell to 0
+   *Set the counter of the Cell to 0
   **/
-  public void settingCounter(ArrayList<Color> colorLimits){
+  public void settingCounter(ArrayList<Color> colorLimits) {
     this.counter = new int[colorLimits.size()];
-    //set all values to 0
-    for(int i = 0; i < counter.length; i++){
+    for (int i = 0; i < counter.length; i++) {
       counter[i] = 0;
     }
-  }
-  
-  
-  /**
-  * Add an amount to the counter in a specfic index
-  * Add the index to the list of indexes.
-  **/
-  public void addingCounter(int index, int amount){
-    this.counter[index] += amount;
-    this.indexes.append(index);
-  }
-  
-  
-  /**
-  *Check the size of the movil average
-  *Remove the last item if the size is equal to a threshold
-  **/
-  public void checkMovilAverage(int threshold, int inc){
-    if(this.indexes.size() >= threshold){
-      counter[this.indexes.get(0)] += inc;
-      indexes.remove(0);
-    }
-  }
-  
-  
-  /**
-  * Get the most frequent color  
-  **/
-  public void movilAverage(){
-    int indexMax = 0;
-    int maxCount = 0;
-    for(int i = 0; i < this.counter.length; i++){
-      if (maxCount < this.counter[i]){
-        maxCount = this.counter[i];
-        indexMax = i;
-      }
-    }
-    this.c = config.colorLimits.get(indexMax);
   }
 
   /**
@@ -90,76 +48,76 @@ public class Cells{
   *Black and white: comparing brightness and saturation in a HSV scale
   *Other Colors: comparing hue in a HSV scale
   *Specific parameters for white and Red
-  **/    
-  public void applyFilter(PImage img, ArrayList<Color> colorLimits){
+  **/     
+  public void applyFilter(PImage img){
     config.restartColors();
     for (int y = int(initPoint.y); y < int(initPoint.y+sclCell); y+=1) {
       for (int x = int(initPoint.x); x < int(initPoint.x+sclCell) ; x+=1) {
         int i = y *img.width + x;
-        color actual = img.pixels[i];  
-        Color colors = colorLimits.get(0);
+        color actual = img.pixels[i];         
+        Color colors = config.colorW;
         float hue = hue(actual);
         float brightness = brightness(actual);
         float saturation = saturation(actual);
         saturation += config.saturationLevel;
-        brightness += config.brightnessLevel;  
+        brightness += config.brightnessLevel;        
         boolean breakLoop = false;
-        for(Color colorL: colorLimits){
-          if(colorL.name.equals("white")){
-            if( ( (saturation < colorL.satMax) & (brightness > colorL.briMin)) | ((saturation < colorL.satMax2) & (hue < colorL.maxHue) & (hue > colorL.hueMin)) ) {
-            //if( ( (saturation < 15) & (brightness > 55)) | ((saturation < 50) & (hue < 70) & (hue > 30)) ){
+        if (((saturation < config.colorW.satMax) & (brightness > config.colorW.briMin)) | ((saturation < config.colorW.satMax2) & (hue < config.colorW.maxHue) & (hue > config.colorW.hueMin))) {
+          colors = config.colorW;
+          breakLoop = true;
+        }
+        if(!breakLoop){
+          if (brightness < config.colorB.briMax | ((brightness < config.colorB.briMax2 ) & (saturation  < config.colorB.satMax ))) {  
+            colors = config.colorB;
+            breakLoop = true;
+          }          
+        }
+        if(!breakLoop){
+          for(Color colorL: config.colorO){
+            if ((hue < colorL.maxHue)) {
               colors = colorL;
               breakLoop = true;
               break;
-            }
-          }else if(colorL.name.equals("black")){
-            if( brightness < colorL.briMax | ( (brightness < colorL.briMax2 ) & (saturation  < colorL.satMax ) )){
-            //if( brightness < 25 | ( (brightness < 40 ) & (saturation  < 15 ) )){  
-              colors = colorL;
-              breakLoop = true;
-              break; 
-            }
-          }else{
-            if((hue < colorL.maxHue)){
-              colors = colorL;
-              breakLoop = true;
-              break;    
-            }
+            }            
           }
         }
-        if(!breakLoop) colors = colorLimits.get(2);
+        if (!breakLoop) colors = config.colorO.get(0);
         colors.n +=1;
         img.pixels[i] = colors.getColor();
       }
-     }
-     
-    int maximo = 0;
-    for(Color colorL:colorLimits){
-      if (colorL.n > maximo){
-        maximo = colorL.n;
+    }
+    int max = 0;
+    Color maxColor = null;
+    for(Color col:config.colorLimits){
+      if(col.n > max) {
+          max = col.n;
+          maxColor = col;
       }
     }
-    for(Color colorL:colorLimits){
-      if(colorL.n == maximo){
-        this.addingCounter(colorL.id, 1);
-        this.checkMovilAverage(30, -1);
-        movilAverage();
-      } 
-    }     
-     
-   }
+    counter[maxColor.id]+=1;
+    indexes.append(maxColor.id);
+    if (this.indexes.size() >= threshold) {
+      counter[indexes.get(0)]-=1;
+      indexes.remove(0);
+    }  
+    int maxAverage = max(counter);
+    for(int i =0; i< counter.length; i++){
+      if(counter[i] == maxAverage) {
+          this.c = config.colorLimits.get(i);
+          break;
+      }
+    }    
+  }
 
   /**
-  *draw the cells with its own color in the canvas
-  *depend of the value of withColor to render its color or none.
+  *Draw the cell with its own color
   **/
-  void draw(PGraphics canvas){
+  public void draw(PGraphics canvas){
     canvas.fill(c.stdColor);
     canvas.stroke(0, 60);
     canvas.strokeWeight(1);
     canvas.rect(initPoint.x, initPoint.y,sclCell, sclCell);
-  }  
-  
+  }
 }
 
 public class patternBlock{
@@ -169,16 +127,16 @@ public class patternBlock{
   int indexPattern = -1;
   boolean pattern = false;
   ArrayList<Cells> cells = new ArrayList<Cells>();
-  ArrayList<BlockGroup> colorPatterns = new ArrayList();
+  ArrayList<BlockGroup> colorPatterns = new ArrayList();  
   
   public patternBlock(int id, PVector initPoint, int scl){
-    this.id =id; 
+    this.id = id;
     this.initPoint = initPoint;
     this.scl = (int) scl;
     this.create();
-    this.setColorPattern();
+    setColorPattern();
   }
-   
+
   /**
   *Create cells for a patternBlock
   **/  
@@ -188,18 +146,17 @@ public class patternBlock{
     cells.add(new Cells(2,new PVector(initPoint.x,initPoint.y+this.scl/2),this.scl/2));
     cells.add(new Cells(3,new PVector(initPoint.x+this.scl/2,initPoint.y+this.scl/2),this.scl/2));
   }
-
   
   /**
   *Calls applyFilter for each cell
   **/ 
-  public void applyFilter(PImage img, ArrayList<Color> colors){
+  public void applyFilter(PImage img){
     for(Cells c:cells){
-      c.applyFilter(img, colors);
+      c.applyFilter(img);
     }
-  }  
+  }
   
-  void draw(PGraphics canvas){
+  public void draw(PGraphics canvas){
     for(Cells c: cells){
       c.draw(canvas);
     }
@@ -224,21 +181,27 @@ public class patternBlock{
     canvas.strokeWeight(2);
     canvas.rect(initPoint.x, initPoint.y, scl, scl);    
   }
-  
-  
-  public void setColorPattern(){
+
+  /**
+  * Assign the color patterns from the JSON
+  **/ 
+  public void setColorPattern() {
     colorPatterns = patternBlocks.groups;
-  }
-  
-  public void checkPattern(){
+  }  
+
+  /**
+  * Check if there is a pattern for each rotation type
+  **/   
+  public void checkPattern() {
     this.pattern = false;
     int index = 0;
-    for(int i = 0; i < colorPatterns.size(); i++){
+    for (int i = 0; i < colorPatterns.size(); i++) {
       BlockGroup colorPattern = colorPatterns.get(i);
       boolean correct1 = true;
       boolean correct2 = true;
       boolean correct3 = true;
-      boolean correct4 = true; 
+      boolean correct4 = true;        
+
       //check 0123  0132
       if(colorPattern.blocks.size() == 4){
         boolean verify1 =  colorPattern.blocks.get(0).col == (cells.get(0).c);
@@ -274,32 +237,37 @@ public class patternBlock{
         boolean verify4 =  colorPattern.blocks.get(0).col ==(cells.get(2).c);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct4 = false;}
       }    
-      if(correct1 || correct2 || correct3 || correct4){this.indexPattern = index; this.pattern = true; break;}
+      
+      if (correct1 || correct2 || correct3 || correct4) {
+        this.indexPattern = index; 
+        this.pattern = true; 
+        break;
+      }
       index += 1;
     }
-    if(!pattern){this.indexPattern = -1;}
-  }
-  
+    if (!pattern) {
+      this.indexPattern = -1;
+    }
+  }  
 }
 
-public class Mesh{
+public class Mesh {
   int scl;
   PVector[][] grid;
   int nblocks;  
   ArrayList<patternBlock> patternBlocks = new ArrayList<patternBlock>();
-  
-  public Mesh(int nblocks, int w){
+
+  public Mesh(int nblocks, int w) {
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.grid = new PVector[nblocks][nblocks];
     this.create();
   }
-  
-  
+
   /**
-  * Create all the "n" blocks with a specific width
-  **/
-  public void create(){
+  * Creates a grid of nxn patternBlocks
+  **/   
+  public void create() {
     int id = 0;
     for(int h = 0; h < this.grid.length; h++) {
       for (int w = 0; w < this.grid.length; w++) {
@@ -309,15 +277,9 @@ public class Mesh{
         id++;
       }
     }
-  }  
+  }
   
-  
-  /**
-  * draw the mesh
-  * if withColor is false, only the mesh is rendered
-  * if withColor is true, the mesh with its color is rendered
-  **/
-  void draw(PGraphics canvas, boolean withColor){
+  public void draw(PGraphics canvas){
     for(patternBlock pb: patternBlocks){
       pb.draw(canvas);
     }
@@ -328,37 +290,38 @@ public class Mesh{
       pb.drawGrid(canvas);
     }    
   }
-   
-  public void update(int nblocks, int w){
+
+  /**
+  * Updates the original configuration
+  **/    
+  public void update(int nblocks, int w) {
     this.nblocks = nblocks;
     this.scl = w/nblocks;
-    this.grid = new PVector[nblocks+1][nblocks+1];
+    this.grid = new PVector[nblocks][nblocks];
     patternBlocks = new ArrayList<patternBlock>();
     this.create();
-  }
+  }  
 
-  public void updateString(){
-    for(patternBlock p : patternBlocks){
+  /**
+  * Changes the pattern color
+  **/  
+  public void updateString() {
+    for (patternBlock p : patternBlocks) {
       p.setColorPattern();
     }
-  } 
-
-
-  public PImage applyFilter(PGraphics canvas, ArrayList<Color> colors){
-    PImage img = canvas.get();
+  }  
+  
+  public void applyFilter(PImage img){
     img.loadPixels();
     for(patternBlock pb :patternBlocks ){
-      pb.applyFilter(img,colors);
+      pb.applyFilter(img);
     }
     img.updatePixels();
-    
-    return img;
   }
   
   public void checkPattern(){
-    for(patternBlock pattern : patternBlocks){
-      pattern.checkPattern();
+    for(patternBlock pb: patternBlocks){
+      pb.checkPattern();
     }
   }
-  
-}
+}   
