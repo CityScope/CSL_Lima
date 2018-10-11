@@ -135,7 +135,7 @@ public class Patterns extends PApplet{
           this.colorIndex +=1;
         }
         this.col = config.colorLimits.get(colorIndex);
-        patterns.patternBlocks.getColorString();
+        patternBlocks.getColorString();
       }
     }
   }
@@ -241,11 +241,12 @@ public class BlockGroup{
    /*
    * Change the color of the selected block inside an specific parameter
    */
-   public void selected(int x, int y){
+   public void selected(int x, int y,Patterns patterns){
      for (BlockGroup b : this.groups){
        b.selected(x,y);
      }
      this.config.patterns = this.patternString;
+     mesh.updateString(patterns);
    }
    
    /*

@@ -55,7 +55,6 @@ ColorRange colorRange;
 Mesh mesh;
 BlockReader blockReader;
 Configuration config = new Configuration(sizeCanvas, "data/calibrationParameters.json");
-PatternBlocks patternBlocks;
 Patterns patterns;
 
 void settings(){
@@ -84,7 +83,7 @@ void setup() {
     patterns = new Patterns(canvasPattern, config);
     PApplet.runSketch(pattern, patterns);
     
-    mesh = new Mesh(config.nblocks/2, canvas.width);
+    mesh = new Mesh(config.nblocks/2, canvas.width,patterns);
 
     warpedPerspective = new WarpedPerspective(config.contour);
     
@@ -164,7 +163,7 @@ void keyPressed(KeyEvent e) {
    
    switch(key){
      case 's':
-     config.saveConfiguration(colorRange.selectAll());
+     config.saveConfiguration(colorRange.selectAll(),patterns);
      break;
      
      case 'e':
@@ -188,13 +187,13 @@ void keyPressed(KeyEvent e) {
 
      case '+':
      config.nblocks += 4;
-     mesh.update(config.nblocks, canvas.width);
+     mesh.update(config.nblocks, canvas.width,patterns);
      config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;
      
      case '-':
      config.nblocks-=4;
-     mesh.update(config.nblocks, canvas.width);
+     mesh.update(config.nblocks, canvas.width,patterns);
      config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;    
        

@@ -171,12 +171,12 @@ public class patternBlock{
   ArrayList<Cells> cells = new ArrayList<Cells>();
   ArrayList<BlockGroup> colorPatterns = new ArrayList();
   
-  public patternBlock(int id, PVector initPoint, int scl){
+  public patternBlock(int id, PVector initPoint, int scl,Patterns patterns){
     this.id =id; 
     this.initPoint = initPoint;
     this.scl = (int) scl;
     this.create();
-    this.setColorPattern();
+    this.setColorPattern(patterns);
   }
    
   /**
@@ -226,8 +226,8 @@ public class patternBlock{
   }
   
   
-  public void setColorPattern(){
-    colorPatterns = patternBlocks.groups;
+  public void setColorPattern(Patterns patterns){
+    colorPatterns = patterns.patternBlocks.groups;
   }
   
   public void checkPattern(){
@@ -288,24 +288,24 @@ public class Mesh{
   int nblocks;  
   ArrayList<patternBlock> patternBlocks = new ArrayList<patternBlock>();
   
-  public Mesh(int nblocks, int w){
+  public Mesh(int nblocks, int w,Patterns patterns){
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.grid = new PVector[nblocks][nblocks];
-    this.create();
+    this.create(patterns);
   }
   
   
   /**
   * Create all the "n" blocks with a specific width
   **/
-  public void create(){
+  public void create(Patterns patterns){
     int id = 0;
     for(int h = 0; h < this.grid.length; h++) {
       for (int w = 0; w < this.grid.length; w++) {
         float pointx = w * scl;
         float pointy = h * scl;
-        patternBlocks.add(new patternBlock(id,new PVector(pointx, pointy),scl));
+        patternBlocks.add(new patternBlock(id,new PVector(pointx, pointy),scl,patterns));
         id++;
       }
     }
@@ -329,19 +329,13 @@ public class Mesh{
     }    
   }
    
-  public void update(int nblocks, int w){
+  public void update(int nblocks, int w,Patterns patterns){
     this.nblocks = nblocks;
     this.scl = w/nblocks;
     this.grid = new PVector[nblocks+1][nblocks+1];
     patternBlocks = new ArrayList<patternBlock>();
-    this.create();
+    this.create(patterns);
   }
-
-  public void updateString(){
-    for(patternBlock p : patternBlocks){
-      p.setColorPattern();
-    }
-  } 
 
 
   public PImage applyFilter(PGraphics canvas, ArrayList<Color> colors){

@@ -165,7 +165,7 @@ public class Configuration{
   /**
   * Safe colors ranges, saturation, brightness and perspective calibration points.
   **/
-  public void saveConfiguration(ArrayList<Color> colors){ 
+  public void saveConfiguration(ArrayList<Color> colors,Patterns patterns){ 
     JSONObject calibrationParameters = new JSONObject();
     JSONObject limitsColors = new JSONObject();
     for(Color col :colors){
@@ -210,7 +210,7 @@ public class Configuration{
 
     JSONObject patternsLatent = new JSONObject();
     int index = 0;
-    for(ArrayList<String> pattern : patternBlocks.patternString){
+    for(ArrayList<String> pattern : patterns.patternBlocks.patternString){
       JSONArray patternValues = new JSONArray();
       int indexP = 0;
       for(String pat : pattern){
