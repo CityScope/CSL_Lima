@@ -47,6 +47,7 @@ public class BlockReader extends PApplet {
     canvasColor.strokeWeight(1);
     mesh.draw(canvasColor, true);
     mesh.checkPattern();
+    mesh.drawPattern(canvasColor);
     canvasColor.endDraw();
     image(canvasColor, 0, 0);
   }

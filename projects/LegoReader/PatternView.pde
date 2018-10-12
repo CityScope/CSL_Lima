@@ -20,7 +20,6 @@ public class Patterns extends PApplet{
   int w;
   int h;
   PGraphics canvasPattern;
-  PatternBlocks patternBlocks;
   final int blockSize = 20;
   Configuration config;
 
@@ -135,7 +134,7 @@ public class Patterns extends PApplet{
           this.colorIndex +=1;
         }
         this.col = config.colorLimits.get(colorIndex);
-        patterns.patternBlocks.getColorString();
+        patternBlocks.getColorString();
       }
     }
   }
@@ -246,6 +245,7 @@ public class BlockGroup{
        b.selected(x,y);
      }
      this.config.patterns = this.patternString;
+     mesh.updateString();
    }
    
    /*

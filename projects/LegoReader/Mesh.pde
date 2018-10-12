@@ -20,19 +20,27 @@ This file is part of LegoReader.
 **/
 
 public class Cells{
+  ArrayList<PVector> corners = new ArrayList();
+  //Color ownColor;
+  Color col;
+  color ownColor;
+  PVector center;
+  int[] counter; 
+  int movilAverageRange;
+  IntList indexes;
   int id;
-  int threshold = 30;
-  PVector initPoint;
-  int[] counter;
-  IntList indexes = new IntList();
-  int sclCell;
-  Color c = config.colorLimits.get(0);
+  String colorName;
+  String acron;
     
-  public Cells(int id,PVector initPoint, int sclCell){
-    this.id = id;
-    this.initPoint = initPoint;
-    this.sclCell = sclCell;
-    this.settingCounter(config.colorLimits);
+  public Cells(int id, ArrayList<PVector> corners){
+      this.corners = corners;
+      this.id = id;
+      setCenter();
+      this.ownColor = color(random(0,255),random(0,255),random(0,255));
+      this.colorName = "";
+      this.acron = "";
+      this.settingCounter(config.colorLimits);
+      this.indexes = new IntList();
   }
   
   
@@ -82,152 +90,263 @@ public class Cells{
         indexMax = i;
       }
     }
-    this.c = config.colorLimits.get(indexMax);
+    this.col = config.colorLimits.get(indexMax);
   }
-
+   
   /**
-  *Asign a standar color in the range to every pixel in the canvas 
-  *Black and white: comparing brightness and saturation in a HSV scale
-  *Other Colors: comparing hue in a HSV scale
-  *Specific parameters for white and Red
-  **/    
-  public void applyFilter(PImage img, ArrayList<Color> colorLimits){
-    config.restartColors();
-    for (int y = int(initPoint.y); y < int(initPoint.y+sclCell); y+=1) {
-      for (int x = int(initPoint.x); x < int(initPoint.x+sclCell) ; x+=1) {
-        int i = y *img.width + x;
-        color actual = img.pixels[i];  
-        Color colors = colorLimits.get(0);
-        float hue = hue(actual);
-        float brightness = brightness(actual);
-        float saturation = saturation(actual);
-        saturation += config.saturationLevel;
-        brightness += config.brightnessLevel;  
-        boolean breakLoop = false;
-        for(Color colorL: colorLimits){
-          if(colorL.name.equals("white")){
-            if( ( (saturation < colorL.satMax) & (brightness > colorL.briMin)) | ((saturation < colorL.satMax2) & (hue < colorL.maxHue) & (hue > colorL.hueMin)) ) {
-            //if( ( (saturation < 15) & (brightness > 55)) | ((saturation < 50) & (hue < 70) & (hue > 30)) ){
-              colors = colorL;
-              breakLoop = true;
-              break;
-            }
-          }else if(colorL.name.equals("black")){
-            if( brightness < colorL.briMax | ( (brightness < colorL.briMax2 ) & (saturation  < colorL.satMax ) )){
-            //if( brightness < 25 | ( (brightness < 40 ) & (saturation  < 15 ) )){  
-              colors = colorL;
-              breakLoop = true;
-              break; 
-            }
-          }else{
-            if((hue < colorL.maxHue)){
-              colors = colorL;
-              breakLoop = true;
-              break;    
-            }
-          }
-        }
-        if(!breakLoop) colors = colorLimits.get(2);
-        colors.n +=1;
-        img.pixels[i] = colors.getColor();
+  *draw the cells with its own color in the canvas
+  *depend of the value of withColor to render its color or none.
+  **/
+  void draw(PGraphics canvas, boolean withColor){
+    canvas.stroke(0,60);
+    canvas.fill(ownColor);
+    if(!withColor) canvas.noFill();
+    canvas.beginShape();
+    canvas.vertex(this.corners.get(0).x,this.corners.get(0).y);
+    canvas.vertex(this.corners.get(1).x,this.corners.get(1).y);
+    canvas.vertex(this.corners.get(2).x,this.corners.get(2).y);
+    canvas.vertex(this.corners.get(3).x,this.corners.get(3).y); 
+    canvas.endShape(CLOSE);
+  }
+ 
+  /**
+  *get the center point of the cell
+  **/
+  public void setCenter(){
+    int xSum = 0;
+    int ySum = 0;
+    for(PVector i : corners){
+      xSum += i.x;
+      ySum += i.y;
+    }
+    this.center = new PVector(xSum/corners.size(), ySum/corners.size());
+  }
+  
+  
+  /**
+  *Process the canvas and get the colors
+  *Check the color channels and assign it according to the established ranges 
+  **/
+  public void getColor(PGraphics canvas, ArrayList<Color> colorLimits){
+    canvas.loadPixels();
+    
+    for(Color colorL : colorLimits){
+      colorL.n = 0;
+    }
+    
+    for(int y = int(this.corners.get(0).y); y < int(this.corners.get(2).y); y++){
+       for(int x = int(this.corners.get(0).x) ; x < int(this.corners.get(2).x); x++ ){
+         int loc = x + y * canvas.width;      
+         color c = canvas.pixels[loc];
+         for(Color colorL:colorLimits){
+           if(c == colorL.getColor()){
+             colorL.n ++;
+             break;
+           }         
+         }
       }
-     }
-     
+    }
     int maximo = 0;
     for(Color colorL:colorLimits){
       if (colorL.n > maximo){
         maximo = colorL.n;
       }
-    }
+    } 
+    
     for(Color colorL:colorLimits){
       if(colorL.n == maximo){
         this.addingCounter(colorL.id, 1);
         this.checkMovilAverage(30, -1);
         movilAverage();
+        this.ownColor = col.stdColor;
+        this.colorName = col.name;
+        this.acron = col.acron;
       } 
-    }     
-     
-   }
+    }
+  }
+  
+}
 
+
+public class Mesh{
+  int scl;
+  PVector[][] malla;
+  ArrayList<Cells> cells = new ArrayList();
+  int nblocks;  
+  ArrayList<patternBlock> patternBlocks = new ArrayList<patternBlock>();
+  
+  public Mesh(int nblocks, int w){
+    this.nblocks = nblocks;
+    this.scl = w/nblocks;
+    this.malla = new PVector[nblocks+1][nblocks+1];
+    this.create();
+    this.setSizePattern();
+  }
+  
+  public void updateString(){
+    for(patternBlock p : patternBlocks){
+      p.setColorPattern();
+    }
+  }
+
+  public void update(int nblocks, int w){
+    this.nblocks = nblocks;
+    this.scl = w/nblocks;
+    this.malla = new PVector[nblocks+1][nblocks+1];
+    cells = new ArrayList();
+    patternBlocks = new ArrayList<patternBlock>();
+    this.create();
+    this.setSizePattern();
+  }
+  
+  
   /**
-  *draw the cells with its own color in the canvas
-  *depend of the value of withColor to render its color or none.
+  * Create all the "n" blocks with a specific width
   **/
-  void draw(PGraphics canvas){
-    canvas.fill(c.stdColor);
-    canvas.stroke(0, 60);
-    canvas.strokeWeight(1);
-    canvas.rect(initPoint.x, initPoint.y,sclCell, sclCell);
+  public void create(){
+    int id = 0;
+    for(int w = 0; w < this.malla.length; w++){
+       for(int h = 0; h < this.malla.length; h++){
+        int puntox = w*scl;
+        int puntoy = h*scl;
+        malla[w][h] = new PVector(puntox,puntoy);
+      } 
+    }
+      for(int i = 0; i < this.nblocks; i++){
+        for(int y = 0; y < this.nblocks; y++){
+          ArrayList<PVector> cornersTemp = new ArrayList();
+          cornersTemp.add(malla[y][i]);
+          cornersTemp.add(malla[y][i+1]);
+          cornersTemp.add(malla[y+1][i+1]);
+          cornersTemp.add(malla[y+1][i]);
+          cells.add(new Cells(id,cornersTemp));
+          id++;
+        }
+    }
   }  
+  
+  
+  /**
+  * draw the mesh
+  * if withColor is false, only the mesh is rendered
+  * if withColor is true, the mesh with its color is rendered
+  **/
+  void draw(PGraphics canvas, boolean withColor){
+    for(Cells i : cells){
+      i.draw(canvas, withColor);
+    }
+  }
+   
+   
+  /**
+  * get colors with specific ranges in the canvas
+  **/
+  public void getColors(PGraphics canvas, ArrayList<Color> colors){
+    for (Cells cell: cells){
+      cell.getColor(canvas, colors);
+    }
+  }
+  
+  /**
+  **/
+  public void setSizePattern(){
+    int n = config.nblocks;
+    int cont = 0;
+    for(int i = 0; i < n*(n-1); i+=n*2){
+      for(int j = 0; j < n; j+=2){
+        ArrayList<Cells> latent = new ArrayList<Cells>();
+        latent.add(cells.get(j+i));
+        latent.add(cells.get(j+i+1));
+        latent.add(cells.get(j+i+n));
+        latent.add(cells.get(j+i+n+1));
+        patternBlocks.add(new patternBlock(cont,latent, j/2, i/(n*2)));
+        cont++;
+     }
+    }
+  }
+  
+  /**
+  
+  */
+
+  public void drawPattern(PGraphics canvas){
+    for(patternBlock pattern : patternBlocks){
+      pattern.draw(canvas);
+    }
+  }
+  
+  public void checkPattern(){
+    for(patternBlock pattern : patternBlocks){
+      pattern.checkPattern();
+    }
+  }
   
 }
 
 public class patternBlock{
-  PVector initPoint;
-  int scl;
+  ArrayList<Cells> cells = new ArrayList<Cells>();
+  ArrayList<PVector> corners = new ArrayList<PVector>();
+  ArrayList<BlockGroup> colorPatterns = new ArrayList();
+  BlockGroup blockGroup;
+  PVector coords = new PVector();
   int id;
   int indexPattern = -1;
+  int dif = 7;
+  color ownColor = color(random(0,255),random(0,255),random(0,255));  
   boolean pattern = false;
-  ArrayList<Cells> cells = new ArrayList<Cells>();
-  ArrayList<BlockGroup> colorPatterns = new ArrayList();
+  PVector center = new PVector();
   
-  public patternBlock(int id, PVector initPoint, int scl,Patterns patterns){
+  public patternBlock(int id, ArrayList<Cells> cells, int x, int y){
     this.id =id; 
-    this.initPoint = initPoint;
-    this.scl = (int) scl;
-    this.create();
-    this.setColorPattern(patterns);
+    this.coords.x =  x; this.coords.y = y;
+    this.cells = cells;
+    this.getCorners();
+    this.setColorPattern();
   }
    
-  /**
-  *Create cells for a patternBlock
-  **/  
-  public void create(){
-    cells.add(new Cells(0,initPoint,this.scl/2));
-    cells.add(new Cells(1,new PVector(initPoint.x+this.scl/2,initPoint.y),this.scl/2));
-    cells.add(new Cells(2,new PVector(initPoint.x,initPoint.y+this.scl/2),this.scl/2));
-    cells.add(new Cells(3,new PVector(initPoint.x+this.scl/2,initPoint.y+this.scl/2),this.scl/2));
-  }
-
   
-  /**
-  *Calls applyFilter for each cell
-  **/ 
-  public void applyFilter(PImage img, ArrayList<Color> colors){
-    for(Cells c:cells){
-      c.applyFilter(img, colors);
-    }
-  }  
+  public void getCorners(){
+    PVector latent1 = cells.get(0).corners.get(0);
+    PVector latent2 = cells.get(1).corners.get(3);
+    PVector latent3 = cells.get(3).corners.get(2);
+    PVector latent4 = cells.get(2).corners.get(1);
+    this.corners.add(latent1);
+    this.corners.add(latent2);
+    this.corners.add(latent3);
+    this.corners.add(latent4);
+    this.center = cells.get(0).corners.get(2);
+    this.dif = int(cells.get(0).corners.get(2).y - cells.get(0).corners.get(0).y);
+  }
   
   void draw(PGraphics canvas){
-    for(Cells c: cells){
-      c.draw(canvas);
-    }
-    canvas.noFill();
-    canvas.strokeWeight(2);
-    canvas.rect(initPoint.x, initPoint.y, scl, scl);
-    canvas.textAlign(CENTER, CENTER);
-    canvas.rectMode(CENTER); 
-    if (indexPattern != -1) canvas.fill(255);
-    else canvas.fill(215);
-    canvas.rect(initPoint.x+this.scl/2, initPoint.y+this.scl/2, scl/2, scl/2);
-    canvas.fill(0);
-    canvas.text(str(indexPattern), initPoint.x+this.scl/2, initPoint.y+this.scl/2);  
-    canvas.rectMode(CORNER);
+    /*
+      for(PVector vector : corners){
+        canvas.fill(this.ownColor);
+        canvas.ellipse(vector.x,vector.y,20,20);
+      }
+      */
+      
+      canvas.fill(0);canvas.stroke(0);
+      canvas.textSize(dif/1.5); canvas.textAlign(CENTER, CENTER);
+      canvas.strokeWeight(1.25); canvas.noFill(); 
+      canvas.beginShape();
+      canvas.vertex(corners.get(0).x, corners.get(0).y);
+      canvas.vertex(corners.get(1).x, corners.get(1).y);
+      canvas.vertex(corners.get(2).x, corners.get(2).y);
+      canvas.vertex(corners.get(3).x, corners.get(3).y);
+      canvas.endShape(CLOSE);
+      canvas.rectMode(CENTER); 
+      if(indexPattern != -1) canvas.fill(255);
+      else canvas.fill(215);
+      canvas.rect(center.x,center.y, dif,dif);
+      canvas.fill(0);
+      canvas.text(str(indexPattern), center.x, center.y);
+      
   }
 
-  /**
-  *Draw the lines inside the grid
-  **/ 
-  public void drawGrid(PGraphics canvas){
-    canvas.noFill();
-    canvas.strokeWeight(2);
-    canvas.rect(initPoint.x, initPoint.y, scl, scl);    
-  }
   
-  
-  public void setColorPattern(Patterns patterns){
-    colorPatterns = patterns.patternBlocks.groups;
+  public void setColorPattern(){
+    colorPatterns = patternBlocks.groups;
   }
   
   public void checkPattern(){
@@ -241,118 +360,43 @@ public class patternBlock{
       boolean correct4 = true; 
       //check 0123  0132
       if(colorPattern.blocks.size() == 4){
-        boolean verify1 =  colorPattern.blocks.get(0).col == (cells.get(0).c);
-        boolean verify2 =  colorPattern.blocks.get(1).col == (cells.get(1).c);
-        boolean verify3 =  colorPattern.blocks.get(3).col == (cells.get(3).c);
-        boolean verify4 =  colorPattern.blocks.get(2).col == (cells.get(2).c);
+        boolean verify1 =  colorPattern.blocks.get(0).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(1).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(3).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(2).col == (cells.get(2).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct1 = false;}
       }
       
       //check 3210 2013
       if(colorPattern.blocks.size() == 4){
-        boolean verify1 =  colorPattern.blocks.get(2).col == (cells.get(0).c);
-        boolean verify2 =  colorPattern.blocks.get(0).col == (cells.get(1).c);
-        boolean verify3 =  colorPattern.blocks.get(1).col == (cells.get(3).c);
-        boolean verify4 =  colorPattern.blocks.get(3).col == (cells.get(2).c);
+        boolean verify1 =  colorPattern.blocks.get(2).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(0).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(1).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(3).col == (cells.get(2).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct2 = false;}
       }
 
       //check 1302  3201
       if(colorPattern.blocks.size() == 4){
-        boolean verify1 =  colorPattern.blocks.get(3).col == (cells.get(0).c);
-        boolean verify2 =  colorPattern.blocks.get(2).col == (cells.get(1).c);
-        boolean verify3 =  colorPattern.blocks.get(0).col == (cells.get(3).c);
-        boolean verify4 =  colorPattern.blocks.get(1).col == (cells.get(2).c);
+        boolean verify1 =  colorPattern.blocks.get(3).col == (cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(2).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(0).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(1).col == (cells.get(2).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct3 = false;}
       }
       
       //check 2031 1320
       if(colorPattern.blocks.size() == 4){
-        boolean verify1 =  colorPattern.blocks.get(1).col ==(cells.get(0).c);
-        boolean verify2 =  colorPattern.blocks.get(3).col == (cells.get(1).c);
-        boolean verify3 =  colorPattern.blocks.get(2).col == (cells.get(3).c);
-        boolean verify4 =  colorPattern.blocks.get(0).col ==(cells.get(2).c);
+        boolean verify1 =  colorPattern.blocks.get(1).col ==(cells.get(0).col);
+        boolean verify2 =  colorPattern.blocks.get(3).col == (cells.get(1).col);
+        boolean verify3 =  colorPattern.blocks.get(2).col == (cells.get(3).col);
+        boolean verify4 =  colorPattern.blocks.get(0).col ==(cells.get(2).col);
         if(!(verify1 && verify2 && verify3 && verify4)){ correct4 = false;}
       }    
       if(correct1 || correct2 || correct3 || correct4){this.indexPattern = index; this.pattern = true; break;}
       index += 1;
     }
     if(!pattern){this.indexPattern = -1;}
-  }
-  
-}
-
-public class Mesh{
-  int scl;
-  PVector[][] grid;
-  int nblocks;  
-  ArrayList<patternBlock> patternBlocks = new ArrayList<patternBlock>();
-  
-  public Mesh(int nblocks, int w,Patterns patterns){
-    this.nblocks = nblocks;
-    this.scl = w/nblocks;
-    this.grid = new PVector[nblocks][nblocks];
-    this.create(patterns);
-  }
-  
-  
-  /**
-  * Create all the "n" blocks with a specific width
-  **/
-  public void create(Patterns patterns){
-    int id = 0;
-    for(int h = 0; h < this.grid.length; h++) {
-      for (int w = 0; w < this.grid.length; w++) {
-        float pointx = w * scl;
-        float pointy = h * scl;
-        patternBlocks.add(new patternBlock(id,new PVector(pointx, pointy),scl,patterns));
-        id++;
-      }
-    }
-  }  
-  
-  
-  /**
-  * draw the mesh
-  * if withColor is false, only the mesh is rendered
-  * if withColor is true, the mesh with its color is rendered
-  **/
-  void draw(PGraphics canvas, boolean withColor){
-    for(patternBlock pb: patternBlocks){
-      pb.draw(canvas);
-    }
-  }
-  
-  public void drawGrid(PGraphics canvas){
-    for(patternBlock pb: patternBlocks){
-      pb.drawGrid(canvas);
-    }    
-  }
-   
-  public void update(int nblocks, int w,Patterns patterns){
-    this.nblocks = nblocks;
-    this.scl = w/nblocks;
-    this.grid = new PVector[nblocks+1][nblocks+1];
-    patternBlocks = new ArrayList<patternBlock>();
-    this.create(patterns);
-  }
-
-
-  public PImage applyFilter(PGraphics canvas, ArrayList<Color> colors){
-    PImage img = canvas.get();
-    img.loadPixels();
-    for(patternBlock pb :patternBlocks ){
-      pb.applyFilter(img,colors);
-    }
-    img.updatePixels();
-    
-    return img;
-  }
-  
-  public void checkPattern(){
-    for(patternBlock pattern : patternBlocks){
-      pattern.checkPattern();
-    }
   }
   
 }

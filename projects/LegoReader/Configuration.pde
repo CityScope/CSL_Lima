@@ -70,15 +70,6 @@ public class Configuration{
     if(config.patterns.size() < total) return true;
     return false;
   }
-
-  /**
-   *Restart every pixel counter for each color
-  **/
-  public void restartColors() {  
-    for(Color c:colorLimits){
-      c.n = 0;
-    }
-  }
     
   /**
   *Increase/decrease the brightness and saturation of the canvas
@@ -116,6 +107,50 @@ public class Configuration{
   }  
   
   /**
+  *Asign a standar color in the range to every pixel in the canvas 
+  *Black and white: comparing brightness and saturation in a HSV scale
+  *Other Colors: comparing hue in a HSV scale
+  *Specific parameters for white and Red
+  **/    
+  public void applyFilter(PGraphics cam, PImage colorimage){
+    for(int x=0; x<cam.width;x++){
+      for(int y=0; y<cam.height;y++){
+        
+        color colors = color(0,0,0);
+        float hue = hue(cam.get(x,y));
+        float brightness = brightness(cam.get(x,y));
+        float saturation = saturation(cam.get(x,y));
+        boolean breakLoop = false;
+        for(Color colorL: this.colorLimits){
+          if(colorL.name.equals("white")){
+            if( ( (saturation < colorL.satMax) & (brightness > colorL.briMin)) | ((saturation < colorL.satMax2) & (hue < colorL.maxHue) & (hue > colorL.hueMin)) ) {
+            //if( ( (saturation < 15) & (brightness > 55)) | ((saturation < 50) & (hue < 70) & (hue > 30)) ){
+              colors = colorL.getColor();
+              breakLoop = true;
+              break;
+            }
+          }else if(colorL.name.equals("black")){
+            if( brightness < colorL.briMax | ( (brightness < colorL.briMax2 ) & (saturation  < colorL.satMax ) )){
+            //if( brightness < 25 | ( (brightness < 40 ) & (saturation  < 15 ) )){  
+              colors = colorL.getColor();
+              breakLoop = true;
+              break; 
+            }
+          }else{
+            if((hue < colorL.maxHue)){
+              colors = colorL.getColor();
+              breakLoop = true;
+              break;    
+            }
+          }
+        }
+        if(!breakLoop) colors = colorLimits.get(2).getColor();
+        colorimage.set(x,y,colors);
+      }
+     }
+   }
+
+  /**
   *Export a JSONfile with pattern and cells color name
   **/
   public void exportGrid(ArrayList<patternBlock> patternBlocks, Patterns patterns){
@@ -149,13 +184,23 @@ public class Configuration{
     header.setJSONArray("block", block);
     JSONObject type = new JSONObject();
     JSONObject mapping = new JSONObject();
-    int i=0;
-    for(patternBlock pb : patternBlocks){
-      type.setFloat(str(i), pb.indexPattern);
-      i++;
+    int j = 0;
+    for (int i = 0; i < config.patterns.size(); i++) {
+      type.setFloat(str(i), j);
+      j++;
     }
-    mapping.setJSONObject("type",type);
+    mapping.setJSONObject("type", type);
     header.setJSONObject("mapping", mapping);
+    int k = 0;
+    JSONArray grid = new JSONArray();
+    for (int w = 0; w < patternBlocks.size(); w++) {
+      JSONObject arrayValue = new JSONObject();
+      arrayValue.setFloat("type", patternBlocks.get(w).indexPattern);
+      arrayValue.setFloat("rotation", 0);
+      grid.setJSONObject(k, arrayValue);
+      k++;
+    }
+    header.setJSONArray("grid", grid);
     mesh.setJSONObject("meta", meta);
     mesh.setJSONObject("header", header);
     saveJSONObject(mesh, "data/grid.json");
@@ -165,7 +210,7 @@ public class Configuration{
   /**
   * Safe colors ranges, saturation, brightness and perspective calibration points.
   **/
-  public void saveConfiguration(ArrayList<Color> colors,Patterns patterns){ 
+  public void saveConfiguration(ArrayList<Color> colors){ 
     JSONObject calibrationParameters = new JSONObject();
     JSONObject limitsColors = new JSONObject();
     for(Color col :colors){
@@ -210,7 +255,7 @@ public class Configuration{
 
     JSONObject patternsLatent = new JSONObject();
     int index = 0;
-    for(ArrayList<String> pattern : patterns.patternBlocks.patternString){
+    for(ArrayList<String> pattern : patternBlocks.patternString){
       JSONArray patternValues = new JSONArray();
       int indexP = 0;
       for(String pat : pattern){

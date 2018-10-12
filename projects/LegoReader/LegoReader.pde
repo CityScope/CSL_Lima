@@ -55,6 +55,7 @@ ColorRange colorRange;
 Mesh mesh;
 BlockReader blockReader;
 Configuration config = new Configuration(sizeCanvas, "data/calibrationParameters.json");
+PatternBlocks patternBlocks;
 Patterns patterns;
 
 void settings(){
@@ -83,7 +84,7 @@ void setup() {
     patterns = new Patterns(canvasPattern, config);
     PApplet.runSketch(pattern, patterns);
     
-    mesh = new Mesh(config.nblocks/2, canvas.width,patterns);
+    mesh = new Mesh(config.nblocks, canvas.width);
 
     warpedPerspective = new WarpedPerspective(config.contour);
     
@@ -119,19 +120,20 @@ void draw() {
     canvasOriginal.endDraw();
     image(canvasOriginal, 0, 0);
     
-
+    //Filter colors with specific ranges
+    config.applyFilter(canvasOriginal,colorImage);
+    
     //canvas with the color processing and wrapped image
     colorImage.updatePixels();
-    opencv.loadImage(canvasOriginal.get());
+    opencv.loadImage(colorImage);
     opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas - config.resizeCanvas.get(0), sizeCanvas - config.resizeCanvas.get(1),opencv), imageWrapped);
     
     canvas.beginDraw();
     canvas.background(255);
     imageWrapped.resize(canvas.width - config.resizeCanvas.get(0), canvas.height - config.resizeCanvas.get(1));
     canvas.image(imageWrapped, 0, 0);
-    colorImage = mesh.applyFilter(canvas,config.colorLimits);
-    canvas.image(colorImage,0,0);
-    mesh.drawGrid(canvas);
+    mesh.getColors(canvas, config.colorLimits);
+    mesh.draw(canvas, false);
     canvas.endDraw();
     image(canvas, canvas.width, 0);
   }
@@ -163,7 +165,7 @@ void keyPressed(KeyEvent e) {
    
    switch(key){
      case 's':
-     config.saveConfiguration(colorRange.selectAll(),patterns);
+     config.saveConfiguration(colorRange.selectAll());
      break;
      
      case 'e':
@@ -187,13 +189,13 @@ void keyPressed(KeyEvent e) {
 
      case '+':
      config.nblocks += 4;
-     mesh.update(config.nblocks, canvas.width,patterns);
+     mesh.update(config.nblocks, canvas.width);
      config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;
      
      case '-':
      config.nblocks-=4;
-     mesh.update(config.nblocks, canvas.width,patterns);
+     mesh.update(config.nblocks, canvas.width);
      config.updateSizeCanvas(canvas.width % config.nblocks,canvas.height % config.nblocks);
      break;    
        
