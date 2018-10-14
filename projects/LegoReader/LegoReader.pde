@@ -169,7 +169,8 @@ void keyPressed(KeyEvent e) {
      break;
      
      case 'e':
-     config.exportGrid(mesh.patternBlocks,patterns);
+     //config.exportGrid(mesh.patternBlocks,patterns);
+     config.exportGridUDP(mesh.patternBlocks,patterns);
      break;
      
      case 'r':

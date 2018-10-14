@@ -18,7 +18,7 @@ This file is part of LegoReader.
     You should have received a copy of the GNU Affero General Public License
     along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
 **/
-
+import hypermedia.net.*;
 public class Configuration{
   String path;
   ArrayList<PVector> contour;
@@ -30,9 +30,17 @@ public class Configuration{
   int actualSize;
   ArrayList<ArrayList<String>> patterns = new ArrayList<ArrayList<String>>();
   
+  //UDP
+  int PORT = 9877;
+  String HOST_IP = "localhost"; //IP Address of the PC in which this App is running
+  UDP udp; //Create UDP object for recieving
+  
   Configuration(int actualSize,String path){
     this.actualSize = actualSize;
     this.path = path;
+    udp= new UDP(this);  
+    udp.log(true);
+    udp.listen(true);
   }
   
   public void updateSizeCanvas(int w, int h){
@@ -204,7 +212,21 @@ public class Configuration{
     mesh.setJSONObject("meta", meta);
     mesh.setJSONObject("header", header);
     saveJSONObject(mesh, "data/grid.json");
-    println("Grid exported.");
+    println("Grid exported.");    
+  }
+  
+  /**
+  *Export a JSONfile with pattern and cells color name
+  **/
+  public void exportGridUDP(ArrayList<patternBlock> patternBlocks, Patterns patterns){
+    String message = "";
+    int k = 0;
+    for (int w = 0; w < patternBlocks.size(); w++) {
+      message = message + patternBlocks.get(w).indexPattern + ";";
+      k++;
+    }
+    send(message);
+    println("UDP Grid exported.");    
   }
   
   /**
@@ -339,5 +361,13 @@ public class Configuration{
    println("Calibration parameters loaded");
   } 
 
+  void receive(byte[] data){
+    println("Processing received an unexpected message");   
+  }
+  
+  void send(String message){
+    println("sending " + message + " to " + HOST_IP + " port:" + PORT);
+    udp.send(message,HOST_IP,PORT);
+  }
   
 }
