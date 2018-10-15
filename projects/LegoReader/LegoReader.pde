@@ -36,7 +36,9 @@ PGraphics legendColor;
 PGraphics grayScale;
 PGraphics canvasPattern;
 
-
+final int blockSize = 20;
+int patternsw;
+int patternsh;
 int sizeCanvas = 480; 
 PImage colorImage;
 PImage imageWrapped;
@@ -80,8 +82,12 @@ void setup() {
     corners = new Corners(grayScale);
 
     config.loadConfiguration();
+    
+    patternsw = 480;
+    patternsh = blockSize * 4 * ceil(float(config.patterns.size())/3);
+    canvasPattern = createGraphics(patternsw, patternsh);    
     String[] pattern = {"Patterns"};
-    patterns = new Patterns(canvasPattern, config);
+    patterns = new Patterns(canvasPattern, config, blockSize);
     PApplet.runSketch(pattern, patterns);
     
     mesh = new Mesh(config.nblocks, canvas.width);

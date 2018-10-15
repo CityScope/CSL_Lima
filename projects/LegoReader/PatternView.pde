@@ -23,11 +23,12 @@ public class Patterns extends PApplet{
   final int blockSize = 20;
   Configuration config;
 
-  public Patterns(PGraphics canvasPattern, Configuration config){
+  public Patterns(PGraphics canvasPattern, Configuration config, int blockSize){
     this.w = 480;
     this.h = blockSize * 4 * ceil(float(config.patterns.size())/3);
     this.canvasPattern = canvasPattern;
     this.config = config;
+    patternBlocks = new PatternBlocks(this.canvasPattern, this.config, blockSize);
   }
   
   public void settings(){
@@ -36,8 +37,6 @@ public class Patterns extends PApplet{
 
   public void setup(){
     colorMode(HSB,360,100,100);
-    canvasPattern = createGraphics(this.w, this.h);
-    patternBlocks = new PatternBlocks(canvasPattern, this.config, blockSize);
     patternBlocks.getColorString();
   }
   
