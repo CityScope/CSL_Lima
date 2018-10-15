@@ -2,12 +2,12 @@
   "meta": {
     "apiv": "2.1.0",
     "id": "AOpifOF",
-    "timestamp": 151733
+    "timestamp": 32069
   },
   "header": {
     "owner": {
-      "name": "Vanesa and Jesus",
-      "institute": "Pacific's University",
+      "name": "Vanesa and Jesús",
+      "institute": "Pacific´s University",
       "title": "Researchers"
     },
     "mapping": {"type": {
@@ -16,11 +16,7 @@
       "2": 2,
       "3": 3,
       "4": 4,
-      "5": 5,
-      "6": 6,
-      "7": 7,
-      "8": 8,
-      "9": 9
+      "5": 5
     }},
     "grid": [
       {
@@ -65,11 +61,11 @@
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 1
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 1
       },
       {
         "rotation": 0,
@@ -133,11 +129,11 @@
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 1
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 1
       },
       {
         "rotation": 0,
@@ -173,7 +169,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -181,11 +177,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -197,7 +193,7 @@
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 1
       },
       {
         "rotation": 0,
@@ -233,7 +229,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -249,11 +245,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -289,11 +285,11 @@
       },
       {
         "rotation": 0,
-        "type": 7
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -321,7 +317,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -353,7 +349,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -385,11 +381,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -417,7 +413,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -449,11 +445,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -477,7 +473,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -517,11 +513,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -541,7 +537,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -581,11 +577,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -605,7 +601,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -645,11 +641,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -713,7 +709,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -729,7 +725,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -777,7 +773,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -793,11 +789,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -841,7 +837,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -857,11 +853,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -905,7 +901,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -921,11 +917,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -949,7 +945,7 @@
       },
       {
         "rotation": 0,
-        "type": 0
+        "type": -1
       },
       {
         "rotation": 0,
@@ -969,7 +965,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -985,11 +981,11 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": -1
       },
       {
         "rotation": 0,
@@ -1050,9 +1046,8 @@
     ],
     "name": "cityscope_lima",
     "block": [
-      "type",
-      "height",
-      "rotation"
+      "rotation",
+      "type"
     ],
     "spatial": {
       "physical_longitude": -77,
