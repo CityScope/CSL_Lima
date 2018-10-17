@@ -2,7 +2,7 @@
   "meta": {
     "apiv": "2.1.0",
     "id": "AOpifOF",
-    "timestamp": 151733
+    "timestamp": 1082459
   },
   "header": {
     "owner": {
@@ -16,11 +16,7 @@
       "2": 2,
       "3": 3,
       "4": 4,
-      "5": 5,
-      "6": 6,
-      "7": 7,
-      "8": 8,
-      "9": 9
+      "5": 5
     }},
     "grid": [
       {
@@ -113,311 +109,7 @@
       },
       {
         "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 7
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
+        "type": 5
       },
       {
         "rotation": 0,
@@ -446,17 +138,9 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
         "type": -1
       },
       {
@@ -474,10 +158,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -509,19 +189,11 @@
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 3
       },
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -538,10 +210,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -578,14 +246,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -602,10 +262,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -642,14 +298,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -710,10 +358,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -721,7 +365,7 @@
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 4
       },
       {
         "rotation": 0,
@@ -729,7 +373,7 @@
       },
       {
         "rotation": 0,
-        "type": 9
+        "type": 2
       },
       {
         "rotation": 0,
@@ -774,10 +418,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -790,14 +430,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -838,10 +470,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -854,18 +482,10 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
-        "type": -1
+        "type": 1
       },
       {
         "rotation": 0,
@@ -902,10 +522,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -918,14 +534,6 @@
       {
         "rotation": 0,
         "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
       },
       {
         "rotation": 0,
@@ -950,66 +558,6 @@
       {
         "rotation": 0,
         "type": 0
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": 9
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
-      },
-      {
-        "rotation": 0,
-        "type": -1
       },
       {
         "rotation": 0,
@@ -1056,11 +604,11 @@
     ],
     "spatial": {
       "physical_longitude": -77,
-      "nrows": 32,
+      "nrows": 24,
       "latitude": 12,
       "rotation": 0,
       "physical_latitude": 12,
-      "ncols": 32,
+      "ncols": 24,
       "cellSize": 20,
       "longitude": -77
     }
