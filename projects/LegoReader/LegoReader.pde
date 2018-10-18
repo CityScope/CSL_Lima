@@ -120,7 +120,6 @@ void draw() {
         config.exportGridUDP(mesh.patternBlocks,patterns);
       }
     }
-  }
 }
 
 void keyPressed(KeyEvent e) {
