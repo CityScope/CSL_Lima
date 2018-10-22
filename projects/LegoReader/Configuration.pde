@@ -40,15 +40,16 @@ public class Configuration {
   Configuration(int actualSize, String path) {
     this.actualSize = actualSize;
     this.path = path;
+    udp= new UDP(this);  
+    udp.log(true);
+    udp.listen(true);
   }
 
   public void updateSizeCanvas(int w, int h) {
     this.resizeCanvas= new IntList();
     resizeCanvas.append(w);
     resizeCanvas.append(h);
-    udp= new UDP(this);  
-    udp.log(true);
-    udp.listen(true);
+    
   }
 
   /**

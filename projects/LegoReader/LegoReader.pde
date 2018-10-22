@@ -49,6 +49,7 @@ BlockReader blockReader;
 Configuration config = new Configuration(sizeCanvas, "data/calibrationParameters.json");
 PatternBlocks patternBlocks;
 Patterns patterns;
+Boolean exportToUdp = true;
 
 void settings() {
   /**
@@ -114,6 +115,11 @@ void draw() {
     mesh.drawGrid(canvas);
     canvas.endDraw();
     image(canvas, canvas.width, 0);
+    if (exportToUdp){
+      if (frameCount % 5 == 0){
+        config.exportGridUDP(mesh.patternBlocks,patterns);
+      }
+    }
 }
 
 void keyPressed(KeyEvent e) {
