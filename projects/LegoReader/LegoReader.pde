@@ -35,7 +35,7 @@ int patternsw;
 int patternsh;
 int sizeCanvas = 480; 
 PImage colorImage, imageWarped, camFlipped, capture, shot;
-float inc = 1;
+float inc = 3;
 
 Boolean refresh = false, flipped = true;
 ArrayList<PVector> posibles = new ArrayList();
