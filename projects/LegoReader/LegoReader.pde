@@ -101,6 +101,7 @@ void setup() {
 
 void draw() {
     canvasOriginal.beginDraw();
+    canvasOriginal.clear();
     config.flip(canvasOriginal, cam, flipped);
     warpedPerspective.draw(canvasOriginal);
     canvasOriginal.endDraw();
@@ -110,6 +111,7 @@ void draw() {
     mesh.applyFilter(imageWarped);
     
     canvas.beginDraw();
+    canvas.clear();
     canvas.background(255);
     canvas.image(imageWarped, 0, 0);
     mesh.drawGrid(canvas);

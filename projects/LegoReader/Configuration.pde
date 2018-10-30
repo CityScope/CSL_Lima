@@ -36,6 +36,7 @@ public class Configuration {
   int PORT = 9877;
   String HOST_IP = "localhost"; //IP Address of the PC in which this App is running
   UDP udp; //Create UDP object for recieving
+  String previousMess = "";
 
   Configuration(int actualSize, String path) {
     this.actualSize = actualSize;
@@ -96,8 +97,12 @@ public class Configuration {
   }
   
   void send(String message){
-    println("sending " + message + " to " + HOST_IP + " port:" + PORT);
-    udp.send(message,HOST_IP,PORT);
+    //println("sending " + message + " to " + HOST_IP + " port:" + PORT);
+    if(!message.equals(previousMess)){
+      udp.send(message,HOST_IP,PORT);
+      previousMess =message;
+    }
+    
   }
 
   /**
@@ -166,7 +171,7 @@ public class Configuration {
       k++;
     }
     send(message);
-    println("UDP Grid exported.");    
+    //println("UDP Grid exported.");    
   }
 
   /**
