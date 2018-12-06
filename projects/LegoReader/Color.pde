@@ -1,96 +1,417 @@
 /**
-** @copyright: Copyright (C) 2018
-** @authors:   Javier Zárate & Vanesa Alcántara
-** @version:   1.0
-** @legal:
-    This file is part of LegoReader.
-    LegoReader is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    
-    LegoReader is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-    
-    You should have received a copy of the GNU Affero General Public License
-    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
-**/
+ * @copyright: Copyright (C) 2018
+ * @legal:
+ * This file is part of LegoReader.
+ 
+ * LegoReader is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ 
+ * LegoReader is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-public class Color {
-  int id;
-  float maxHue;
-  color stdColor;
-  String name;
-  String acron;
-  Boolean selectionMode;
-  int n;
-  float satMax;
-  float briMin;
-  float satMax2;
-  float hueMin;
-  float briMax;
-  float briMax2;
+
+/**
+ * Color - Abstract class which holds the values shared amongst all the colors
+ * @authors:   Javier Zárate & Vanesa Alcántara
+ * @modified:  Jesús García
+ * @version:   1.1
+ */
+public abstract class Color {
+  protected int ID;
+  protected String ACRONYM;
+  protected String NAME;
+  protected color STD;
+  protected float MAXHUE;
+  protected boolean SELECTED;
+  protected int COUNTER = 0;
+
 
   /**
-   *Constructor for colors in hue scale
-   **/
-  public Color(int id, float maxHue, color stdColor, String name, String acron) {
-    this.n = 0;
-    this.id = id;
-    this.maxHue = maxHue;
-    this.stdColor = stdColor;
-    this.name = name;
-    this.selectionMode = false;
-    this.acron = acron;
+   * Initiates Color class with values retrieved from a JSONObject
+   * @param: obj  JSONObject that stores values for different colors
+   */
+  public Color(JSONObject obj) {
+    ID = obj.getInt("id");
+    ACRONYM = obj.getString("acronym");
+    NAME = obj.getString("name");
+
+    JSONArray hsv = obj.getJSONArray("standarHSV");
+    STD = color(hsv.getInt(0), hsv.getInt(1), hsv.getInt(2));
+
+    MAXHUE = obj.getFloat("maxHue");
   }
 
-  /**
-   *Constructor for white
-   **/
-  public Color(int id, float maxHue, color stdColor, String name, String acron, float satMax, float briMin, float satMax2, float hueMin) {
-    this.n = 0;
-    this.id = id;
-    this.maxHue = maxHue;
-    this.stdColor = stdColor;
-    this.name = name;
-    this.selectionMode = false;
-    this.satMax = satMax;
-    this.briMin = briMin;
-    this.satMax2 = satMax2;
-    this.hueMin = hueMin;
-    this.acron = acron;
-  }
 
   /**
-   *Constructor for black
-   **/
-  public Color(int id, float maxHue, color stdColor, String name, String acron, float briMax, float briMax2, float satMax) {
-    this.n = 0;
-    this.id = id;
-    this.maxHue = maxHue;
-    this.stdColor = stdColor;
-    this.name = name;
-    this.selectionMode = false;
-    this.briMax = briMax;
-    this.briMax2 = briMax2;
-    this.satMax = satMax;
-    this.acron = acron;
+   * Gets the value of the ACRONYM attribute
+   * @returns: String  Value of ACRONYM
+   */
+  protected String getAcronym() {
+    return ACRONYM;
   }
 
-  /**
-   *Return a PVector with hue, saturation and brightness respectively
-   **/
-  public color getColor() {
-    return this.stdColor;
-  }
 
   /**
-   *Change selectionMode of the Color to calibration mode
-   **/
-  public void changeMode() {
-    this.selectionMode = !selectionMode;
-    print(true);
+   * Gets the value of the SELECTED attribute
+   * @returns: boolean  True - It's selected / False - It's not selected
+   */
+  protected boolean getSelected() {
+    return SELECTED;
+  }
+
+
+  /**
+   * Gets the value of the MAXHUE attribute
+   * @returns: float  Value of MAXHUE
+   */
+  protected float getMaxHue() {
+    return MAXHUE;
+  }
+
+
+  /**
+   * Sets the value of the MAXHUE attribute
+   * @param: maxHue  New value of MAXHUE
+   */
+  protected void setMaxHue(float maxHue) {
+    MAXHUE = maxHue;
+  }
+
+
+  /**
+   * Gets the value of the COUNTER attribute
+   * @returns: int  Value of COUNTER
+   */
+  protected int getCounter() {
+    return COUNTER;
+  }
+
+
+  /**
+   * Increases the value of the COUNTER attribute by 1
+   */
+  protected void setCounter() {
+    COUNTER++;
+  }
+
+
+  /**
+   * Sets the value of COUNTER to 0
+   */
+  protected void resetCounter() {
+    COUNTER = 0;
+  }
+
+
+  /**
+   * Gets the value of the ID attribute
+   * @returns: int  Value of ID
+   */
+  protected int getID() {
+    return ID;
+  }
+
+
+  /**
+   * Gets the value of the NAME attribute
+   * @returns: String  Value of NAME
+   */
+  protected String getColorName() {
+    return NAME;
+  }
+
+
+  /**
+   * Gets the value of the STD attribute (HSB format)
+   * @returns: Value of STD
+   */
+  protected color getColor() {
+    return STD;
+  }
+
+
+  /**
+   * Changes selectionMode of the Color to calibration mode
+   */
+  protected void changeMode() {
+    SELECTED = !SELECTED;
+  }
+}
+
+
+/**
+ * White - Class which specifically represents the color white and its associated values. Extends the Color class
+ * @author:    Jesús García
+ * @see:       Color
+ * @version:   1.0
+ */
+public class White extends Color {
+  private float MINHUE;
+  private float MAXSAT;
+  private float MAXSAT2;
+  private float MINBRI;
+
+
+  /**
+   * Creates an instance of White with values retrieved from a JSONObject
+   * @param: obj  JSONObject that stores values for different colors
+   */
+  public White(JSONObject obj) {
+    super(obj);
+    MINHUE = obj.getFloat("minHue");
+    MAXSAT = obj.getFloat("maxSat");
+    MAXSAT2 = obj.getFloat("maxSat2");
+    MINBRI = obj.getFloat("minBri");
+  }
+
+
+  /**
+   * Gets the value of the MINHUE attribute
+   * @returns: Value of MINHUE
+   */
+  public float getMinHue() {
+    return MINHUE;
+  }
+
+
+  /**
+   * Sets the value of the MINHUE attribute
+   * @param: minHue  New MINHUE value
+   */
+  public void setMinHue(float minHue) {
+    MINHUE = minHue;
+  }
+
+
+  /**
+   * Gets the value of the MAXSAT attribute
+   * @returns: Value of MAXSAT
+   */
+  public float getMaxSat() {
+    return MAXSAT;
+  }
+
+
+  /**
+   * Sets the value of the MAXSAT attribute
+   * @param: maxSat  New MAXSAT value
+   */
+  public void setMaxSat(float maxSat) {
+    MAXSAT = maxSat;
+  }
+
+
+  /**
+   * Gets the value of the MAXSAT2 attribute
+   * @returns: Value of MAXSAT2
+   */
+  public float getMaxSat2() {
+    return MAXSAT2;
+  }
+
+
+  /**
+   * Sets the value of the MAXSAT2 attribute
+   * @param: maxSat2  New MAXSAT2 value
+   */
+  public void setMaxSat2(float maxSat2) {
+    MAXSAT2 = maxSat2;
+  }
+
+
+  /**
+   * Gets the value of the MINBRI attribute
+   * @returns: Value of MINBRI
+   */
+  public float getMinBri() {
+    return MINBRI;
+  }
+
+
+  /**
+   * Sets the value of the MINBRI attribute
+   * @param: minBri  New MINBRI value
+   */
+  public void setMinBri(float minBri) {
+    MINBRI = minBri;
+  }
+
+
+  /**
+   * Saves the current values of this object
+   * @returns: JSONObject  A JSONObject with all the values
+   */
+  public JSONObject saveConfiguration() {
+    JSONObject whiteLimit = new JSONObject();
+    whiteLimit.setInt("id", ID);
+
+    JSONArray hsv = new JSONArray();
+    hsv.setFloat(0, hue(STD));
+    hsv.setFloat(1, saturation(STD));
+    hsv.setFloat(2, brightness(STD));
+    whiteLimit.setJSONArray("standarHSV", hsv);
+
+    whiteLimit.setString("acronym", ACRONYM);
+    whiteLimit.setString("name", NAME);
+    whiteLimit.setFloat("maxHue", MAXHUE);
+    whiteLimit.setFloat("minHue", MINHUE);
+    whiteLimit.setFloat("maxSat", MAXSAT);
+    whiteLimit.setFloat("maxSat2", MAXSAT2);
+    whiteLimit.setFloat("minBri", MINBRI);
+
+    return whiteLimit;
+  }
+}
+
+
+/**
+ * Black - Class which specifically represents the color black and its associated values. Extends the Color class
+ * @author:    Jesús García
+ * @see:       Color
+ * @version:   1.0
+ */
+public class Black extends Color {
+  private float MAXSAT;
+  private float MAXBRI;
+  private float MAXBRI2;
+
+
+  /**
+   * Creates an instance of Black with values retrieved from a JSONObject
+   * @param: obj  JSONObject that stores values for different colors
+   */
+  public Black(JSONObject obj) {
+    super(obj);
+    MAXSAT = obj.getFloat("maxSat");
+    MAXBRI = obj.getFloat("maxBri");
+    MAXBRI2 = obj.getFloat("maxBri2");
+  }
+
+
+  /**
+   * Gets the value of the MAXSAT attribute
+   * @returns: Value of MAXSAT
+   */
+  public float getMaxSat() {
+    return MAXSAT;
+  }
+
+
+  /**
+   * Sets the value of the MAXSAT attribute
+   * @param: maxSat  New MAXSAT value
+   */
+  public void setMaxSat(float maxSat) {
+    MAXSAT = maxSat;
+  }
+
+
+  /**
+   * Gets the value of the MAXBRI attribute
+   * @returns: Value of MAXBRI
+   */
+  public float getMaxBri() {
+    return MAXBRI;
+  }
+
+
+  /**
+   * Sets the value of the MAXBRI attribute
+   * @param: maxBri  New MAXBRI value
+   */
+  public void setMaxBri(float maxBri) {
+    MAXBRI = maxBri;
+  }
+
+
+  /**
+   * Gets the value of the MAXBRI2 attribute
+   * @returns: Value of MAXBRI2
+   */
+  public float getMaxBri2() {
+    return MAXBRI2;
+  }
+
+
+  /**
+   * Sets the value of the MAXBRI2 attribute
+   * @param: maxBri2  New MAXBRI2 value
+   */
+  public void setMaxBri2(float maxBri2) {
+    MAXBRI2 = maxBri2;
+  }
+
+
+  /**
+   * Saves the current values of this object
+   * @returns: JSONObject  A JSONObject with all the values
+   */
+  public JSONObject saveConfiguration() {
+    JSONObject blackLimit = new JSONObject();
+    blackLimit.setInt("id", ID);
+
+    JSONArray hsv = new JSONArray();
+    hsv.setFloat(0, hue(STD));
+    hsv.setFloat(1, saturation(STD));
+    hsv.setFloat(2, brightness(STD));
+    blackLimit.setJSONArray("standarHSV", hsv);
+
+    blackLimit.setString("acronym", ACRONYM);
+    blackLimit.setString("name", NAME);
+    blackLimit.setFloat("maxHue", MAXHUE);
+    blackLimit.setFloat("maxSat", MAXSAT);
+    blackLimit.setFloat("maxBri", MAXBRI);
+    blackLimit.setFloat("maxBri2", MAXBRI2);
+
+    return blackLimit;
+  }
+}
+
+
+/**
+ * Other - Class which specifically represents a color different to black or white and its associated values. Extends the Color class
+ * @author:    Jesús García
+ * @see:       Color
+ * @version:   1.0
+ */
+public class Other extends Color {
+
+
+  /**
+   * Creates an instance of Other with values retrieved from a JSONObject
+   * @param: obj  JSONObject that stores values for different colors
+   */
+  public Other(JSONObject obj) {
+    super(obj);
+  }
+
+
+  /**
+   * Saves the current values of this object
+   * @returns: JSONObject  A JSONObject with all the values
+   */
+  public JSONObject saveConfiguration() {
+    JSONObject otherLimit = new JSONObject();
+    otherLimit.setInt("id", ID);
+
+    JSONArray hsv = new JSONArray();
+    hsv.setFloat(0, hue(STD));
+    hsv.setFloat(1, saturation(STD));
+    hsv.setFloat(2, brightness(STD));
+    otherLimit.setJSONArray("standarHSV", hsv);
+
+    otherLimit.setString("acronym", ACRONYM);
+    otherLimit.setString("name", NAME);
+    otherLimit.setFloat("maxHue", MAXHUE);
+
+    return otherLimit;
   }
 }

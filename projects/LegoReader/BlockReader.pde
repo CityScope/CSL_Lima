@@ -1,56 +1,96 @@
 /**
-** @copyright: Copyright (C) 2018
-** @authors:   Javier Zárate & Vanesa Alcántara
-** @version:   1.0
-** @legal:
-    This file is part of LegoReader.
-    LegoReader is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    
-    LegoReader is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-    
-    You should have received a copy of the GNU Affero General Public License
-    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
-**/
+ * @copyright: Copyright (C) 2018
+ * @legal:
+ * This file is part of LegoReader.
+ 
+ * LegoReader is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ 
+ * LegoReader is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ^ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+ **/
 
+
+/**
+ * BlockReader - Extends PApplet. Shows a Mesh object
+ * @see:       Mesh
+ * @authors:   Javier Zárate & Vanesa Alcántara
+ * @modified:  Jesús García
+ * @version:   1.1
+ */
 public class BlockReader extends PApplet {
-  int w;
-  int h;
-  color actualColor;
+  private PGraphics CANVAS;
+  private int WIDTH;
+  private int HEIGHT;
+  private color COLOR = 0;
+  private Mesh MESH;
+  private boolean SHOW = true;
 
-  public BlockReader(int w, int h) {
-    this.w = w;
-    this.h = h;
-    actualColor = color(0, 0, 0);
+
+  /**
+   * Creates a BlockReader object with values retrieved from a JSONObject and a Mesh object
+   * @param: calibrationParameters  JSONObject with the size values for the PApplet
+   * @param: mesh                   Mesh object to be shown
+   */
+  public BlockReader(JSONObject calibrationParameters, Mesh mesh) {
+    HEIGHT = WIDTH = calibrationParameters.getInt("Canvas size");
+    MESH = mesh;
   }
 
+
+  /**
+   * Sets the size of the PApplet. P3D enables the use of vertices
+   */
   public void settings() {
-    size(this.w, this.h,P3D);
+    size(WIDTH, HEIGHT, P3D);
   }
 
+
+  /**
+   * Creates a PGraphics object where the Mesh instance will be drawn and sets colorMode to HSB
+   */
   public void setup() {
-    canvasColor = createGraphics(this.w, this.h,P3D);
+    CANVAS = createGraphics(WIDTH, HEIGHT, P3D);
     colorMode(HSB, 360, 100, 100);
   }
 
+
+  /**
+   * Calls the Mesh object checkPattern and draw methods to display it in a PGraphics object
+   */
   public void draw() {
-    canvasColor.beginDraw();
-    canvasColor.background(255);
-    canvasColor.strokeWeight(1);
-    mesh.checkPattern();
-    mesh.draw(canvasColor);
-    canvasColor.endDraw();
-    image(canvasColor, 0, 0);
+    CANVAS.beginDraw();
+    CANVAS.background(255);
+    CANVAS.strokeWeight(1);
+    MESH.checkPattern();
+    MESH.draw(CANVAS);
+    CANVAS.endDraw();
+    image(CANVAS, 0, 0);
   }
 
-  void mouseClicked() {
-    color selected = canvasColor.get(mouseX, mouseY);
+
+  /**
+   * Prints the HSB and RGB values of the color selected with the mouse
+   */
+  public void mouseClicked() {
+    color selected = CANVAS.get(mouseX, mouseY);
     println(hue(selected), saturation(selected), brightness(selected));
     println(red(selected), green(selected), blue(selected));
+  }
+
+
+  /**
+   * Toggles showing or not the PApplet
+   */
+  public void setShow() {
+    SHOW = !SHOW;
+    this.getSurface().setVisible(SHOW);
   }
 }

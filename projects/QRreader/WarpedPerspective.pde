@@ -1,20 +1,20 @@
 /**
  * @copyright: Copyright (C) 2018
  * @legal:
- * This file is part of LegoReader.
+ * This file is part of QRreader.
  
- * LegoReader is free software: you can redistribute it and/or modify
+ * QRreader is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  
- * LegoReader is distributed in the hope that it will be useful,
+ * QRreader is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  
  * You should have received a copy of the GNU Affero General Public License
- * along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+ * along with QRreader. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -31,8 +31,8 @@ public class WarpedPerspective {
 
 
   /**
-   * Creates the object with an array of control points
-   * @param: calibrationParameters  JSONObject with the control points
+   * Creates the object with an array of contour points
+   * @param: calibrationPoints  JSONObject with the contour points
    */
   public WarpedPerspective(JSONObject calibrationParameters) {
     load(calibrationParameters);
@@ -40,13 +40,14 @@ public class WarpedPerspective {
 
 
   /**
-   * Retrieves the control points from a JSONObject
-   * @param: calibrationParameters  JSONObject with the control points
+   * Retrieves the contour points from a JSONObject
+   * @param: calibrationPoints  JSONObject with the control points
    */
   private void load(JSONObject calibrationParameters) {
-    JSONObject points = calibrationParameters.getJSONObject("Calibration Points");    
-    for (int i = 0; i < points.size(); i++) {
-      JSONArray point = points.getJSONArray(str(i));
+    JSONObject calibrationPoints = calibrationParameters.getJSONObject("Calibration Points");
+
+    for (int i = 0; i < calibrationPoints.size(); i++) {
+      JSONArray point = calibrationPoints.getJSONArray(str(i));
       CONTOUR.add(new PVector(point.getInt(0), point.getInt(1)));
     }
   }
@@ -126,14 +127,14 @@ public class WarpedPerspective {
    */
   public void draw(PGraphics canvas) {
     for (PVector i : CONTOUR) {
-      canvas.fill(0);
+      canvas.fill(255);
       if (i == POI) {
-        canvas.fill(255);
+        canvas.fill(0);
       }
-      canvas.ellipse(i.x, i.y, 5, 5);
+      canvas.ellipse(i.x, i.y, 10, 10);
     }
   }
-  
+
 
   /**
    * Saves the current values of the CONTOUR attribute
