@@ -4,17 +4,6 @@
 # In[1]:
 
 
-#LIBRARIES NEDDED --> Run on terminal those lines to install the libraries
-# TO INSTALL PIP --> https://pip.pypa.io/en/stable/installing/
-# pip install matplotlib
-# pip install pyzbar
-# pip install numpy
-# pip install opencv-python
-# pip install json
-# pip install socket
-# pip install datetime
-
-from __future__ import print_function
 from matplotlib import pyplot as plt
 import pyzbar.pyzbar as pyzbar
 import math
@@ -26,7 +15,7 @@ from datetime import timedelta
 from datetime import datetime
 
 
-# In[18]:
+# In[2]:
 
 
 def read_parameters():  
@@ -73,13 +62,18 @@ class QR(object):
     def decode(self,im) :
         # Find barcodes and QR codes
         decodedObjects = pyzbar.decode(im)
+
         return decodedObjects        
 
     def draw(self,im, decodedObjects):
 
         # Loop over all decoded objects
-        for decodedObject in decodedObjects: 
-            points = decodedObject.location
+        for decodedObject in decodedObjects:
+#             print(decodedObject)
+            try:
+                points = decodedObject.location
+            except:
+                points = decodedObject.polygon
 
             # If the points do not form a quad, find convex hull
             if len(points) > 4 : 
@@ -129,20 +123,21 @@ class cell:
         return ((x > self.start[0]) and (x < (self.start[0]+self.size)) and (y > self.start[1]) and (y < (self.start[1]+self.size)))
     
     def set_pattern(self, data):
-        if i.pattern == "Residential Large":
+        if data == "Residential Large":
             self.pattern = 0
-        elif i.pattern == "Residential Medium":
+        elif data == "Residential Medium":
             self.pattern = 1
-        elif i.pattern == "Residential Small":
+        elif data == "Residential Small":
             self.pattern = 2
-        elif i.pattern == "Office Medium":
+        elif data == "Office Medium":
             self.pattern = 3
-        elif i.pattern == "Residential Medium":
+        elif data == "Residential Medium":
             self.pattern = 4
-        elif i.pattern == "Office Small":
+        elif data == "Office Small":
             self.pattern = 5
         else:
             self.pattern = -1
+        print(self.pattern)
         
     
 
@@ -205,9 +200,14 @@ class mesh:
         qr.draw(im, decodedObjects)
         for i in decodedObjects:  
             for j in self.cells:
-                if j.check(i.location):
-                    j.set_pattern(i.data.decode("utf-8"))
-                    break
+                try:
+                    if j.check(i.location):
+                        j.set_pattern(i.data.decode("utf-8"))
+                        break
+                except:
+                    if j.check(i.polygon):
+                        j.set_pattern(i.data.decode("utf-8"))
+                        break
         return im 
 
 
@@ -307,7 +307,7 @@ def mouse_selecting(event, x, y, flags, params):
                 break;
 
 
-# In[19]:
+# In[9]:
 
 
 # Main 
@@ -320,7 +320,8 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
     while True:
         k = cv2.waitKey(1)
-        print(k)
+        if k != -1:
+            print(k)
         cv2.namedWindow("Original")
         cv2.setMouseCallback("Original", mouse_selecting)
         ret, img = cap.read()
