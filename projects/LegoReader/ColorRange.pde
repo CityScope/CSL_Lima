@@ -1,278 +1,284 @@
 /**
- * @copyright: Copyright (C) 2018
- * @legal:
- * This file is part of LegoReader.
- 
- * LegoReader is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- 
- * LegoReader is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- 
- * You should have received a copy of the GNU Affero General Public License
- * along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
- */
+** @copyright: Copyright (C) 2018
+** @authors:   Javier Zárate & Vanesa Alcántara
+** @version:   1.0
+** @legal:
+    This file is part of LegoReader.
+    LegoReader is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    LegoReader is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-
-/**
- * ColorRange - Extendeds PApplet. Allows to change calibrations regarding hue, saturation and brightness for the colors
- * @see:       Color, White, Black, Other
- * @authors:   Javier Zárate & Vanesa Alcántara
- * @modified:  Jesús García
- * @version:   1.1
- */
 public class ColorRange extends PApplet {
-  private PGraphics LEGEND;
-  private PImage WHITEBG;
-  private PImage BLACKBG;
-  private PImage OTHERBG;
-  private int WIDTH;
-  private int HEIGHT;
-  private White W;
-  private Black BL;
-  private ArrayList<Other> OT = new ArrayList<Other>();  
-  private int CONTROLLER = 5;
-  private boolean WMODE = true;
-  private boolean BMODE = false;
-  private boolean OMODE = true;
-  private boolean SHOW = true;
+  ArrayList<Color> colorLimits = new ArrayList();
+  int w;
+  int h;
+  Boolean black =  false;
+  Boolean white = false;
+  Boolean otherColors = true;
+  int mx;
+  int my;
+  int scale = 6;
+  int control = 5;
 
-
-  /**
-   * Creates a ColorRange object from a group of files and a JSONObject
-   * @param: whiteBackground        Path to image with the modification panel for color white
-   * @param: blackBackground        Path to image with the modification panel for color black
-   * @param: otherBackground        Path to image with the modification panel for the rest of the colors
-   * @param: calibrationParameters  JSONObject with values to create Color objects and to set the PApplet's size
-   */
-  public ColorRange(PImage whiteBackground, PImage blackBackground, PImage otherBackground, JSONObject calibrationParameters) {
-    WHITEBG = whiteBackground;
-    BLACKBG = blackBackground;
-    OTHERBG = otherBackground;
-    load(calibrationParameters);
-
+  public ColorRange(ArrayList<Color> colorLimits, int w, int h) {
+    this.colorLimits = colorLimits;
+    this.w = w;
+    this.h = h;
   }
 
-
-  /**
-   * Creates Color instances from a JSONObject and sets the width and height of the PApplet
-   * @param: calibrationParameters  JSONObject with values to create Color objects and to set the PApplet's size
-   */
-  private void load(JSONObject calibrationParameters) {
-    JSONObject colorRange = calibrationParameters.getJSONObject("Color Range");
-    WIDTH = colorRange.getInt("w");
-    HEIGHT = colorRange.getInt("h");
-
-    JSONArray colorLimits = calibrationParameters.getJSONArray("Color Limits");     
-   
-    for (int i = 0; i < colorLimits.size(); i++) {
-      JSONObject c = colorLimits.getJSONObject(i);  
-      String acronym = c.getString("acronym");  
-      if (acronym.equals("W")) {
-        White w = new White(c);
-        W = w;
-      } else if (acronym.equals("BK")) {
-        Black bl = new Black(c);
-        BL = bl;
-      } else {
-        Other o = new Other(c);
-        OT.add(o);
-      }
-    }
-  }
-
-  /**
-   * Sets the size of the PApplet. P3D enables the use of vertices
-   */
   public void settings() {
-    size(WIDTH, HEIGHT + 20);
+    size(this.w, this.h + 20);
   }
 
-
-  /**
-   * Creates a PGraphics opbject to be displayed in the PApplet and sets colorMode to HSB
-   */
   public void setup() {
-    LEGEND = createGraphics(WIDTH, HEIGHT + 20);
+    legendColor = createGraphics(this.w, this.h + 20);
     colorMode(HSB, 360, 100, 100);
   }
 
-
   /**
-   * Depending on the mode, shows a modification panel to change color calibrations while running
-   * WMODE: Shows modification panel for color white
-   * BMODE: Shows modification panel for color black
-   * OMODE: Shows modification panel for other colors
-   */
+   *Create the manual control to change color limits while running
+   **/
   public void draw() {
-    LEGEND.beginDraw();
-    if (WMODE) {
-      controlPanelWhite();
-    } else if (BMODE) {
-      controlPanelBlack();
-    } else if (OMODE) {
-      controlPanelOthers();
+      legendColor.beginDraw();
+      legendColor.fill(0);
+      legendColor.rect(0, h, w, 20);
+      legendColor.fill(255);
+      legendColor.textAlign(CENTER); 
+      legendColor.rectMode(CORNER);
+      legendColor.colorMode(HSB, 360, 100, 100);
+      if (white) {
+        controlPanelWhite();
+      } else if (black) {
+        controlPanelBlack();
+      } else {
+        controlPanelOthers();
+      }
+      legendColor.endDraw();
+      image(legendColor, 0, 0);
+  }
+
+  /**
+    *Enable the option to modify hue, saturation and brightness for the color white
+  **/
+  void controlPanelWhite() {
+    for (int x = 0; x < w; x++) {
+      for (int y = 0; y < h; y++) {
+        float max = map(y, 0, h, 0, 100);
+        if (x < w/5) { //SatMax
+          legendColor.stroke(0, 0, 100 - max);
+          legendColor.point(x, y);
+        } else if (x < (2 * w)/5) { //BriMin
+          legendColor.stroke(0, 0, max);
+          legendColor.point(x, y);
+        } else if (x < (3 * w)/5) { //SatMax
+          legendColor.stroke(0, 0, 100 - max);
+          legendColor.point(x, y);
+        } else if (x< (4 * w)/5) { //HueMax
+          legendColor.stroke(max, 50, 100);
+          legendColor.point(x, y);
+        } else {//HueMin
+          legendColor.stroke(max, 50, 100);
+          legendColor.point(x, y);
+        }
+      }
     }
-    LEGEND.endDraw();
-
-    image(LEGEND, 0, 0);
+    int satMax = (int) map(config.colorW.satMax, 0, 100, 0, h);
+    int briMin = (int) map(config.colorW.briMin, 0, 100, 0, h);
+    int satMax2 = (int) map(config.colorW.satMax2, 0, 100, 0, h);
+    int maxHue = (int) map(config.colorW.maxHue, 0, 100, 0, h);
+    int hueMin = (int) map(config.colorW.hueMin, 0, 100, 0, h);
+    /**
+      *Display the ranges for hue, saturation and brightness
+    **/
+    legendColor.fill(0);
+    legendColor.stroke(0);
+    legendColor.textSize(legendColor.height/3);
+    legendColor.textAlign(CENTER, CENTER);
+    legendColor.text("S", w/10, h/2 );
+    legendColor.text("B", w/10 + w/5, h/2 );
+    legendColor.text("S", w/10 +(2 * w)/5, h/2 );
+    legendColor.textSize(legendColor.height/3.5);
+    legendColor.text("Hmax", w/10 +(3 * w)/5, h/2 );
+    legendColor.text("Hmin", w/10 +(4 * w)/5, h/2 );
+    legendColor.rect(w/5, 0, 1.5, h);
+    legendColor.rect((3 * w)/5, 0, 1.5, h);
+    legendColor.rect((4 * w)/5, 0, 1.5, h);
+    legendColor.fill(0, 0, 100);
+    legendColor.stroke(0);
+    legendColor.rect((2 * w)/5, 0, 4, h + 20);
+    legendColor.textSize(12);
+    legendColor.textAlign(CENTER);
+    legendColor.text("Modify white parameters", w/5, h + 15);
+    legendColor.text("Modify yellow bias", (7 * w)/10, h+15); 
+    legendColor.fill(255);
+    legendColor.stroke(255);
+    legendColor.rect(2, satMax, w/5 - 3, control);
+    legendColor.rect(w/5 + 2, briMin, w/5 - 3, control);    
+    legendColor.rect((2 * w)/5 + 4, satMax2, w/5 - 5, control);
+    legendColor.rect((3 * w)/5 + 2, maxHue, w/5 - 3, control);
+    legendColor.rect((4 * w)/5 + 2, hueMin, w/5 - 3, control);
   }
 
-
   /**
-   * Enables the option to modify hue, saturation and brightness for color white using control bars
-   */
-  private void controlPanelWhite() {
-    int maxHue = (int) map(W.getMaxHue(), 0, 100, 0, HEIGHT);
-    int minHue = (int) map(W.getMinHue(), 0, 100, 0, HEIGHT);
-    int maxSat = (int) map(W.getMaxSat(), 0, 100, 0, HEIGHT);
-    int maxSat2 = (int) map(W.getMaxSat2(), 0, 100, 0, HEIGHT);
-    int minBri = (int) map(W.getMinBri(), 0, 100, 0, HEIGHT);
-
-    LEGEND.image(WHITEBG, 0, 0, WIDTH, HEIGHT + 20);
-    LEGEND.fill(0);
-    LEGEND.stroke(0);
-    LEGEND.rect(WIDTH/5, 0, 1.5, HEIGHT);
-    LEGEND.rect((3 * WIDTH)/5, 0, 1.5, HEIGHT);
-    LEGEND.rect((4 * WIDTH)/5, 0, 1.5, HEIGHT);
-    LEGEND.fill(255);
-    LEGEND.stroke(255);
-    LEGEND.rect(2, maxSat, WIDTH/5 - 3, CONTROLLER);
-    LEGEND.rect(WIDTH/5 + 2, minBri, WIDTH/5 - 3, CONTROLLER);    
-    LEGEND.rect((2 * WIDTH)/5 + 4, maxSat2, WIDTH/5 - 5, CONTROLLER);
-    LEGEND.rect((3 * WIDTH)/5 + 2, maxHue, WIDTH/5 - 3, CONTROLLER);
-    LEGEND.rect((4 * WIDTH)/5 + 2, minHue, WIDTH/5 - 3, CONTROLLER);
+    *Enable the option to modify saturation and brightness for the color black
+  **/
+  void controlPanelBlack() {
+    for (int x = 0; x < w/2; x++) {
+      for (int y = 0; y < h; y++) {
+        float max = map(x, 0, w/2, 0, 100);
+        legendColor.stroke(0, 0, max);
+        legendColor.point(x, y);
+        if (y < h/2) {
+          legendColor.point(x + w/2, y);
+        } else {
+          legendColor.stroke(0, 0, 100 - max);
+          legendColor.point(x + w/2, y);
+        }
+      }
+    }
+    int brimax = (int) map(config.colorB.briMax, 0, 100, 0, w/2);
+    int brimax2 = (int) map(config.colorB.briMax2, 0, 100, 0, w/2);
+    int satmax = (int) map(config.colorB.satMax, 0, 100, 0, w/2);
+    /**
+      *Display the ranges for saturation and brightness
+    **/
+    legendColor.fill(0);
+    legendColor.stroke(0);
+    legendColor.textSize(legendColor.height/3);
+    legendColor.textAlign(CENTER, CENTER);
+    legendColor.text("B", w/4, h/2);
+    legendColor.text("B", w/4 + w/2, h/4);
+    legendColor.text("S", w/4 + w/2, h/4 + h/2);
+    legendColor.fill(0, 0, 100);
+    legendColor.stroke(0);
+    legendColor.rect(w/2, 0, 4, h + 20);
+    legendColor.textSize(12);
+    legendColor.textAlign(CENTER);
+    legendColor.text("Modify black parameters ", w/4, h + 15);
+    legendColor.text("Modify red bias", (3 * w)/4, h + 15);
+    legendColor.fill(255);
+    legendColor.stroke(255);
+    legendColor.rect(brimax, 0, control, h);
+    legendColor.rect(brimax2 + w/2, 0, control, h/2);
+    legendColor.rect(satmax + w/2, h/2, control, h/2);
   }
 
-
   /**
-   * Enables the option to modify saturation and brightness for color black using control bars
-   */
-  private void controlPanelBlack() {
-    int maxSat = (int) map(BL.getMaxSat(), 0, 100, 0, WIDTH/2);
-    int maxBri = (int) map(BL.getMaxBri(), 0, 100, 0, WIDTH/2);
-    int maxBri2 = (int) map(BL.getMaxBri2(), 0, 100, 0, WIDTH/2);
-
-    LEGEND.image(BLACKBG, 0, 0, WIDTH, HEIGHT + 20);
-    LEGEND.fill(255);
-    LEGEND.stroke(0);
-    LEGEND.rect(WIDTH/2, 0, 4, HEIGHT + 20);
-    LEGEND.fill(255);
-    LEGEND.stroke(255);
-    LEGEND.rect(maxBri, 0, CONTROLLER, HEIGHT);
-    LEGEND.rect(maxBri2 + WIDTH/2, 0, CONTROLLER, HEIGHT/2);
-    LEGEND.rect(maxSat + WIDTH/2, HEIGHT/2, CONTROLLER, HEIGHT/2);
-  }
-
-
-  /**
-   * Enables the option to modify ranges for the rest of the colors using control bars
-   */
-  private void controlPanelOthers() {
-    LEGEND.image(OTHERBG, 0, 0, WIDTH, HEIGHT + 20);
-    for (Color c : OT) {
-      int x = (int) map(c.getMaxHue(), 0, 360, 0, WIDTH);
-      LEGEND.stroke(255);
-      LEGEND.rect(x, 0, CONTROLLER, HEIGHT);
+    *Enable the option to modify ranges for the rest of the colors
+  **/
+  void controlPanelOthers() {
+    for (int x = 0; x < w; x++) {
+      for (int y = 0; y < h; y++) {
+        float i = map(x, 0, w, 0, 360);
+        legendColor.stroke(i, y, 100);
+        legendColor.point(x, y);
+      }
+    }
+    for (Color c : config.colorO) {
+      int x = (int) map(c.maxHue, 0, 360, 0, w);
+      legendColor.fill(255);
+      legendColor.stroke(255);
+      legendColor.rect(x, 0, control, h);
+      legendColor.text("x = Modify color limits", w/2, h + 15);
     }
   }
 
-
   /**
-   * Depending on which panel is being shown, allows selecting and moving control bars for hue, saturation and brigthness
-   * WMODE: Control bars to change hue, saturation and brightness for color white
-   * BMODE: Control bars to change brightness and saturation for color black
-   * OMODE: Control bars to change hue - if near a threshold - for other colors
-   */
-  public void mousePressed() {
+   *White: Select a color rect to change hue, saturation and brightness
+   *Black: Select a color rect to change brigness and saturation or rect for brightness
+   *Other colors:Select a color rect if it is near threshold
+   **/
+  void mousePressed() {
     int mousex = mouseX;
     int mousey = mouseY;
-    if (WMODE) {
-      int maxHue = (int) map(W.getMaxHue(), 0, 100, 0, HEIGHT);
-      int minHue = (int) map(W.getMinHue(), 0, 100, 0, HEIGHT);
-      int maxSat = (int) map(W.getMaxSat(), 0, 100, 0, HEIGHT);
-      int maxSat2 = (int) map(W.getMaxSat2(), 0, 100, 0, HEIGHT);
-      int minBri = (int) map(W.getMinBri(), 0, 100, 0, HEIGHT);
-      if ((mousex < WIDTH/5) && (mousey > maxSat) && (mousey < maxSat + CONTROLLER)) {
-        W.changeMode();
-      } else if ((mousex < (2 * WIDTH)/5) && (mousey > minBri) && (mousey < minBri + CONTROLLER)) {
-        W.changeMode();
-      } else if ((mousex < (3 * WIDTH)/5) && (mousey > maxSat2) && (mousey < maxSat2 + CONTROLLER)) {
-        W.changeMode();
-      } else if ((mousex < (4 * WIDTH)/5) && (mousey > maxHue) && (mousey < maxHue + CONTROLLER)) {
-        W.changeMode();
-      } else if ((mousex < WIDTH) && (mousey > minHue) && (mousey < minHue + CONTROLLER)) {
-        W.changeMode();
+    if (white) {
+      int satMax = (int) map(config.colorW.satMax, 0, 100, 0, h);
+      int briMin = (int) map(config.colorW.briMin, 0, 100, 0, h);
+      int satMax2 = (int) map(config.colorW.satMax2, 0, 100, 0, h);
+      int maxHue = (int) map(config.colorW.maxHue, 0, 100, 0, h);
+      int hueMin = (int) map(config.colorW.hueMin, 0, 100, 0, h);
+      if ((mousex < w/5) && (mousey > satMax) && (mousey < satMax + control)) {
+        config.colorW.changeMode();
+      } else if ((mousex < (2 * w)/5) && (mousey > briMin) && (mousey < briMin + control)) {
+        config.colorW.changeMode();
+      } else if ((mousex < (3 * w)/5) && (mousey > satMax2) && (mousey < satMax2 + control)) {
+        config.colorW.changeMode();
+      } else if ((mousex < (4 * w)/5) && (mousey > maxHue) && (mousey < maxHue + control)) {
+        config.colorW.changeMode();
+      } else if ((mousex < w) && (mousey > hueMin) && (mousey<hueMin+control)) {
+        config.colorW.changeMode();
       }
-    } else if (BMODE) {
-      int maxBri = (int) map(BL.getMaxBri(), 0, 100, 0, WIDTH/2);
-      int maxBri2 = (int) map(BL.getMaxBri2(), 0, 100, 0, WIDTH/2);
-      int maxSat = (int) map(BL.getMaxSat(), 0, 100, 0, WIDTH/2);
-      if ((mousex > maxBri) && (mousex < maxBri + CONTROLLER)) {
-        BL.changeMode();
-      } else if ((mousex > maxBri2 + WIDTH/2) && (mousex < maxBri2 + CONTROLLER + WIDTH/2) && (mousey < HEIGHT/2)) {
-        BL.changeMode();
-      } else if ( (mousex > maxSat + WIDTH/2) && (mousex < maxSat + CONTROLLER + WIDTH/2) && (mousey > HEIGHT/2) ) {
-        BL.changeMode();
+    } else if (black) {
+      int brimax = (int) map(config.colorB.briMax, 0, 100, 0, w/2);
+      int brimax2 = (int) map(config.colorB.briMax2, 0, 100, 0, w/2);
+      int satmax = (int) map(config.colorB.satMax, 0, 100, 0, w/2);
+      if ((mousex > brimax) && (mousex < brimax + control)) {
+        config.colorB.changeMode();
+      } else if ((mousex > brimax2 + w/2) && (mousex < brimax2 + control + w/2) && (mousey < h/2)) {
+        config.colorB.changeMode();
+      } else if ( (mousex > satmax + w/2) && (mousex < satmax + control + w/2) && (mousey > h/2) ) {
+        config.colorB.changeMode();
       }
     } else {
-      for (Color c : OT) {
-        int x = (int) map(c.getMaxHue(), 0, 360, 0, WIDTH);
-        if ((mousex > x) && (mousex < x + CONTROLLER)) {
+      for (Color c : config.colorO) {
+        int x = (int) map(c.maxHue, 0, 360, 0, w);
+        if ((mousex > x) && (mousex < x + control)) {
           c.changeMode();
         }
       }
     }
   }
 
-
   /**
-   * Depending on which panel is being shown, sets a new color calibration for hue, saturation and brightness after releasing a control bar
-   * WMODE: New hue, saturation and brightness values for color white
-   * BMODE: New brightness and saturation values for color black
-   * OMODE: New hue values for other colors
-   */
-  public void mouseReleased() {
+   *Set a new color Limit for hue, saturation and brightness
+   **/
+  void mouseReleased() {
     int mousex = mouseX;
     int mousey = mouseY;
-    if (WMODE) {
-      if (W.getSelected()) {
-        if ((mousex < WIDTH/5)) {
-          W.setMaxSat(map(mousey, 0, HEIGHT, 0, 100));
-          W.changeMode();
-        } else if ((mousex < (2 * WIDTH)/5)) {
-          W.setMinBri(map(mousey, 0, HEIGHT, 0, 100));
-          W.changeMode();
-        } else if ((mousex < (3 * WIDTH)/5)) {
-          W.setMaxSat2(map(mousey, 0, HEIGHT, 0, 100));
-          W.changeMode();
-        } else if ((mousex < (4 * WIDTH)/5)) {
-          W.setMaxHue(map(mousey, 0, HEIGHT, 0, 100));
-          W.changeMode();
-        } else if ((mousex < WIDTH)) {
-          W.setMinHue(map(mousey, 0, HEIGHT, 0, 100));
-          W.changeMode();
+    if (white) {
+      if (config.colorW.selectionMode) {
+        if ((mousex < w/5)) {
+          config.colorW.satMax = (int) map(mousey, 0, h, 0, 100);
+          config.colorW.changeMode();
+        } else if ((mousex < (2 * w)/5)) {
+          config.colorW.briMin = (int) map(mousey, 0, h, 0, 100);
+          config.colorW.changeMode();
+        } else if ((mousex < (3 * w)/5)) {
+          config.colorW.satMax2 = (int) map(mousey, 0, h, 0, 100);
+          config.colorW.changeMode();
+        } else if ((mousex < (4 * w)/5)) {
+          config.colorW.maxHue = (int) map(mousey, 0, h, 0, 100);
+          config.colorW.changeMode();
+        } else if ((mousex < w)) {
+          config.colorW.hueMin = (int) map(mousey, 0, h, 0, 100);
+          config.colorW.changeMode();
         }
       }
-    } else if (BMODE) {
-      if (BL.getSelected()) {
-        if (mousex < WIDTH/2) {
-          BL.setMaxBri(map(mousex, 0, WIDTH/2, 0, 100));
-        } else if (mousey < HEIGHT/2) {
-          BL.setMaxBri2(map(mousex - WIDTH/2, 0, WIDTH/2, 0, 100));
+    } else if (black) {
+      if (config.colorB.selectionMode) {
+        if (mousex < w/2) {
+          config.colorB.briMax = (int) map(mousex, 0, w/2, 0, 100);
+        } else if (mousey < h/2) {
+          config.colorB.briMax2 = (int) map(mousex - w/2, 0, w/2, 0, 100);
         } else {
-          BL.setMaxSat(map(mousex - WIDTH/2, 0, WIDTH/2, 0, 100));
+          config.colorB.satMax = (int) map(mousex - w/2, 0, w/2, 0, 100);
         }         
-        BL.changeMode();
+        config.colorB.changeMode();
       }
     } else {
-      for (Color c : OT) {
-        if (c.SELECTED) {
-          c.setMaxHue(map(mousex, 0, WIDTH, 0, 360));
+      for (Color c : config.colorO) {
+        if (c.selectionMode) {
+          c.maxHue = map(mousex, 0, w, 0, 360);
           c.changeMode();
           break;
         }
@@ -280,100 +286,44 @@ public class ColorRange extends PApplet {
     }
   }
 
-
   /**
-   * Toggles between WMODE, BMODE and OMODE
-   */
-  public void keyPressed() {
+   *Choose between white, black or other colors configuration
+   **/
+  void keyPressed() {
     switch(key) {
     case 'b':
-      if (WMODE | OMODE) {
-        WMODE = false;
-        OMODE = false;
+      if (white | otherColors) {
+        white=false;
+        otherColors=false;
       }
-      BMODE = !BMODE;
+      black = !black;
+      if (black) print("\n Black mode on");
       break;
 
     case 'w':
-      if (BMODE | OMODE) {
-        BMODE = false;
-        OMODE = false;
+      if (black | otherColors) {
+        black=false;
+        otherColors=false;
       }
-      WMODE = !WMODE;
+      white = !white;
+      if (white) print("\n White mode on");
       break;
 
     case 'o':
-      if (BMODE | WMODE) {
-        BMODE = false;
-        WMODE =false;
+      if (black | white) {
+        black=false;
+        white=false;
       }
-      OMODE = !OMODE;
+      otherColors = !otherColors;
+      if (otherColors) print("\n Hue mode on");
       break;
     }
   }
 
-
   /**
-   * Gets the value of the W attribute
-   * @returns: White  Value of W
-   */
-  public White getWhite() {
-    return W;
-  }
-
-
-  /**
-   * Gets all the stored colors
-   * @returns: ArrayList<Color>  An array with all the stored colors
-   */
+   *Get all the colors
+   **/
   public ArrayList<Color> selectAll() {
-    ArrayList<Color> colors = new ArrayList<Color>();
-    colors.add(W);
-    colors.add(BL);
-    colors.addAll(OT);
-    return colors;
-  }
-
-  /**
-   * Gets the size of the PApplet
-   * @returns: JSONObject  A JSONObject with the values of WIDTH and HEIGHT
-   */
-  public JSONObject getSize() {
-    JSONObject size = new JSONObject();
-    size.setInt("w", WIDTH);
-    size.setInt("h", HEIGHT);
-
-    return size;
-  }
-
-
-  /**
-   * Toggles showing or not the PApplet
-   */
-  public void setShow() {
-    SHOW = !SHOW;
-    this.getSurface().setVisible(SHOW);
-  }
-
-
-  /**
-   * Calls the saveConfiguration method for each stored Color instance
-   * @returns:  JSONArray  A JSONArray with values of all the stored Color objects
-   */
-  public JSONArray saveConfiguration() {
-    JSONArray colorLimits = new JSONArray();
-
-    JSONObject whiteLimit = W.saveConfiguration();
-    colorLimits.append(whiteLimit);
-
-    JSONObject blackLimit = BL.saveConfiguration();
-    colorLimits.append(blackLimit);
-
-    for (Other o : OT) {
-      JSONObject otherLimit = o.saveConfiguration();
-      colorLimits.append(otherLimit);
-    }
-
     return colorLimits;
   }
 }
