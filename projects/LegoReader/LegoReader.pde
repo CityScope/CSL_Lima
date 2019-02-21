@@ -37,8 +37,8 @@ float inc = 3;
 boolean flipped = true;
 Capture cam;
 Configuration configuration;
-boolean exportToUdp;
-PImage imageWarped,WHITEBG,BLACKBG,OTHERBG;
+boolean exportToUdp = true;
+PImage imageWarped;
 PGraphics canvasCamera;
 PGraphics canvasMesh;
 PGraphics canvasPatterns;
@@ -53,7 +53,8 @@ void settings() {
 
 
 /**
- * Looks for connected cameras and instantiates variables if cameras are available. It might be necessary to use absolute paths when passing the files
+ * Looks for connected cameras and instantiates variables if cameras are available
+ * Absolute paths might be required by configuration
  */
 void setup() {
   colorMode(HSB, 360, 100, 100);
@@ -65,12 +66,7 @@ void setup() {
     println("There are no cameras available for capture.");
     exit();
   } else {
-
-    WHITEBG = loadImage("background/white.png");
-    BLACKBG = loadImage("background/black.png");
-    OTHERBG = loadImage("background/color.png");
-    configuration = new Configuration("calibrationParameters.json",WHITEBG ,BLACKBG ,OTHERBG);
-
+    configuration = new Configuration("calibrationParameters.json", "data/background/white.png", "data/background/black.png", "data/background/color.png");
 
     canvasMesh = createGraphics(sizeCanvas, sizeCanvas, P3D);
     canvasCamera = createGraphics(sizeCanvas, sizeCanvas, P3D);

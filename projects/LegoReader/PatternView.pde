@@ -62,7 +62,6 @@ public class Block {
 
   /**
    * Draws an square using the stored coordinates and fills it using the Color object
-   * @param: canvas  PGraphics object to draw on
    */
   public void draw(PGraphics canvas) {
     canvas.stroke(0);
@@ -73,8 +72,6 @@ public class Block {
 
   /**
    * Changes the fill color of the square to the next one in the array of colors
-   * @param: x  X coordinate
-   * @param: y  Y coordinate
    */
   public void select(int x, int y) {
     if ((x > COORDS.x) && (x < (COORDS.x + SIZE)) && (y > COORDS.y) && (y < (COORDS.y + SIZE))) {
@@ -178,8 +175,6 @@ public class BlockGroup {
 
   /**
    * Calls the select method for every Block in the group
-   * @param: x  X coordinate
-   * @param: y  Y coordinate
    */
   public void select(int x, int y) {
     for (Block b : BLOCKS) {

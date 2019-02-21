@@ -30,6 +30,9 @@ public class ColorRange extends PApplet {
   private PImage WHITEBG;
   private PImage BLACKBG;
   private PImage OTHERBG;
+  private String WPATH;
+  private String BLPATH;
+  private String OPATH;
   private int WIDTH;
   private int HEIGHT;
   private White W;
@@ -49,12 +52,11 @@ public class ColorRange extends PApplet {
    * @param: otherBackground        Path to image with the modification panel for the rest of the colors
    * @param: calibrationParameters  JSONObject with values to create Color objects and to set the PApplet's size
    */
-  public ColorRange(PImage whiteBackground, PImage blackBackground, PImage otherBackground, JSONObject calibrationParameters) {
-    WHITEBG = whiteBackground;
-    BLACKBG = blackBackground;
-    OTHERBG = otherBackground;
+  public ColorRange(String whiteBackground, String blackBackground, String otherBackground, JSONObject calibrationParameters) {
     load(calibrationParameters);
-
+    WPATH = whiteBackground;
+    BLPATH = blackBackground;
+    OPATH = otherBackground;
   }
 
 
@@ -67,8 +69,7 @@ public class ColorRange extends PApplet {
     WIDTH = colorRange.getInt("w");
     HEIGHT = colorRange.getInt("h");
 
-    JSONArray colorLimits = calibrationParameters.getJSONArray("Color Limits");     
-   
+    JSONArray colorLimits = calibrationParameters.getJSONArray("Color Limits");      
     for (int i = 0; i < colorLimits.size(); i++) {
       JSONObject c = colorLimits.getJSONObject(i);  
       String acronym = c.getString("acronym");  
@@ -86,6 +87,19 @@ public class ColorRange extends PApplet {
   }
 
   /**
+   * Sets the values for the WHITEBG, BLACKBG and OTHERBG attributes
+   * @param: whiteBackground        Path to image with the modification panel for color white
+   * @param: blackBackground        Path to image with the modification panel for color black
+   * @param: otherBackground        Path to image with the modification panel for the rest of the colors
+   */
+  private void loadFiles(String whiteBackground, String blackBackground, String otherBackground) {
+    WHITEBG = loadImage(whiteBackground);
+    BLACKBG = loadImage(blackBackground);
+    OTHERBG = loadImage(otherBackground);
+  }
+
+
+  /**
    * Sets the size of the PApplet. P3D enables the use of vertices
    */
   public void settings() {
@@ -97,6 +111,7 @@ public class ColorRange extends PApplet {
    * Creates a PGraphics opbject to be displayed in the PApplet and sets colorMode to HSB
    */
   public void setup() {
+    loadFiles(WPATH, BLPATH, OPATH);
     LEGEND = createGraphics(WIDTH, HEIGHT + 20);
     colorMode(HSB, 360, 100, 100);
   }
