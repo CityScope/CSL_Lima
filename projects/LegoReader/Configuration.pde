@@ -43,11 +43,11 @@ public class Configuration {
   /**
    * Creates a Configuration object in order to initiate the displayable classes from the parameters passed to it
    * @param: path              Path to JSON file with all the calibration parameters
-   * @param: whiteBackground   Path to image with the modification panel for color white
-   * @param: blackBackground   Path to image with the modification panel for color black
-   * @param: otherBackground   Path to image with the modification panel for the rest of the colors
+   * @param: whiteBackground   Image with the modification panel for color white
+   * @param: blackBackground   Image with the modification panel for color black
+   * @param: otherBackground   Image with the modification panel for the rest of the colors
    */
-  public Configuration(String path, String whiteBackground, String blackBackground, String otherBackground) {
+  public Configuration(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground) {
     load(path, whiteBackground, blackBackground, otherBackground);
     udp = new UDP(this);  
     udp.log(true);
@@ -58,11 +58,11 @@ public class Configuration {
   /**
    * Creates instance of ColorRange, WarpedPerspective, Patterns, Mesh and BlockReader
    * @param: path              Path to JSON file with all the calibration parameters
-   * @param: whiteBackground   Path to image with the modification panel for color white
-   * @param: blackBackground   Path to image with the modification panel for color black
-   * @param: otherBackground   Path to image with the modification panel for the rest of the colors
+   * @param: whiteBackground   Image with the modification panel for color white
+   * @param: blackBackground   Image with the modification panel for color black
+   * @param: otherBackground   Image with the modification panel for the rest of the colors
    */
-  private void load(String path, String whiteBackground, String blackBackground, String otherBackground) {    
+  private void load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground) {    
     JSONObject calibrationParameters = loadJSONObject(path);
 
     WARP = new WarpedPerspective(calibrationParameters);
@@ -347,7 +347,7 @@ public class Configuration {
     JSONObject patterns = PATTERNS.saveConfiguration();           
     calibrationParameters.setJSONObject("Patterns", patterns);
 
-    saveJSONObject(calibrationParameters, "data/calibrationParameters2.json", "compact");
+    saveJSONObject(calibrationParameters, "data/calibrationParameters.json", "compact");
     println("Calibration parameters saved.");
   }
 }

@@ -15,13 +15,13 @@ This code uses GNU Affero General Public License v3.0. For more information: htt
 ## **Configuration (Class)**
 1. Constructor
 ```java
-new Configuration(String path, String whiteBackground, String blackBackground, String otherBackground)
+new Configuration(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground)
 ```
 2. Methods
    - *`updateSizeCanvas(int w, int h)`*: Changes the size of the canvas.
    - *`exportGridUDP()`*: Exports a JSON file with patterns and cells color name.
    - *`saveConfiguration()`*: Saves custom calibration regarding color ranges, saturation, brightness and perspective calibration points in a JSON file.
-   - *`load()`*: Loads calibration parameters regarding color ranges, saturation, brightness and perspective calibration points from a JSON file.
+   - *`load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground)`*: Loads calibration parameters regarding color ranges, saturation, brightness and perspective calibration points from a JSON file.
    - *`flip(PGraphics canvas, Capture cam, boolean flip)`*: Mirrors the image shown by the camera.
    - *`runSketches(String[] patterns, String[] colors, String[] block)`*: Runs the PApplets.
    - *`drawWarp(PGraphics canvas)`*: Calls the **_draw(PGraphics canvas)_** method of WarpedPerspective.
@@ -168,11 +168,10 @@ new Other(JSONObject obj)
 ## **ColorRange (Class extends PApplet)**
 1. Constructor
 ```java
-new ColorRange(String whiteBackground, String blackBackground, String otherBackground, JSONObject calibrationParameters)
+new ColorRange(PImage whiteBackground, PImage blackBackground, PImage otherBackground, JSONObject calibrationParameters)
 ```
 2. Methods
    - *`load(JSONObject calibrationParameters)`*: Loads color calibrations.
-   - *`loadFiles(String whiteBackground, String blackBackground, String otherBackground)`*: Loads background images.
    - *`controlPanelWhite()`*: Enables the option to modify hue, saturation and brightness for color white using control bars.
    - *`controlPanelBlack()`*: Enables the option to modify saturation and brightness for color black using control bars.
    - *`controlPanelOthers()`*: Enables the option to modify ranges for the rest of the colors using control bars.

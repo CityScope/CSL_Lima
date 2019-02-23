@@ -42,6 +42,7 @@ PImage imageWarped;
 PGraphics canvasCamera;
 PGraphics canvasMesh;
 PGraphics canvasPatterns;
+PImage white, black, col;
 
 
 /**
@@ -54,19 +55,22 @@ void settings() {
 
 /**
  * Looks for connected cameras and instantiates variables if cameras are available
- * Absolute paths might be required by configuration
  */
 void setup() {
   colorMode(HSB, 360, 100, 100);
 
   String[] cameras = Capture.list();
-  print(cameras.length);
+  println(cameras.length);
 
   if (cameras.length == 0) {
     println("There are no cameras available for capture.");
     exit();
   } else {
-    configuration = new Configuration("calibrationParameters.json", "data/background/white.png", "data/background/black.png", "data/background/color.png");
+    white = loadImage("background/white.png");
+    black = loadImage("background/black.png");
+    col = loadImage("background/color.png");
+    
+    configuration = new Configuration("calibrationParameters.json", white, black, col);
 
     canvasMesh = createGraphics(sizeCanvas, sizeCanvas, P3D);
     canvasCamera = createGraphics(sizeCanvas, sizeCanvas, P3D);

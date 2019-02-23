@@ -59,22 +59,21 @@ public class WarpedPerspective {
    * @returns: PImage  Distorted portion of the PGraphics
    */
   public PImage applyPerspective(PGraphics img) {
-    PGraphics canvas = createGraphics(img.width, img.height, P3D);
-    canvas.beginDraw();
-    canvas.background(155);
-    canvas.pushMatrix();
-    canvas.noStroke();
-    canvas.beginShape();
-    canvas.texture(img);
-    canvas.vertex(0, 0, 0, CONTOUR.get(0).x, CONTOUR.get(0).y);
-    canvas.vertex(canvas.width, 0, 0, CONTOUR.get(1).x, CONTOUR.get(1).y);
-    canvas.vertex(canvas.width, canvas.height, 0, CONTOUR.get(2).x, CONTOUR.get(2).y);
-    canvas.vertex(0, canvas.height, 0, CONTOUR.get(3).x, CONTOUR.get(3).y);
-    canvas.endShape();
-    canvas.popMatrix();    
-    canvas.endDraw();
+    img.beginDraw();
+    img.background(155);
+    img.pushMatrix();
+    img.noStroke();
+    img.beginShape();
+    img.texture(img);
+    img.vertex(0, 0, 0, CONTOUR.get(0).x, CONTOUR.get(0).y);
+    img.vertex(img.width, 0, 0, CONTOUR.get(1).x, CONTOUR.get(1).y);
+    img.vertex(img.width, img.height, 0, CONTOUR.get(2).x, CONTOUR.get(2).y);
+    img.vertex(0, img.height, 0, CONTOUR.get(3).x, CONTOUR.get(3).y);
+    img.endShape();
+    img.popMatrix();    
+    img.endDraw();
 
-    return canvas.get();
+    return img.get();
   }
 
 
