@@ -295,7 +295,7 @@ public class PatternCells {
 
     for (int i = 0; i < PBLOCKS.getGroups().size(); i++) {
       BlockGroup bg = PBLOCKS.getGroups().get(i);
-      
+
       ArrayList<Color> blockColors = new ArrayList<Color>();
       ArrayList<Color> cellColors = new ArrayList<Color>();
 
@@ -376,7 +376,7 @@ public class Mesh {
   private void load(JSONObject calibrationParameters, PatternBlocks pBlocks) {
     SATURATION = calibrationParameters.getFloat("Saturation");
     BRIGHTNESS = calibrationParameters.getFloat("Brightness");
-    NBLOCKS = calibrationParameters.getInt("nblocks")/2;
+    NBLOCKS = calibrationParameters.getInt("nblocks");
     SIZE = calibrationParameters.getInt("Canvas size")/NBLOCKS;
     GRID = new PVector[NBLOCKS][NBLOCKS];
     create(pBlocks);
@@ -388,15 +388,17 @@ public class Mesh {
    * @param: pBlocks  PatternBlocks object to be used when creating instances of PatternCells
    */
   private void create(PatternBlocks pBlocks) {
+    ArrayList<PatternCells> tempCells = new ArrayList<PatternCells>();
     int id = 0;
     for (int h = 0; h < GRID.length; h++) {
       for (int w = 0; w < GRID.length; w++) {
         float pointx = w * SIZE;
         float pointy = h * SIZE;
-        PCELLS.add(new PatternCells(id, new PVector(pointx, pointy), SIZE, pBlocks));
+        tempCells.add(new PatternCells(id, new PVector(pointx, pointy), SIZE, pBlocks));
         id++;
       }
     }
+    PCELLS = tempCells;
   }
 
 
@@ -431,7 +433,6 @@ public class Mesh {
   public void update(int w, PatternBlocks pBlocks) {
     SIZE = w/NBLOCKS;
     GRID = new PVector[NBLOCKS][NBLOCKS];
-    PCELLS = new ArrayList<PatternCells>();
     create(pBlocks);
   } 
 
@@ -465,10 +466,10 @@ public class Mesh {
   public int getBlocks() {
     return NBLOCKS;
   }
-  
+
 
   /**
-   * Increases the value of the NBLOCKS attribute by 1
+   * Increases the value of NBLOCKS attribute by 1
    */
   public void increaseBlocks() {
     NBLOCKS++;
@@ -476,10 +477,10 @@ public class Mesh {
 
 
   /**
-   * Decreases the value of the NBLOCKS attribute by 1
+   * Decreases the value of NBLOCKS attribute by 1
    */
   public void decreaseBlocks() {
-    NBLOCKS--;
+    if (NBLOCKS > 1) NBLOCKS--;
   }
 
 

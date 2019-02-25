@@ -63,7 +63,7 @@ public class Configuration {
    * @param: otherBackground   Image with the modification panel for the rest of the colors
    */
   private void load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground) {    
-    JSONObject calibrationParameters = loadJSONObject(path);
+    JSONObject calibrationParameters = loadJSONObject(path);  
 
     WARP = new WarpedPerspective(calibrationParameters);
     COLORS = new ColorRange(whiteBackground, blackBackground, otherBackground, calibrationParameters);    
@@ -85,8 +85,8 @@ public class Configuration {
    * @param: h  Value to resize height
    */
   public void updateSizeCanvas(int w, int h) {
-    int newW = w/MESH.getBlocks();
-    int newH = h/MESH.getBlocks();
+    int newW = w % MESH.getBlocks();
+    int newH = h % MESH.getBlocks();
     RESIZE.append(newW);
     RESIZE.append(newH);
   }
@@ -301,10 +301,8 @@ public class Configuration {
    */
   public void exportGridUDP() {
     String message = "";
-    int k = 0;
     for (int w = 0; w < MESH.getPatterns().size(); w++) {
       message = message + MESH.getPatterns().get(w).getIndex() + ";";
-      k++;
     }
     send(message);
   }
