@@ -69,7 +69,7 @@ void setup() {
     white = loadImage("background/white.png");
     black = loadImage("background/black.png");
     col = loadImage("background/color.png");
-    
+
     configuration = new Configuration("calibrationParameters.json", white, black, col);
 
     canvasMesh = createGraphics(sizeCanvas, sizeCanvas, P3D);
@@ -161,7 +161,7 @@ void keyPressed(KeyEvent e) {
     break;
 
   case 'e':
-    configuration.exportGridUDP();
+    configuration.exportGrid();
     break;
 
   case 'f':

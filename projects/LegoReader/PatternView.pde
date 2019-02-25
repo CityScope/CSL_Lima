@@ -516,6 +516,24 @@ public class Patterns extends PApplet {
 
 
   /**
+   * Gets the value of the BLOCKSIZE attribute
+   * @returns: int  Value of BLKOCKSIZE
+   */
+  public int getBlockSize() {
+    return BLOCKSIZE;
+  }
+
+
+  /**
+   * Gets the value of the OPTIONS attribute
+   * @returns: ArrayList<JSONArray>  Value of OPTIONS
+   */
+  public ArrayList<JSONArray> getOptions() {
+    return OPTIONS;
+  }
+
+
+  /**
    * Gets the value of the PBLOCKS attribute
    * @returns: PatternBlocks  Value of PBLOCKS
    */

@@ -2,13 +2,13 @@
   "meta": {
     "apiv": "2.1.0",
     "id": "AOpifOF",
-    "timestamp": 1082459
+    "timestamp": 14807
   },
   "header": {
     "owner": {
-      "name": "Vanesa and Jesus",
-      "institute": "Pacific's University",
-      "title": "Researchers"
+      "name": "Vanesa and Jesús",
+      "institute": "Pacific´s University",
+      "title": "Researcher"
     },
     "mapping": {"type": {
       "0": 0,
@@ -109,7 +109,7 @@
       },
       {
         "rotation": 0,
-        "type": 5
+        "type": -1
       },
       {
         "rotation": 0,
@@ -189,7 +189,7 @@
       },
       {
         "rotation": 0,
-        "type": 3
+        "type": -1
       },
       {
         "rotation": 0,
@@ -365,7 +365,7 @@
       },
       {
         "rotation": 0,
-        "type": 4
+        "type": -1
       },
       {
         "rotation": 0,
@@ -373,7 +373,7 @@
       },
       {
         "rotation": 0,
-        "type": 2
+        "type": -1
       },
       {
         "rotation": 0,
@@ -485,7 +485,7 @@
       },
       {
         "rotation": 0,
-        "type": 1
+        "type": -1
       },
       {
         "rotation": 0,
@@ -557,7 +557,7 @@
       },
       {
         "rotation": 0,
-        "type": 0
+        "type": -1
       },
       {
         "rotation": 0,
@@ -598,17 +598,16 @@
     ],
     "name": "cityscope_lima",
     "block": [
-      "type",
-      "height",
-      "rotation"
+      "rotation",
+      "type"
     ],
     "spatial": {
       "physical_longitude": -77,
-      "nrows": 24,
+      "nrows": 12,
       "latitude": 12,
       "rotation": 0,
       "physical_latitude": 12,
-      "ncols": 24,
+      "ncols": 12,
       "cellSize": 20,
       "longitude": -77
     }

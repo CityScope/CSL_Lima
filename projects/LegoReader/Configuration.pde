@@ -297,7 +297,7 @@ public class Configuration {
 
 
   /**
-   * Exports a JSONfile with pattern and cells color name
+   * Exports color patterns and id's in the mesh
    */
   public void exportGridUDP() {
     String message = "";
@@ -307,6 +307,76 @@ public class Configuration {
       k++;
     }
     send(message);
+  }
+
+
+  /**
+   * Exports a JSONfile with color patterns and id's in the mesh
+   */
+  public void exportGrid() {
+    JSONObject mesh = new JSONObject();
+    JSONObject metadata = new JSONObject();
+
+    metadata.setString("id", "AOpifOF");
+    metadata.setFloat("timestamp", millis());
+    metadata.setString("apiv", "2.1.0");
+
+    JSONObject header = new JSONObject();
+    header.setString("name", "cityscope_lima");
+
+    JSONObject spatial = new JSONObject();
+    spatial.setInt("nrows", MESH.getBlocks());
+    spatial.setInt("ncols", MESH.getBlocks());
+    spatial.setFloat("physical_longitude", -77);
+    spatial.setFloat("physical_latitude", 12);
+    spatial.setInt("longitude", -77);
+    spatial.setInt("latitude", 12);
+    spatial.setInt("cellSize", PATTERNS.getBlockSize());
+    spatial.setInt("rotation", 0);
+
+    header.setJSONObject("spatial", spatial);
+
+    JSONObject owner = new JSONObject();
+    owner.setString("name", "Vanesa and Jesús");
+    owner.setString("title", "Researcher");
+    owner.setString("institute", "Pacific´s University");
+    
+    header.setJSONObject("owner", owner);
+
+    JSONArray block = new JSONArray();
+    block.setString(1, "type");
+    block.setString(0, "rotation");
+
+    header.setJSONArray("block", block);
+
+    JSONObject type = new JSONObject();
+    JSONObject mapping = new JSONObject();
+
+    int j = 0;
+    for (int i = 0; i < PATTERNS.getOptions().size(); i++) {
+      type.setFloat(str(i), j);
+      j++;
+    }
+    mapping.setJSONObject("type", type);
+
+    header.setJSONObject("mapping", mapping);
+
+    int k = 0;
+    JSONArray grid = new JSONArray();
+    for (int w = 0; w < MESH.getPatterns().size(); w++) {
+      JSONObject arrayValue = new JSONObject();
+      arrayValue.setFloat("type", MESH.getPatterns().get(w).getIndex());
+      arrayValue.setFloat("rotation", 0);
+      grid.setJSONObject(k, arrayValue);
+      k++;
+    }
+
+    header.setJSONArray("grid", grid);
+
+    mesh.setJSONObject("meta", metadata);
+    mesh.setJSONObject("header", header);
+
+    saveJSONObject(mesh, "data/grid.json");
   }
 
 

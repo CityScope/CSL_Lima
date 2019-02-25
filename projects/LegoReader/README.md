@@ -19,7 +19,8 @@ new Configuration(String path, PImage whiteBackground, PImage blackBackground, P
 ```
 2. Methods
    - *`updateSizeCanvas(int w, int h)`*: Changes the size of the canvas.
-   - *`exportGridUDP()`*: Exports a JSON file with patterns and cells color name.
+   - *`exportGridUDP()`*: Exports color patterns and ids in the mesh.
+   - *`exportGrid()`*: Exports a JSON file with color patterns and ids in the mesh.
    - *`saveConfiguration()`*: Saves custom calibration regarding color ranges, saturation, brightness and perspective calibration points in a JSON file.
    - *`load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground)`*: Loads calibration parameters regarding color ranges, saturation, brightness and perspective calibration points from a JSON file.
    - *`flip(PGraphics canvas, Capture cam, boolean flip)`*: Mirrors the image shown by the camera.
@@ -249,6 +250,8 @@ new Patterns(JSONObject calibrationParameters, ColorRange colors)
    - *`load(JSONObject calibrationParameters, ColorRange colors)`*: Loads predefined patterns.
    - *`fact(int num)`*: Gets the factorial of a number.
    - *`getPossiblePatterns()`*: Checks if there is any other possible combination to create a new pattern.
+   - *`getBlockSize()`*: Gets the value of the BLOCKSIZE attribute.
    - *`getSize()`*: Gets the width of the PApplet.
+   - *`getOptions()`*: Gets the value of the OPTIONS attribute.
    - *`setShow()`*: Toggles between showing or hiding the PApplet.
    - *`saveConfiguration()`*: Calls the **_saveConfiguration()_** method of PatternBlocks.
