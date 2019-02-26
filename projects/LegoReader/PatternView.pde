@@ -245,15 +245,15 @@ public class PatternBlocks {
 
           PVector coordinatesSecondBlock = new PVector(initP.x + BLOCKSIZE, initP.y);
           String nameSecondBlock = (String) colorNames.get(1); 
-          Block secondBlock = new Block(BLOCKSIZE, coordinatesSecondBlock, COLORS.selectAll(), nameSecondBlock); 
+          Block secondBlock = new Block(BLOCKSIZE, coordinatesSecondBlock, COLORS.selectAll(), nameSecondBlock);
 
-          PVector coordinatesThirdBlock= new PVector(initP.x, initP.y + BLOCKSIZE);
+          PVector coordinatesThirdBlock = new PVector(initP.x + BLOCKSIZE, initP.y + BLOCKSIZE);
           String nameThirdBlock = (String) colorNames.get(2); 
-          Block thirdBlock = new Block(BLOCKSIZE, coordinatesThirdBlock, COLORS.selectAll(), nameThirdBlock); 
+          Block thirdBlock = new Block(BLOCKSIZE, coordinatesThirdBlock, COLORS.selectAll(), nameThirdBlock);
 
-          PVector coordinatesFourthBlock = new PVector(initP.x + BLOCKSIZE, initP.y + BLOCKSIZE);
+          PVector coordinatesFourthBlock = new PVector(initP.x, initP.y + BLOCKSIZE);
           String nameFourthBlock = (String) colorNames.get(3); 
-          Block fourthBlock = new Block(BLOCKSIZE, coordinatesFourthBlock, COLORS.selectAll(), nameFourthBlock);
+          Block fourthBlock = new Block(BLOCKSIZE, coordinatesFourthBlock, COLORS.selectAll(), nameFourthBlock); 
 
           blocks.add(firstBlock);
           blocks.add(secondBlock);
@@ -494,7 +494,7 @@ public class Patterns extends PApplet {
 
     case DOWN:
       if (OPTIONS.size() > 1) {
-        if (((OPTIONS.size()-1) % 3 == 0)) {
+        if (((OPTIONS.size() - 1) % 3 == 0)) {
           HEIGHT -= BLOCKSIZE * 4;
           surface.setSize(WIDTH, HEIGHT);
           CANVAS.setSize(width, height);

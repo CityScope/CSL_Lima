@@ -225,8 +225,8 @@ public class PatternCells {
   private void create(ArrayList<Color> colors) {
     CELLS.add(new Cells(0, START, SIZE/2, colors));
     CELLS.add(new Cells(1, new PVector(START.x + SIZE/2, START.y), SIZE/2, colors));
-    CELLS.add(new Cells(2, new PVector(START.x, START.y + SIZE/2), SIZE/2, colors));
-    CELLS.add(new Cells(3, new PVector(START.x + SIZE/2, START.y + SIZE/2), SIZE/2, colors));
+    CELLS.add(new Cells(2, new PVector(START.x + SIZE/2, START.y + SIZE/2), SIZE/2, colors));
+    CELLS.add(new Cells(3, new PVector(START.x, START.y + SIZE/2), SIZE/2, colors));    
   }
 
 
