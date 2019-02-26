@@ -100,6 +100,7 @@ void setup() {
 }
 
 void draw() {
+  if(canvasOriginal !=null){
     canvasOriginal.beginDraw();
     canvasOriginal.clear();
     config.flip(canvasOriginal, cam, flipped);
@@ -122,6 +123,10 @@ void draw() {
         config.exportGridUDP(mesh.patternBlocks,patterns);
       }
     }
+  }else{
+    println("canvasOriginal is null");
+    setup();
+  }
 }
 
 void keyPressed(KeyEvent e) {
