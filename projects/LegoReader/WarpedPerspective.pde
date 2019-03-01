@@ -125,8 +125,11 @@ public class WarpedPerspective {
    */
   public void draw(PGraphics canvas) {
     for (PVector i : CONTOUR) {
+      canvas.strokeWeight(2);
+      canvas.stroke(255);
       canvas.fill(0);
       if (i == POI) {
+        canvas.stroke(0);
         canvas.fill(255);
       }
       canvas.ellipse(i.x, i.y, 5, 5);
