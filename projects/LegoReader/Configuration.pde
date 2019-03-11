@@ -359,16 +359,15 @@ public class Configuration {
 
     header.setJSONObject("mapping", mapping);
 
-    int k = 0;
     JSONArray grid = new JSONArray();
     for (int w = 0; w < MESH.getPatterns().size(); w++) {
-      JSONObject arrayValue = new JSONObject();
-      arrayValue.setFloat("type", MESH.getPatterns().get(w).getIndex());
-      arrayValue.setFloat("rotation", 0);
-      grid.setJSONObject(k, arrayValue);
-      k++;
+      JSONArray arr = new JSONArray();
+      arr.append(MESH.getPatterns().get(w).getIndex());
+      arr.append(0);
+      arr.append(0);
+      grid.append(arr);      
     }
-
+    
     header.setJSONArray("grid", grid);
 
     mesh.setJSONObject("meta", metadata);
