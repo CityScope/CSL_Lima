@@ -153,11 +153,11 @@ void keyPressed(KeyEvent e) {
 
   switch(key) {
   case 'b':
-    configuration.toggleBlockReader();
+    configuration.showBlockReader();
     break;
 
   case 'c':
-    configuration.toggleColorRange();
+    configuration.showColorRange();
     break;
 
   case 'e':
@@ -170,7 +170,7 @@ void keyPressed(KeyEvent e) {
     break;
 
   case 'p':
-    configuration.togglePatterns();
+    configuration.showPatterns();
     break;
 
   case 's':

@@ -31,7 +31,6 @@ public class BlockReader extends PApplet {
   private int HEIGHT;
   private color COLOR = 0;
   private Mesh MESH;
-  private boolean SHOW = true;
 
 
   /**
@@ -86,11 +85,19 @@ public class BlockReader extends PApplet {
   }
 
 
+  public void keyPressed() {
+    switch(key) {
+    case 's':
+      this.getSurface().setVisible(false);
+      break;
+    }
+  }
+
+
   /**
-   * Toggles showing or not the PApplet
+   * Shows the PApplet
    */
-  public void setShow() {
-    SHOW = !SHOW;
-    this.getSurface().setVisible(SHOW);
+  public void show() {
+    this.getSurface().setVisible(true);
   }
 }

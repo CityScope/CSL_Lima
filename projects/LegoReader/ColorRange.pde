@@ -39,7 +39,6 @@ public class ColorRange extends PApplet {
   private boolean WMODE = true;
   private boolean BMODE = false;
   private boolean OMODE = true;
-  private boolean SHOW = true;
 
 
   /**
@@ -308,6 +307,10 @@ public class ColorRange extends PApplet {
       }
       OMODE = !OMODE;
       break;
+
+    case 's':
+      this.getSurface().setVisible(false);
+      break;
     }
   }
 
@@ -347,11 +350,10 @@ public class ColorRange extends PApplet {
 
 
   /**
-   * Toggles showing or not the PApplet
+   * Shows the PApplet
    */
-  public void setShow() {
-    SHOW = !SHOW;
-    this.getSurface().setVisible(SHOW);
+  public void show() {
+    this.getSurface().setVisible(true);
   }
 
 

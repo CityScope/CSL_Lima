@@ -260,26 +260,26 @@ public class Configuration {
 
 
   /**
-   * Calls the setShow method of COLORS
+   * Calls the show method of COLORS
    */
-  public void toggleBlockReader() {
-    BLOCKR.setShow();
+  public void showBlockReader() {
+    BLOCKR.show();
   }
 
 
   /**
-   * Calls the setShow method of COLORS
+   * Calls the show method of COLORS
    */
-  public void toggleColorRange() {
-    COLORS.setShow();
+  public void showColorRange() {
+    COLORS.show();
   }
 
 
   /**
-   * Calls the setShow method of COLORS
+   * Calls the show method of COLORS
    */
-  public void togglePatterns() {
-    PATTERNS.setShow();
+  public void showPatterns() {
+    PATTERNS.show();
   }
 
 
@@ -335,10 +335,10 @@ public class Configuration {
     header.setJSONObject("spatial", spatial);
 
     JSONObject owner = new JSONObject();
-    owner.setString("name", "Vanesa and Jesús");
+    owner.setString("name", "Vanesa Alcántara and Jesús García");
     owner.setString("title", "Researcher");
-    owner.setString("institute", "Pacific´s University");
-    
+    owner.setString("institute", "Universidad del Pacífico");
+
     header.setJSONObject("owner", owner);
 
     JSONArray block = new JSONArray();
@@ -349,24 +349,24 @@ public class Configuration {
 
     JSONObject type = new JSONObject();
     JSONObject mapping = new JSONObject();
-
-    int j = 0;
-    for (int i = 0; i < PATTERNS.getOptions().size(); i++) {
-      type.setFloat(str(i), j);
-      j++;
-    }
+    type.setFloat("RL", 0);
+    type.setFloat("RM", 1);
+    type.setFloat("RS", 2);
+    type.setFloat("OL", 3);
+    type.setFloat("OM", 4);
+    type.setFloat("OS", 5);
+    type.setFloat("ROAD", 6);
     mapping.setJSONObject("type", type);
 
     header.setJSONObject("mapping", mapping);
 
-    int k = 0;
     JSONArray grid = new JSONArray();
     for (int w = 0; w < MESH.getPatterns().size(); w++) {
-      JSONObject arrayValue = new JSONObject();
-      arrayValue.setFloat("type", MESH.getPatterns().get(w).getIndex());
-      arrayValue.setFloat("rotation", 0);
-      grid.setJSONObject(k, arrayValue);
-      k++;
+      JSONArray arr = new JSONArray();
+      arr.append(MESH.getPatterns().get(w).getIndex());
+      arr.append(0);
+      arr.append(0);
+      grid.append(arr);
     }
 
     header.setJSONArray("grid", grid);
@@ -375,6 +375,7 @@ public class Configuration {
     mesh.setJSONObject("header", header);
 
     saveJSONObject(mesh, "data/grid.json");
+    println("Grid Exported Locally");
   }
 
 

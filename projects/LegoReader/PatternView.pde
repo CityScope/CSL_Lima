@@ -387,7 +387,6 @@ public class Patterns extends PApplet {
   private PatternBlocks PBLOCKS;
   private ColorRange COLORS;
   private final int BLOCKSIZE = 20;
-  private boolean SHOW = true;
 
 
   /**
@@ -503,6 +502,12 @@ public class Patterns extends PApplet {
       }
       break;
     }
+
+    switch(key) {
+    case 's':
+      this.getSurface().setVisible(false);
+      break;
+    }
   }
 
 
@@ -543,11 +548,10 @@ public class Patterns extends PApplet {
 
 
   /**
-   * Toggles showing or not the PApplet
+   * Shows the PApplet
    */
-  public void setShow() {
-    SHOW = !SHOW;
-    this.getSurface().setVisible(SHOW);
+  public void show() {
+    this.getSurface().setVisible(true);
   }
 
 
