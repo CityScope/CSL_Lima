@@ -2,17 +2,17 @@
  * @copyright: Copyright (C) 2018
  * @legal:
  * This file is part of LegoReader.
- 
+
  * LegoReader is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * LegoReader is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- 
+
  * You should have received a copy of the GNU Affero General Public License
  * along with LegoReader.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ public class Configuration {
    */
   public Configuration(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground) {
     load(path, whiteBackground, blackBackground, otherBackground);
-    udp = new UDP(this);  
+    udp = new UDP(this);
     udp.log(true);
     udp.listen(true);
   }
@@ -62,11 +62,11 @@ public class Configuration {
    * @param: blackBackground   Image with the modification panel for color black
    * @param: otherBackground   Image with the modification panel for the rest of the colors
    */
-  private void load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground) {    
-    JSONObject calibrationParameters = loadJSONObject(path);  
+  private void load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground) {
+    JSONObject calibrationParameters = loadJSONObject(path);
 
     WARP = new WarpedPerspective(calibrationParameters);
-    COLORS = new ColorRange(whiteBackground, blackBackground, otherBackground, calibrationParameters);    
+    COLORS = new ColorRange(whiteBackground, blackBackground, otherBackground, calibrationParameters);
     PATTERNS = new Patterns(calibrationParameters, COLORS);
     MESH = new Mesh(calibrationParameters, PATTERNS.getPBlocks());
     BLOCKR = new BlockReader(calibrationParameters, MESH);
@@ -382,7 +382,7 @@ public class Configuration {
   /**
    * Saves custom calibration parameters in a JSON file
    */
-  public void saveConfiguration() { 
+  public void saveConfiguration() {
     JSONObject calibrationParameters = new JSONObject();
 
     JSONObject calibrationPoints = WARP.saveConfiguration();
@@ -391,7 +391,7 @@ public class Configuration {
     float brightness = MESH.getBrightness();
     calibrationParameters.setFloat("Brightness", brightness);
 
-    JSONObject resize = new JSONObject();    
+    JSONObject resize = new JSONObject();
     for (int i=0; i < RESIZE.size(); i++) {
       resize.setInt("rWa", RESIZE.get(0));
       resize.setInt("rHa", RESIZE.get(1));
@@ -413,7 +413,7 @@ public class Configuration {
     JSONArray colorLimits = COLORS.saveConfiguration();
     calibrationParameters.setJSONArray("Color Limits", colorLimits);
 
-    JSONObject patterns = PATTERNS.saveConfiguration();           
+    JSONObject patterns = PATTERNS.saveConfiguration();
     calibrationParameters.setJSONObject("Patterns", patterns);
 
     saveJSONObject(calibrationParameters, "data/calibrationParameters.json", "compact");
