@@ -37,7 +37,7 @@ float inc = 3;
 boolean flipped = true;
 Capture cam;
 Configuration configuration;
-boolean exportToUdp = true;
+boolean exportToUdp = false;
 PImage imageWarped;
 PGraphics canvasCamera;
 PGraphics canvasMesh;
@@ -91,7 +91,7 @@ void setup() {
 
 void draw() {
   canvasCamera.beginDraw();
-  canvasCamera.clear();
+  canvasCamera.background(255);
   configuration.flip(canvasCamera, cam, flipped);
   configuration.drawWarp(canvasCamera);
   canvasCamera.endDraw();
@@ -101,7 +101,6 @@ void draw() {
   configuration.applyFilter(imageWarped);
 
   canvasMesh.beginDraw();
-  canvasMesh.clear();
   canvasMesh.background(255);
   canvasMesh.image(imageWarped, 0, 0);
   configuration.drawGrid(canvasMesh);

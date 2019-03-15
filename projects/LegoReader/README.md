@@ -40,9 +40,9 @@ new Configuration(String path, PImage whiteBackground, PImage blackBackground, P
    - *`move(int x, int y)`*: Calls the **_move(int x, int y)_** method of WarpedPerspective.
    - *`unselect()`*: Calls the **_unselect()_** method of WarpedPerspective.
    - *`update(int w)`*: Calls the **_update(int w)_** method of Mesh.
-   - *`toggleBlockReader()`*: Calls the **_setShow()_** method of BlockReader.
-   - *`toggleColorRange()`*: Calls the **_setShow()_** method of ColorRange.
-   - *`togglePatterns()`*: Calls the **_setShow()_** method of Patterns.
+   - *`showBlockReader()`*: Calls the **_show()_** method of BlockReader.
+   - *`showColorRange()`*: Calls the **_show()_** method of ColorRange.
+   - *`showPatterns()`*: Calls the **_show()_** method of Patterns.
 
 
 ## **Cells (Class)**
@@ -102,7 +102,7 @@ new Mesh(JSONObject calibrationParameters, PatternBlocks pBlocks)
 new BlockReader(JSONObject calibrationParameters, Mesh mesh)
 ```
 2. Methods
-   - *`setShow()`*: Toggles between showing or hiding the PApplet.
+   - *`show()`*: Shows the PApplet.
 3. Description: This **_sketch_** shows the final result of the video.
 
 
@@ -179,7 +179,7 @@ new ColorRange(PImage whiteBackground, PImage blackBackground, PImage otherBackg
    - *`getWhite()`*: Gets the **_W_** attribute.
    - *`selectAll()`*: Gets all the stored Color objects.
    - *`getSize()`*: Gets the size of the PApplet.
-   - *`setShow()`*: Toggles between showing or hiding the PApplet.
+   - *`show()`*: Shows the PApplet.
    - *`saveConfiguration()`*: Calls the **_saveConfiguration()_** of each Color object.
 3. Description: This **_sketch_** shows the color control panels.
 
@@ -253,5 +253,5 @@ new Patterns(JSONObject calibrationParameters, ColorRange colors)
    - *`getBlockSize()`*: Gets the value of the BLOCKSIZE attribute.
    - *`getSize()`*: Gets the width of the PApplet.
    - *`getOptions()`*: Gets the value of the OPTIONS attribute.
-   - *`setShow()`*: Toggles between showing or hiding the PApplet.
+   - *`show()`*: Shows the PApplet.
    - *`saveConfiguration()`*: Calls the **_saveConfiguration()_** method of PatternBlocks.
