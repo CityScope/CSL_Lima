@@ -37,7 +37,7 @@ float inc = 3;
 boolean flipped = true;
 Capture cam;
 Configuration configuration;
-boolean exportToUdp = false;
+boolean exportToUdp = true;
 PImage imageWarped;
 PGraphics canvasCamera;
 PGraphics canvasMesh;
