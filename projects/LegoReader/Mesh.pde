@@ -167,7 +167,7 @@ public class Cells {
    * Draws the cell with the standard color
    * @param: canvas  PGraphics object to draw on
    */
-  public void draw(PGraphics canvas) {
+  public void drawCell(PGraphics canvas) {
     canvas.fill(COLOR.getColor());
     canvas.stroke(0, 60);
     canvas.strokeWeight(1);
@@ -244,12 +244,12 @@ public class PatternCells {
 
 
   /**
-   * Calls the draw method for each stored Cell and shows a rectangle with its ID in the middle of the drawn Cells
+   * Calls the drawCell method for each stored Cell and shows a rectangle with its ID in the middle of the drawn Cells
    * @param: canvas  PGraphics object to draw on
    */
-  public void draw(PGraphics canvas) {
+  public void drawPattern(PGraphics canvas) {
     for (Cells c : CELLS) {
-      c.draw(canvas);
+      c.drawCell(canvas);
     }
 
     canvas.noFill();
@@ -403,12 +403,12 @@ public class Mesh {
 
 
   /**
-   * Calls the draw method for each stored PatternCells object
+   * Calls the drawPattern method for each stored PatternCells object
    * @param: canvas  PGraphics object to draw on
    */
-  public void draw(PGraphics canvas) {
+  public void drawPatterns(PGraphics canvas) {
     for (PatternCells pc : PCELLS) {
-      pc.draw(canvas);
+      pc.drawPattern(canvas);
     }
   }
 

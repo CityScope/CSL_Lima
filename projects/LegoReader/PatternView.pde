@@ -63,7 +63,7 @@ public class Block {
   /**
    * Draws an square using the stored coordinates and fills it using the Color object
    */
-  public void draw(PGraphics canvas) {
+  public void drawBlock(PGraphics canvas) {
     canvas.stroke(0);
     canvas.fill(COLOR.getColor());
     canvas.rect(COORDS.x, COORDS.y, SIZE, SIZE);
@@ -156,7 +156,7 @@ public class BlockGroup {
    * Draws Block objects in a 2x2 arrangement
    * @param: canvas  PGraphics object to draw on
    */
-  public void draw(PGraphics canvas) {
+  public void drawGroup(PGraphics canvas) {
     canvas.stroke(0);
     canvas.fill(0);
     canvas.textSize(10);
@@ -164,7 +164,7 @@ public class BlockGroup {
     int spaceText = 0;
 
     for (Block block : BLOCKS) {
-      block.draw(canvas);
+      block.drawBlock(canvas);
       canvas.fill(0);
       canvas.textSize(8);
       canvas.text(block.getColor().getColorName() + " ", BL.x + spaceText, BL.y + 10 );
@@ -315,12 +315,12 @@ public class PatternBlocks {
 
 
   /**
-   * Calls the draw method for all the BlockGroup objects
+   * Calls the drawGroup method for all the BlockGroup objects
    * @param: canvas  PGraphics object to draw the groups of blocks
    */
-  public void draw(PGraphics canvas) {
+  public void drawGroups(PGraphics canvas) {
     for (BlockGroup bg : GROUPS) {
-      bg.draw(canvas);
+      bg.drawGroup(canvas);
     }
   }
 
@@ -462,7 +462,7 @@ public class Patterns extends PApplet {
   public void draw() {
     CANVAS.beginDraw();
     CANVAS.background(255);
-    PBLOCKS.draw(CANVAS);
+    PBLOCKS.drawGroups(CANVAS);
     CANVAS.endDraw();
     image(CANVAS, 0, 0);
   }

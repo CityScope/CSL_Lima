@@ -25,7 +25,7 @@ new Configuration(String path, PImage whiteBackground, PImage blackBackground, P
    - *`load(String path, PImage whiteBackground, PImage blackBackground, PImage otherBackground)`*: Loads calibration parameters regarding color ranges, saturation, brightness and perspective calibration points from a JSON file.
    - *`flip(PGraphics canvas, Capture cam, boolean flip)`*: Mirrors the image shown by the camera.
    - *`runSketches(String[] patterns, String[] colors, String[] block)`*: Runs the PApplets.
-   - *`drawWarp(PGraphics canvas)`*: Calls the **_draw(PGraphics canvas)_** method of WarpedPerspective.
+   - *`drawWarp(PGraphics canvas)`*: Calls the **_drawWarp(PGraphics canvas)_** method of WarpedPerspective.
    - *`applyPerspective(PGraphics canvas)`*: Calls the **_applyPerspective(PGraphics canvas)_** of WarpedPerspective.
    - *`applyFilter(PImage img)`*: Calls the **_applyFilter(PImage img)_** method of Mesh.
    - *`drawGrid(PGraphics canvas)`*: Calls the **_drawGrid(PGraphics canvas)_** method of Mesh.
@@ -51,7 +51,7 @@ new Configuration(String path, PImage whiteBackground, PImage blackBackground, P
 new Cells(int id, PVector startPoint, int size, ArrayList<Color> colors)
 ```
 2. Methods
-   - *`draw(PGraphics canvas)`*: Draws the Cell with the standard color.
+   - *`drawCell(PGraphics canvas)`*: Draws the Cell with the standard color.
    - *`setCounter()`*: Sets the counter for every possible color of the object to 0.
    - *`setColor()`*: Instantiates colors from the separately to simplify color manipulation.
    - *`applyFilter(PImage img, float sat, float bright)`*: Asigns a standard color to every group of an image pixels in the same color range.
@@ -66,7 +66,7 @@ new PatternCells(int id, PVector startPoint, int size, PatternBlocks pBlocks)
 2. Methods
    - *`create(ArrayList<Color> colors)`* : Creates a group of Cells for the object.
    - *`applyFilter(PImage img, float sat, float bright)`*: Calls the **_applyFilter(PImage img, float sat, float bright)_** for each stored Cell object.
-   - *`draw(PGraphics canvas)`*: Calls the **_draw(PGraphics canvas)_** method for each stored Cell and shows a rectangle with its ID in the middle of the drawn Cells.
+   - *`drawPattern(PGraphics canvas)`*: Calls the **_drawCell(PGraphics canvas)_** method for each stored Cell and shows a rectangle with its ID in the middle of the drawn Cells.
    - *`drawGrid(PGraphics canvas)`*: Draws squares that will form a grid.
    - *`checkPattern()`*: Checks if the color pattern of its cells - or a rotated version of it - can be found in the defined patterns of the Patterns class.
    - *`getIndex()`*: Gets the index pattern.
@@ -80,7 +80,7 @@ new Mesh(JSONObject calibrationParameters, PatternBlocks pBlocks)
 2. Methods
    - *`load(JSONObject calibrationParameters, PatternBlocks pBlocks)`*: Loads parameters.
    - *`create(PatternBlocks pBlocks)`* : Creates a grid of nxn PatternCells.
-   - *`draw(PGraphics canvas)`*: Iterates inside PatternCells and call its **_draw(PGraphics canvas)_** method.
+   - *`drawPatterns(PGraphics canvas)`*: Iterates inside PatternCells and call its **_drawPattern(PGraphics canvas)_** method.
    - *`drawGrid(PGraphics canvas)`*: Iterates inside PatternCells and call its **_drawGrid(PGraphics canvas)_** method.
    - *`update(int nblocks, int w)`*: Overwrites the original configuration.
    - *`applyFilter(PImage img)`*: Iterates inside PatternCells and calls its **_applyFilter(PImage img)_** method.          
@@ -206,7 +206,7 @@ new Block(int size, PVector coordinates, ArrayList<Color> colors, String colorNa
 ```
 2. Methods
     - *`getColorFromName(String colorName)`*: Gets a Color instance from a color name.
-    - *`draw(PGraphics canvas)`*: Draws an square using the stored coordinates and fills it using the Color object.
+    - *`drawBlock(PGraphics canvas)`*: Draws an square using the stored coordinates and fills it using the Color object.
     - *`select(int x, int y)`*: Changes the fill color of the square to the next one in the array of colors.
     - *`getCoords()`*: Gets the **_COORDS_**..
     - *`getColor()`*: Gets the Color instance.
@@ -220,7 +220,7 @@ new BlockGroup(int id, ArrayList<Block> blocks)
 ```
 2. Methods
     - *`findCorners()`*: Sets the upper-right and bottom-left corners of the object.
-    - *`draw(PGraphics canvas)`*: Calls the **_draw(PGraphics canvas)_** method for every Block object.
+    - *`drawGroup(PGraphics canvas)`*: Calls the **_drawBlock(PGraphics canvas)_** method for every Block object.
     - *`select(int x, int y)`*: Calls the select method for every Block in the group.
     - *`getBlocks()`*: Gets the value of **_BLOCKS_**.
 
@@ -238,6 +238,7 @@ new PatternBlocks(ArrayList<JSONArray> options, ColorRange colors, int canvasSiz
     - *`updatePatternOptions()`*: Updates the array of color names so it can be saved on a JSON file.
     - *`createPattern(PGraphics canvas)`*: Creates a new pattern and assigns it a default W-W-W-W parameter.
     - *`deletePattern(PGraphics canvas)`*: Deletes the last pattern of the pattern array.
+    - *`drawGroups(PGraphics canvas)`*: Calls the **_drawGroup(PGraphics canvas)_** method for every BlockGroup object.
     - *`saveConfiguration()`*: Saves the current pattern options.
 
 

@@ -124,11 +124,11 @@ public class Configuration {
 
 
   /**
-   * Calls the draw method of WARP
+   * Calls the drawWarp method of WARP
    * @param: canvas  PGraphics object to draw on
    */
   public void drawWarp(PGraphics canvas) {
-    WARP.draw(canvas);
+    WARP.drawWarp(canvas);
   }
 
 

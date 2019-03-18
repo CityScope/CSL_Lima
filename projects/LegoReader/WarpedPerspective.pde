@@ -123,7 +123,7 @@ public class WarpedPerspective {
    * Draw the contour points
    * @param: canvas  PGraphics object where te points will be drawn
    */
-  public void draw(PGraphics canvas) {
+  public void drawWarp(PGraphics canvas) {
     for (PVector i : CONTOUR) {
       canvas.strokeWeight(2);
       canvas.stroke(255);
@@ -135,7 +135,7 @@ public class WarpedPerspective {
       canvas.ellipse(i.x, i.y, 5, 5);
     }
   }
-  
+
 
   /**
    * Saves the current values of the CONTOUR attribute

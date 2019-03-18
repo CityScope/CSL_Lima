@@ -41,7 +41,6 @@ boolean exportToUdp = true;
 PImage imageWarped;
 PGraphics canvasCamera;
 PGraphics canvasMesh;
-PGraphics canvasPatterns;
 PImage white, black, col;
 
 
@@ -74,7 +73,6 @@ void setup() {
 
     canvasMesh = createGraphics(sizeCanvas, sizeCanvas, P3D);
     canvasCamera = createGraphics(sizeCanvas, sizeCanvas, P3D);
-    canvasPatterns = createGraphics(sizeCanvas, sizeCanvas, P3D);
     imageWarped = createImage(sizeCanvas, sizeCanvas, HSB);
 
     String[] patterns = {"Patterns"};
@@ -108,7 +106,7 @@ void draw() {
   image(canvasMesh, canvasMesh.width, 0);
 
   if (exportToUdp) {
-    if (frameCount % 5 == 0) {
+    if (frameCount % 30 == 0) {
       configuration.exportGridUDP();
     }
   }
