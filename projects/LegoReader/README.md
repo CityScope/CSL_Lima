@@ -1,5 +1,5 @@
 # **LegoReader**
-Reads video from a camera and applies a filter to each frame's pixels. Creates a nxn grid where an standardized version of the filtered frame's pixels will be shown. Also, creates additional windows to change the color calibrations while running.
+Reads video from a camera and applies a filter to each frame's pixels. Creates a nxn grid where a standardized version of the filtered frame's pixels will be shown. Also, creates additional windows to change the color calibrations while running.
 
 
 ## **Contact Info**

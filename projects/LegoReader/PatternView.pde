@@ -474,9 +474,13 @@ public class Patterns extends PApplet {
     PBLOCKS.select(mouseX, mouseY);
   }
 
+
   /**
-   * Change the amount of possible patterns
-   * @param: e  UP - Increase the amount of possible patterns / DOWN - Reduce the amount of possible patterns
+   * Performs certain actions when a key is pressed
+   * @param: e      KeyEvent
+   * @case: UP      Increases the amount of possible patterns
+   * @case: DOWN    Reduces the amount of possible patterns
+   * @case: 's'     Hides the PApplet
    */
   public void keyPressed(KeyEvent e) {
     switch(e.getKeyCode()) {

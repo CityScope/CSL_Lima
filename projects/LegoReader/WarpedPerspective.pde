@@ -64,10 +64,10 @@ public class WarpedPerspective {
     img.noStroke();
     img.beginShape();
     img.texture(img);
-    img.vertex(0, 0, 0, CONTOUR.get(0).x, CONTOUR.get(0).y);
-    img.vertex(img.width, 0, 0, CONTOUR.get(1).x, CONTOUR.get(1).y);
-    img.vertex(img.width, img.height, 0, CONTOUR.get(2).x, CONTOUR.get(2).y);
-    img.vertex(0, img.height, 0, CONTOUR.get(3).x, CONTOUR.get(3).y);
+    img.vertex(0, 0, CONTOUR.get(0).x, CONTOUR.get(0).y);
+    img.vertex(img.width, 0, CONTOUR.get(1).x, CONTOUR.get(1).y);
+    img.vertex(img.width, img.height, CONTOUR.get(2).x, CONTOUR.get(2).y);
+    img.vertex(0, img.height, CONTOUR.get(3).x, CONTOUR.get(3).y);
     img.endShape();
     img.popMatrix();    
     img.endDraw();

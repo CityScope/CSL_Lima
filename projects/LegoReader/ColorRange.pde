@@ -280,7 +280,11 @@ public class ColorRange extends PApplet {
 
 
   /**
-   * Toggles between WMODE, BMODE and OMODE
+   * Performs certain actions when a key is pressed
+   * @case: 'b'  Activates BMODE
+   * @case: 'w'  Activates WMODE
+   * @case: 'o'  Activates OMODE
+   * @case: 's'  Hides the PApplet
    */
   public void keyPressed() {
     switch(key) {

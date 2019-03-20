@@ -48,7 +48,7 @@ PImage white, black, col;
  * P3D needs to be passed as an argument to size to enable the use of vertices
  */
 void settings() {
-  size(sizeCanvas * 2, sizeCanvas, P3D);
+  size(sizeCanvas * 2, sizeCanvas, P2D);
 }
 
 
@@ -71,8 +71,8 @@ void setup() {
 
     configuration = new Configuration("calibrationParameters.json", white, black, col);
 
-    canvasMesh = createGraphics(sizeCanvas, sizeCanvas, P3D);
-    canvasCamera = createGraphics(sizeCanvas, sizeCanvas, P3D);
+    canvasMesh = createGraphics(sizeCanvas, sizeCanvas);
+    canvasCamera = createGraphics(sizeCanvas, sizeCanvas, P2D);
     imageWarped = createImage(sizeCanvas, sizeCanvas, HSB);
 
     String[] patterns = {"Patterns"};
@@ -106,7 +106,7 @@ void draw() {
   image(canvasMesh, canvasMesh.width, 0);
 
   if (exportToUdp) {
-    if (frameCount % 30 == 0) {
+    if (frameCount % 60 == 0) {
       configuration.exportGridUDP();
     }
   }
@@ -114,20 +114,20 @@ void draw() {
 
 
 /**
- * Perform certain actions when a key is pressed
+ * Performs certain actions when a key is pressed
  * @param: e      KeyEvent
- * @case: UP      Increase brightness level
- * @case: DOWN    Decrease brightness level
- * @case: RIGHT   Increase saturation level
- * @case: LEFT    Decrease saturation level
- * @case: 'b'     Toggle visibility of BlockReader PApplet
- * @case: 'c'     Toggle visibility of ColorRange PApplet
- * @case: 'p'     Toggle visibility of Patterns PApplet
- * @case: 'e'     Export the grid
- * @case: 's'     Save custom changes
- * @case: 'f'     Toggle the mirroring of the image shown by the camera
- * @case: '+'     Increase the number of blocks in the grid
- * @case: '-'     Decrease the number of blocks in the grid
+ * @case: UP      Increases brightness level
+ * @case: DOWN    Decreases brightness level
+ * @case: RIGHT   Increases saturation level
+ * @case: LEFT    Decreases saturation level
+ * @case: 'b'     Shows BlockReader PApplet
+ * @case: 'c'     Shows ColorRange PApplet
+ * @case: 'p'     Shows Patterns PApplet
+ * @case: 'e'     Exports the grid
+ * @case: 's'     Saves custom changes
+ * @case: 'f'     Toggles the mirroring of the image shown by the camera
+ * @case: '+'     Increases the number of blocks in the grid
+ * @case: '-'     Decreases the number of blocks in the grid
  */
 void keyPressed(KeyEvent e) {
   switch(e.getKeyCode()) {
@@ -190,7 +190,7 @@ void keyPressed(KeyEvent e) {
 
 
 /**
- * Start reading from the camera
+ * Starts reading from the camera
  * @param: cam  Capture object which represents the camera to read from
  */
 void captureEvent(Capture cam) {

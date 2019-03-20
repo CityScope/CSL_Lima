@@ -29,7 +29,6 @@ public class BlockReader extends PApplet {
   private PGraphics CANVAS;
   private int WIDTH;
   private int HEIGHT;
-  private color COLOR = 0;
   private Mesh MESH;
 
 
@@ -48,15 +47,16 @@ public class BlockReader extends PApplet {
    * Sets the size of the PApplet. P3D enables the use of vertices
    */
   public void settings() {
-    size(WIDTH, HEIGHT, P3D);
+    size(WIDTH, HEIGHT);
   }
+
 
 
   /**
    * Creates a PGraphics object where the Mesh instance will be drawn and sets colorMode to HSB
    */
   public void setup() {
-    CANVAS = createGraphics(WIDTH, HEIGHT, P3D);
+    CANVAS = createGraphics(WIDTH, HEIGHT);
     colorMode(HSB, 360, 100, 100);
   }
 
@@ -85,6 +85,10 @@ public class BlockReader extends PApplet {
   }
 
 
+  /**
+   * Performs certain actions when a key is pressed
+   * @case: 's'  Hides the PApplet
+   */
   public void keyPressed() {
     switch(key) {
     case 's':
