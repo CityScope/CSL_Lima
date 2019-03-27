@@ -65,9 +65,9 @@ void setup() {
     println("There are no cameras available for capture.");
     exit();
   } else {
-    white = loadImage("background/white.png");
-    black = loadImage("background/black.png");
-    col = loadImage("background/color.png");
+    white = loadImage("data/background/white.png");
+    black = loadImage("data/background/black.png");
+    col = loadImage("data/background/color.png");
 
     configuration = new Configuration("calibrationParameters.json", white, black, col);
 
