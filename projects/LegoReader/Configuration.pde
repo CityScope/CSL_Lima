@@ -304,9 +304,6 @@ public class Configuration {
     for (int w = 0; w < MESH.getPatterns().size(); w++) {
       message = message + MESH.getPatterns().get(w).getIndex() + ";";
     }
-    if(slider){
-      message = message +val;
-    }
     send(message);
   }
 

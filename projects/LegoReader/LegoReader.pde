@@ -44,15 +44,6 @@ PGraphics canvasCamera;
 PGraphics canvasMesh;
 PImage white, black, col;
 
-//FIXME: Temporay solution to integrate a physical slider
-boolean slider=true;
-Serial myPort;
-private UDP udp; //Create UDP object for recieving
-private int PORT = 9878;
-private String HOST_IP = "localhost"; //IP Address of the PC in which this App is running
-String val; // variable that is passed from processing to arduino
-//END FIXME
-
 
 /**
  * P3D needs to be passed as an argument to size to enable the use of vertices
@@ -66,11 +57,6 @@ void settings() {
  * Looks for connected cameras and instantiates variables if cameras are available
  */
 void setup() {
-  
-  //FIXME: Temporal arduino
-  String portName = Serial.list()[3]; ///*** change the port and CLOSE arduino serial monitor
-  myPort = new Serial(this, portName, 74880); 
-  //ENDFIMXE
   
   colorMode(HSB, 360, 100, 100);
 
@@ -124,10 +110,6 @@ void draw() {
   if (exportToUdp) {
     if (frameCount % 60 == 0) {
       configuration.exportGridUDP();
-    }
-    //FIXME: Temporal Hack for Arduino
-    if (myPort.available() > 0) {  
-      val = myPort.readStringUntil('\n');
     }
   }
 }
