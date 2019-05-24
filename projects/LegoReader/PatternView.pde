@@ -443,7 +443,7 @@ public class Patterns extends PApplet {
    * Sets the size of the PApplet. P3D enables the use of vertices
    */
   public void settings() {
-    size(WIDTH, HEIGHT);
+    size(WIDTH, HEIGHT, P2D);
   }
 
   /**
