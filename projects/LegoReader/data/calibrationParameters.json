@@ -1,1 +1,17 @@
-{"Calibration Points":{"0":[113,7],"1":[455,18],"2":[448,476],"3":[103,464]},"Brightness":25,"resizeCanvas":{"rHa":0,"rWa":0},"Saturation":-13,"Color Range":{"w":600,"h":100},"Canvas size":480,"nblocks":12,"Color Limits":[{"standarHSV":[0,0,100],"acronym":"W","name":"white","maxHue":70,"id":0,"minHue":17,"maxSat":27,"minBri":60,"maxSat2":50},{"standarHSV":[0,0,0],"acronym":"BK","maxBri2":40,"name":"black","maxHue":361,"id":1,"maxBri":58,"maxSat":14},{"standarHSV":[0,100,100],"acronym":"R","name":"red","maxHue":9,"id":2},{"standarHSV":[61.17646789550781,100,100],"acronym":"Y","name":"yellow","maxHue":60,"id":3},{"standarHSV":[110,100,80],"acronym":"G","name":"green","maxHue":175,"id":4},{"standarHSV":[230.29412841796875,100,80],"acronym":"B","name":"blue","maxHue":233,"id":5}],"Patterns":{"0":["black","white","red","white"],"1":["red","black","white","white"],"2":["white","red","white","white"],"3":["red","black","white","black"],"4":["white","red","black","black"],"5":["black","red","white","white"]}}
+{"Calibration Points":{"0":[113,7],"1":[455,18],"2":[448,476],"3":[103,464]},
+"Brightness":25,"resizeCanvas":{"rHa":0,"rWa":0},"Saturation":-13,"Color Range":{"w":600,"h":100},
+"Canvas size":480,"nblocks":12,
+"Color Limits":[
+  {"standarHSV":[0,0,100],"acronym":"W","name":"white","maxHue":70,"id":0,"minHue":17,"maxSat":27,"minBri":60,"maxSat2":50},
+  {"standarHSV":[0,0,0],"acronym":"BK","maxBri2":40,"name":"black","maxHue":361,"id":1,"maxBri":58,"maxSat":14},
+  {"standarHSV":[0,100,100],"acronym":"R","name":"red","maxHue":9,"id":2},
+  {"standarHSV":[61.17646789550781,100,100],"acronym":"Y","name":"yellow","maxHue":60,"id":3},
+  {"standarHSV":[110,100,80],"acronym":"G","name":"green","maxHue":175,"id":4},
+  {"standarHSV":[230.29412841796875,100,80],"acronym":"B","name":"blue","maxHue":233,"id":5}],
+  "Patterns":{
+    "0":["black","white","red","white"],
+    "1":["red","black","white","white"],
+    "2":["white","red","white","white"],
+    "3":["red","black","white","black"],
+    "4":["white","red","black","black"],
+    "5":["black","red","white","white"]}}

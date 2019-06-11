@@ -13,14 +13,16 @@ PGraphics canvasOriginal;
 PGraphics canvasColor;
 
 int nblocks = 6;
-int sizeCanvas = 24*24;
+int sizeCanvas = 480;
 PImage colorImage;
 PImage imageWrapped;
 float inc = 1;
 
+boolean warpMode = false;
+
 Capture cam;
 OpenCV opencv;
-WrappedPerspective wrappedPerspective;
+WarpedPerspective warpedPerspective;
 Mesh mesh;
 Configuration config = new Configuration("data/calibrationParameters.json");
 Simulation simulation;
@@ -48,19 +50,17 @@ void setup() {
 
     mesh = new Mesh(nblocks, canvas.width);
 
-    wrappedPerspective = new WrappedPerspective(config.contour);
+    warpedPerspective = new WarpedPerspective(config.contour);
 
     cam = new Capture(this, 640, 480, cameras[0]);
-    //cam = new Capture(this,canvas.width, canvas.height, cameras[0]);
     cam.start();
 
     opencv = new OpenCV(this, cam);
     opencv.useColor(HSB);
 
-    String[] argsS = {"simulation"};
+    String[] argsS = {"Simulation"};
     simulation = new Simulation(1000, 800);
     PApplet.runSketch(argsS, simulation);
-    //frameRate(5);
   }
 }
 
@@ -68,8 +68,10 @@ void setup() {
 void draw() {
   canvasOriginal.beginDraw();
   config.flip(canvasOriginal, cam, true);
-  config.SBCorrection(canvasOriginal, config.brightnessLevel, config.saturationLevel);
+  config.SBCorrection(canvasOriginal);
+  warpedPerspective.drawWarp(canvasOriginal);
   canvasOriginal.endDraw();
+  if (warpMode) image(canvasOriginal, 0, 0);
 
   //Filter colors with specific ranges
   config.applyFilter(canvasOriginal, colorImage);
@@ -77,17 +79,50 @@ void draw() {
   //canvas with the color processing and wrapped image
   colorImage.updatePixels();
   opencv.loadImage(colorImage);
-  opencv.toPImage(wrappedPerspective.warpPerspective(sizeCanvas, sizeCanvas), imageWrapped);
+  opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas, sizeCanvas), imageWrapped);
 
   canvas.beginDraw();
   canvas.image(imageWrapped, 0, 0);
   mesh.getColors(canvas, config.colorLimits);
   mesh.draw(canvas, true);
   canvas.endDraw();
-  image(canvas, 0, 0);
+  if (!warpMode) image(canvas, 0, 0);
 }
 
 
 void captureEvent(Capture cam) {
   cam.read();
+}
+
+
+void keyPressed() {
+  switch(key) {
+  case 'w':
+    warpMode = !warpMode;
+    break;
+  }
+}
+
+
+/**
+ * Calls the select method of warpedPerspective
+ */
+void mousePressed() {
+  if (warpMode) warpedPerspective.select(mouseX, mouseY, 5);
+}
+
+
+/**
+ * Calls the move method of warpedPerspective
+ */
+void mouseDragged() {
+  if (warpMode) warpedPerspective.move(mouseX, mouseY);
+}
+
+
+/**
+ * Calls the unselect method of warpedPerspective
+ */
+void mouseReleased() {
+  if (warpMode) warpedPerspective.unselect();
 }

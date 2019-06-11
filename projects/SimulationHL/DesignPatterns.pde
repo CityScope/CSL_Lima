@@ -108,21 +108,6 @@ public abstract class Facade<T extends Placeable> {
   public void delete(T item) {
     items.remove(item);
   }
-
-
-  /**
-   * Print item's legend in a specific position
-   * @param canvas  Canvas to draw legend
-   * @param x  Horizontal position in screen
-   * @param y  Vertical position in screen
-   */
-  public void printLegend(PGraphics canvas, int x, int y) {
-    String txt = "";
-    IntDict counter = factory.getCounter();
-    textAlign(LEFT, TOP);
-    for (String name : counter.keyArray()) txt += name + ": " + counter.get(name) + "\n";
-    text(txt, x, y);
-  }
 }
 
 

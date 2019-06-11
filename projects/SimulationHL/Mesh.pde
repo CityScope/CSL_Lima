@@ -18,15 +18,15 @@ public class Mesh {
   public void create() {
     for (int w = 0; w < grid.length; w++) {
       for (int h = 0; h < grid.length; h++) {
-        int puntox = w * scl;
-        int puntoy = h * scl;
-        grid[w][h] = new PVector(puntox, puntoy);
+        int x = w * scl;
+        int y = h * scl;
+        grid[w][h] = new PVector(x, y);
       }
     }
     
     for (int i = 0; i < this.nblocks; i++) {
       for (int y = 0; y < this.nblocks; y++) {
-        ArrayList<PVector> cornersTemp = new ArrayList();
+        ArrayList<PVector> cornersTemp = new ArrayList<PVector>();
         cornersTemp.add(grid[y][i]);
         cornersTemp.add(grid[y][i+1]);
         cornersTemp.add(grid[y+1][i+1]);

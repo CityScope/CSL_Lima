@@ -102,8 +102,8 @@ private class Node implements Placeable, Comparable<Node> {
    * @param vertices  List of vertices that shape the lane
    * @param name  Name of the lane
    */
-  protected void connect(Node node, ArrayList<PVector> vertices, String name, Accessible access) {
-    lanes.add( new Lane(name, access, this, node, vertices) );
+  protected void connect(Node node, ArrayList<PVector> vertices, String name) {
+    lanes.add(new Lane(name, this, node, vertices));
   }
 
 
@@ -113,10 +113,10 @@ private class Node implements Placeable, Comparable<Node> {
    * @param vertices  List of vertices that shape the lanes
    * @param name  Name of the lanes
    */
-  protected void connectBoth(Node node, ArrayList<PVector> vertices, String name, Accessible access) {
-    connect(node, vertices, name, access);
+  protected void connectBoth(Node node, ArrayList<PVector> vertices, String name) {
+    connect(node, vertices, name);
     if (vertices != null) Collections.reverse(vertices);
-    node.connect(this, vertices, name, access);
+    node.connect(this, vertices, name);
   }
 
 
@@ -137,17 +137,6 @@ private class Node implements Placeable, Comparable<Node> {
     return direction;
   }
 
-  /**
-   *Check if the agent can go throw the lane
-   *@return boolean true if is possible, false otherwise
-   */
-  public boolean allows(Agent agent) {
-    for (Lane lane : lanes) {
-      if (lane.allows(agent)) return true;
-    }
-    return false;
-  }
-  
 
   /**
    * Draw the node and outbound lanes with default colors
@@ -156,7 +145,7 @@ private class Node implements Placeable, Comparable<Node> {
   public void draw(PGraphics canvas) {
     canvas.fill(#000000); 
     canvas.ellipse(position.x, position.y, 3, 3);
-    draw(canvas, 1, #F0F3F5);
+    draw(canvas, 1);
   }
 
 
@@ -166,20 +155,16 @@ private class Node implements Placeable, Comparable<Node> {
    * @param stroke  Lane width in pixels
    * @param c  Lanes color
    */
-  public void draw(PGraphics canvas, int stroke, color c) {
+  public void draw(PGraphics canvas, int stroke) {
     for (Lane lane : lanes) {
       float valor = map(lane.load, 0, 150, 0, 1);
-      //color occupColor = lerpColor(#E0E3E5, #FF0000, valor);
       color occupColor = lerpColor(#E0E3E5, #FF0000, valor);
-      //lane.draw(canvas, stroke, occupColor);
       lane.draw(canvas, stroke, occupColor);
       if (lane.selected) {
         lane.closeLane();
       }
     }
-    if (selected) {
-      canvas.text(toString(), position.x, position.y);
-    }
+    if (selected) canvas.text(toString(), position.x, position.y);
   }
 
 
@@ -196,7 +181,7 @@ private class Node implements Placeable, Comparable<Node> {
 
 
   /**
-   * PATHFINDING METHODS.
+   * PATHFINDING METHODS
    * Update and get pathfinding variables (parent node, f and g)
    */
   public void setParent(Node parent) {

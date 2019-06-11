@@ -26,13 +26,14 @@ POIs pois;
 
 
 /**
- * Cells - Class which represents colored cells
+ * Simulation - Class to control the Simulation
  * @author        Javier Zárate
  * @version       1.0
  */
 public class Simulation extends PApplet {
   int w;
   int h;
+  boolean result = false;
 
 
   public Simulation( int w, int h) {
@@ -55,26 +56,32 @@ public class Simulation extends PApplet {
 
 
   /**
-   *Create the manual control to change colors limits while running
-   **/
+   * Create the manual control to change colors limits while running
+   */
   public void draw() {
     simulationCanvas.beginDraw();
     simulationCanvas.background(255);
-    roads.draw(simulationCanvas, 1, #E0E3E5);
-    roads.readMesh(mesh.celdas, canvas);
+    roads.draw(simulationCanvas, 1);
+    roads.readMesh(mesh.cells, canvas);
+    simulationCanvas.pushStyle();
+    simulationCanvas.fill(0, 0, 0);
+    simulationCanvas.textSize(25);
+    simulationCanvas.textAlign(LEFT);     
+    simulationCanvas.text("Objective function result:", 100, 650);
+    if (!result) simulationCanvas.text("No solution found!", 100, 680);
+    else simulationCanvas.text(String.valueOf(pois.MINIMUM), 100, 680);    
+    simulationCanvas.popStyle();
     simulationCanvas.endDraw();
     image(simulationCanvas, 0, 0);
   }
 
-  public void mouseClicked() {
-    println(red(simulationCanvas.get(mouseX, mouseY)), green(simulationCanvas.get(mouseX, mouseY)), blue(simulationCanvas.get(mouseX, mouseY)), alpha(simulationCanvas.get(mouseX, mouseY)) );
-    //println(pois.count());
-  }
+
   void keyPressed() {
     switch(key) {
     case 'd':
-      pois.wrappedOptimization();
+      result = pois.wrappedOptimization();
       break;
+
     case 's':
       pois.resetLanes();
       break;

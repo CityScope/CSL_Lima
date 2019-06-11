@@ -5,7 +5,7 @@
  */
 
 public class Cells {
-  ArrayList<PVector> corners = new ArrayList();
+  ArrayList<PVector> corners = new ArrayList<PVector>();
   color ownColor;
   PVector center;
   int[] counter; 
@@ -80,8 +80,8 @@ public class Cells {
    */
   public color gettingColor(int index, ArrayList<Color> colorLimits) {
     Color col = colorLimits.get(index);
-    this.colorName = col.name;                        ///////<-- CAMBIAR-->/////////
-    color newCol = color(col.getColor().x, col.getColor().y, col.getColor().z);
+    this.colorName = col.getColorName();                        ///////<-- CAMBIAR-->/////////
+    color newCol = color(col.getColor());
     return newCol;
   }
 
@@ -127,7 +127,7 @@ public class Cells {
     canvas.loadPixels();
 
     for (Color colorL : colorLimits) {
-      colorL.n = 0;
+      colorL.COUNTER = 0;
     }
 
     for (int y = int(this.corners.get(0).y); y < int(this.corners.get(2).y); y++) {
@@ -135,8 +135,8 @@ public class Cells {
         int loc = x + y * canvas.width;      
         color c = canvas.pixels[loc];
         for (Color colorL : colorLimits) {
-          if (c == color(colorL.getColor().x, colorL.getColor().y, colorL.getColor().z)) {
-            colorL.n ++;
+          if (c == colorL.getColor()) {
+            colorL.COUNTER ++;
             break;
           }
         }
@@ -144,14 +144,14 @@ public class Cells {
     }
     int maximo = 0;
     for (Color colorL : colorLimits) {
-      if (colorL.n > maximo) {
-        maximo = colorL.n;
+      if (colorL.COUNTER > maximo) {
+        maximo = colorL.COUNTER;
       }
     } 
 
     for (Color colorL : colorLimits) {
-      if (colorL.n == maximo) {
-        this.addingCounter(colorL.id, 1);
+      if (colorL.COUNTER == maximo) {
+        this.addingCounter(colorL.ID, 1);
         this.checkMovilAverage(30, -1);
         this.ownColor = movilAverage();
       }

@@ -7,10 +7,9 @@
  */
 public class Path {
 
-  private final Roads ROADMAP; 
-  private Agent AGENT;
+  private final Roads ROADMAP;
 
-  private ArrayList<Lane> lanes = new ArrayList();
+  private ArrayList<Lane> lanes = new ArrayList<Lane>();
   private float distance = 0;
 
   // Path movement variables
@@ -20,15 +19,6 @@ public class Path {
   private boolean arrived = false;
   private POI poi;
 
-  /**
-   * Initiate Path
-   * @param agent  Agent using the path
-   * @param roads  Roadmap used to find possible paths between its nodes
-   */
-  public Path(Agent agent, Roads roads) {
-    ROADMAP = roads;
-    AGENT = agent;
-  }
 
   public Path(POI poi, Roads roads) {
     ROADMAP = roads;
@@ -87,43 +77,10 @@ public class Path {
    * Reset path paramters to initial state
    */
   public void reset() {
-    lanes = new ArrayList();
+    lanes = new ArrayList<Lane>();
     currentLane = null;
     arrived = false;
     distance = 0;
-  }
-
-
-  /**
-   * Move agent across the path.
-   * @param pos  Actual agent position
-   * @param speed  Speed of agent
-   * @return agent position after movement
-   */
-  public PVector move(PVector pos, float speed) {
-    PVector dir = PVector.sub(toVertex, pos);
-    PVector movement = dir.copy().normalize().mult(speed);
-    if (movement.mag() < dir.mag()) return movement;
-    else {
-      if ( currentLane.isLastVertex( toVertex ) ) goNextLane();
-      else toVertex = currentLane.nextVertex(toVertex);
-      return dir;
-    }
-  }
-
-
-  /**
-   * Move agent to next lane in path. Update node binding and handles lane hosting of agent. If there isn't next lane, finishes path.
-   */
-  public void goNextLane() {
-    inNode = currentLane.getEnd();
-    currentLane.removeAgent(AGENT);
-    int i = lanes.indexOf(currentLane) + 1;
-    if ( i < lanes.size() ) {
-      currentLane = lanes.get(i);
-      toVertex = currentLane.getVertex(1);
-      currentLane.addAgent(AGENT);
-    } else arrived = true;
   }
 
 
@@ -166,29 +123,26 @@ public class Path {
    * @param origin  Origin node
    * @param destination  Destination node
    * @return list of lanes that define the found path from origin to destination
-   *The cost is considering the crows of the actual agents in a lane
+   * The cost is considering the crowds of the actual agents in a lane
    */
-  //se toma en cuenta la cantidad de vehiculos en cada lane como costo adicional y condicion de maxcrowd
   private ArrayList<Lane> aStar(Node origin, Node destination) {
-    ArrayList<Lane> path = new ArrayList();
+    ArrayList<Lane> path = new ArrayList<Lane>();
     if (!origin.equals(destination)) {
       for (Node node : ROADMAP.getAll()) node.reset();
-      ArrayList<Node> closed = new ArrayList();
+      ArrayList<Node> closed = new ArrayList<Node>();
       PriorityQueue<Node> open = new PriorityQueue();
       open.add(origin);
+      
       while (open.size() > 0) {
         Node currNode = open.poll();
         closed.add(currNode);
-        if ( currNode.equals(destination) ) break;
-        for (Lane lane : currNode.outboundLanes()) {
-          Node neighbor = lane.getEnd();
+        if (currNode.equals(destination)) break;
+        for (Lane lane :  currNode.outboundLanes()) {
+           Node neighbor = lane.getEnd();
           if (lane.closed) break;
-          if ( !lane.isOpen() || closed.contains(neighbor) || !lane.allows(AGENT)) continue;
-          if (lane.maxCrowd <= lane.crowd.size()) {
-            break;
-          }
+          if (!lane.isOpen() || closed.contains(neighbor)) continue;
           boolean neighborOpen = open.contains(neighbor);
-          float costToNeighbor = currNode.getG() + lane.getLength() + lane.crowd.size()*30;
+          float costToNeighbor = currNode.getG() + lane.getLength() + 15 * 30;
           if ( costToNeighbor < neighbor.getG() || !neighborOpen ) {
             neighbor.setParent(currNode); 
             neighbor.setG(costToNeighbor);
@@ -209,10 +163,10 @@ public class Path {
    * @return list of lanes that define a path to destination node
    */
   private ArrayList<Lane> tracePath(Node destination) {
-    ArrayList<Lane> path = new ArrayList();
+    ArrayList<Lane> path = new ArrayList<Lane>();
     Node pathNode = destination;
     while (pathNode.getParent() != null) {
-      path.add( pathNode.getParent().shortestLaneTo(pathNode) );
+      path.add(pathNode.getParent().shortestLaneTo(pathNode));
       pathNode = pathNode.getParent();
     }
     Collections.reverse(path);

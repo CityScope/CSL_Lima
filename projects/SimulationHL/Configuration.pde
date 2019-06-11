@@ -14,8 +14,8 @@ public class Configuration {
   public Configuration(String path) {
     this.path = path;
   }
-  
-  
+
+
   public void flip(PGraphics canvas, Capture cam, boolean flip) {
     if (flip) {
       canvas.pushMatrix();
@@ -31,7 +31,7 @@ public class Configuration {
   /**
    * Increase/decrease the brightness and saturation of the canvas
    */
-  public void SBCorrection(PGraphics canvas, float b, float s) {
+  public void SBCorrection(PGraphics canvas) {
     canvas.loadPixels();
     for (int y = 0; y < canvas.height; y++) {
       for (int x = 0; x < canvas.width; x++) {
@@ -40,8 +40,8 @@ public class Configuration {
         float h = hue(actual);
         float newS = saturation(actual);
         float newB = brightness(actual);
-        newS += s;
-        newB += b;
+        newS += saturationLevel;
+        newB += brightnessLevel;
         canvas.set(x, y, color(h, newS, newB));
       }
     }
@@ -54,41 +54,44 @@ public class Configuration {
    * Other Colors: comparing hue in a HSV scale
    * Specific parameters for white and Red
    */
-  public void applyFilter(PGraphics cam, PImage colorimage) {
+  public void applyFilter(PGraphics cam, PImage colorImage) {
     for (int x = 0; x < cam.width; x++) {
       for (int y = 0; y < cam.height; y++) {
+        int i = y * cam.width + x;
+        color actual = cam.pixels[i];   
 
-        PVector colors = new PVector();
-        float hue = hue(cam.get(x, y));
-        float brightness = brightness(cam.get(x, y));
-        float saturation = saturation(cam.get(x, y));
+        float hue = hue(actual);
+        float brightness = brightness(actual);
+        float saturation = saturation(actual);
         boolean breakLoop = false;
+
         for (Color colorL : this.colorLimits) {
-          if (colorL.name.equals("white")) {
+          String colorName = colorL.getColorName();
+          if (colorName.equals("white")) {
             //if( ( (saturation < colorL.satMax) & (brightness > colorL.briMin)) | ((saturation < colorL.satMax2) & (hue < colorL.hueMax) & (hue > colorL.hueMin)) ) {
             if ( ( (saturation < 15) & (brightness > 55)) | ((saturation < 50) & (hue < 70) & (hue > 30)) ) {
-              colors = colorL.getColor();
+              actual = colorL.getColor();
               breakLoop = true;
               break;
             }
-          } else if (colorL.name.equals("black")) {
+          } else if (colorName.equals("black")) {
             //if( brightness < colorL.briMax | ( (brightness < colorL.briMax2 ) & (saturation  < colorL.satMax ) )){
             if ( brightness < 25 | ( (brightness < 40 ) & (saturation  < 15 ) )) {  
-              colors = colorL.getColor();
+              actual = colorL.getColor();
               breakLoop = true;
               break;
             }
           } else {
-            if ((hue < colorL.maxHue)) {
-              colors = colorL.getColor();
+            if ((hue < colorL.MAXHUE)) {
+              actual = colorL.getColor();
               breakLoop = true;
               break;
             }
           }
         }
-        if (!breakLoop) colors = new PVector(colorLimits.get(0).getColor().x, colorLimits.get(0).getColor().y, colorLimits.get(0).getColor().z);
+        if (!breakLoop) actual = color(0, 0, 100); ///// REMEMBER!
 
-        colorimage.set(x, y, color(colors.x, colors.y, colors.z));
+        colorImage.pixels[i] = actual;
       }
     }
   }
@@ -98,38 +101,30 @@ public class Configuration {
    * load colors ranges, saturation, brightness and perspective calibration points.
    */
   public void loadConfiguration() {
-    ArrayList<Color> colorConf = new ArrayList();
-    ArrayList<PVector> calibrationPoints = new ArrayList();
+    ArrayList<Color> colorConf = new ArrayList<Color>();
+    ArrayList<PVector> calibrationPoints = new ArrayList<PVector>();
     JSONObject calibrationParameters =  loadJSONObject(this.path);
-    JSONObject colorLimits = calibrationParameters.getJSONObject("Color Limits");
-    
-    for (int i = 0; i < colorLimits.size(); i++) {
-      int id = colorLimits.getJSONObject(str(i)).getInt("id");
-      String name = colorLimits.getJSONObject(str(i)).getString("name");
-      float  maxHue = colorLimits.getJSONObject(str(i)).getFloat("maxHue");
-      JSONArray stdColor = colorLimits.getJSONObject(str(i)).getJSONArray("standarHSV");
 
-      if (name.equals("white")) {
-        float satMax = colorLimits.getJSONObject(str(i)).getFloat("satMax");
-        float briMin = colorLimits.getJSONObject(str(i)).getFloat("briMin");
-        float satMax2 = colorLimits.getJSONObject(str(i)).getFloat("satMax2");
-        float hueMax = colorLimits.getJSONObject(str(i)).getFloat("hueMax");
-        float hueMin = colorLimits.getJSONObject(str(i)).getFloat("hueMin");
-        colorConf.add(new Color(id, maxHue, stdColor, name, satMax, briMin, satMax2, hueMax, hueMin));
-      } else if (name.equals("black")) {
-        float briMax = colorLimits.getJSONObject(str(i)).getFloat("briMax");
-        float briMax2 = colorLimits.getJSONObject(str(i)).getFloat("briMax2");
-        float satMax = colorLimits.getJSONObject(str(i)).getFloat("satMax");
-        colorConf.add(new Color(id, maxHue, stdColor, name, briMax, briMax2, satMax));
+    JSONArray colorLimits = calibrationParameters.getJSONArray("Color Limits");      
+    for (int i = 0; i < colorLimits.size(); i++) {
+      JSONObject c = colorLimits.getJSONObject(i);  
+      String acronym = c.getString("acronym");  
+      if (acronym.equals("W")) {
+        White w = new White(c);
+        colorConf.add(w);
+      } else if (acronym.equals("BK")) {
+        Black bl = new Black(c);
+        colorConf.add(bl);
       } else {
-        colorConf.add(new Color(id, maxHue, stdColor, name));
+        Other o = new Other(c);
+        colorConf.add(o);
       }
     }
 
-    JSONObject points = calibrationParameters.getJSONObject("Calibration Points");
-    for (int i=0; i<points.size(); i++) {
+    JSONObject points = calibrationParameters.getJSONObject("Calibration Points");    
+    for (int i = 0; i < points.size(); i++) {
       JSONArray point = points.getJSONArray(str(i));
-      calibrationPoints.add(new PVector(point.getFloat(0), point.getFloat(1)));
+      calibrationPoints.add(new PVector(point.getInt(0), point.getInt(1)));
     }
 
     this.contour = calibrationPoints;

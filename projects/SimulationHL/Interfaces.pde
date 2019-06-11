@@ -2,7 +2,6 @@
  * @author        Marc Vilella & Javier Zarate
  * @version       1.1
  */
-
 public interface Placeable {
   public void place(Roads roads);
   public PVector getPosition();
