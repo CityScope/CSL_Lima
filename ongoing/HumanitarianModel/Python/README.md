@@ -1,51 +1,34 @@
-# Dash Application for Dynamic Routing
+# Emergency Evacuation Routes from Schools to Hospitals
 
-## Dependencies
-* attrs
-* certifi
-* chardet
-* Click
-* click-plugins
-* cligj
-* cycler
+This is the code for the visualization of Lima's road network, schools and hospitals, and the optimal route from a school to a hospital. An integer optimization method was applied to assign to each school a hospital for emergency evacuation using the schools-to-hospital distance and hospital vulnerability index data. The vulnerability index calculation is based in a Fuzzy Inference System and was proposed in [this link.](https://www.igi-global.com/chapter/assessing-a-vulnerability-index-for-healthcare-service-facilities/231981?camid=4v1)
+
+The interactive visualization is available at [this link.](https://rutas-colegios-hospitales.herokuapp.com/)
+
+![fullmap](/images/fullmap.png) ![route](/images/route.png)
+
+## Run Server Locally
+
+1. Download and extract project.
+2. Create a python virtual environment (recommended)
+```sh
+$ cd project-folder
+$ virtualenv .env
+$ source .env/bin/activate
+```
+3. Install dependencies.
+```sh
+(.env) $ pip install -r requirements.txt
+```
+4. Run the dash app with flask server `$ python app.py`.
+
+## Core dependencies
 * dash
-* dash-core-components
-* dash-html-components
-* dash-renderer
-* dash-table-experiments
-* decorator
-* descartes
-* Fiona
 * Flask
-* Flask-Compress
 * geopandas
 * googlemaps
 * gunicorn
-* idna
-* ipython-genutils
-* itsdangerous
-* Jinja2
-* jsonschema
-* jupyter
-* kiwisolver
-* MarkupSafe
-* matplotlib
-* munch
-* nbformat
 * networkx
 * numpy
 * osmnx
 * pandas
 * plotly
-* pyparsing
-* pyproj
-* python-dateutil
-* pytz
-* requests
-* retrying
-* Rtree
-* Shapely
-* six
-* traitlets
-* urllib3
-* Werkzeug

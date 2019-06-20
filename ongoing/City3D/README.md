@@ -1,16 +1,20 @@
-# **CityMatrix**
-Recognizes the colors of Legos arranged in a NxN grid using a camera, in order to build a 3D model of the grid, which represents a city. The calibrations for color identification can be changed and saved while running.
+# **City3D**
+Recognizes the colors of Legos arranged in a NxN grid using a camera, in order to build a 3D model of the grid, which represents a city.
 
+![lego table 1](/images/table1.png) ![lego table 2](/images/table2.png)
+![city3d render](/images/city3d.png)
+
+The calibrations for color identification and image region of interest (ROI) can be changed and saved while running.
+
+![configuration](/images/config.png) ![configuration](/images/patterns.png)
 
 ## **Contact Info**
 **Vanesa Alcántara**: v.alcantarapanta@alum.up.edu.pe | https://github.com/vaap1997 .
 **Jesús García**: jesusgarciaruiz1004@gmail.com | https://github.com/JesusGarcia98 .
 **Javier Zárate**: javierazd1305@gmail.com | https://github.com/javierazd1305 .
 
-
 ## **Legal Description**
 This code uses GNU Affero General Public License v3.0. For more information: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 
 ## **Configuration (Class)**
 1. Constructor
