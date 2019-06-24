@@ -4,9 +4,11 @@ This is the code for the visualization of Lima's road network, schools and hospi
 
 The interactive visualization is available at [this link.](https://rutas-colegios-hospitales.herokuapp.com/)
 
-![fullmap](/images/fullmap.png) ![route](/images/route.png)
+Web App View | Route visualization
+:-------------------------:|:-------------------------:
+![fullmap](/ongoing/HumanitarianModel/Python/images/fullmap.png) | ![route](/ongoing/HumanitarianModel/Python/images/route.png)
 
-## Run Server Locally
+## Run Server Locally
 
 1. Download and extract project.
 2. Create a python virtual environment (recommended)
