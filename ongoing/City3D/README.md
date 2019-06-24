@@ -1,12 +1,17 @@
 # **City3D**
 Recognizes the colors of Legos arranged in a NxN grid using a camera, in order to build a 3D model of the grid, which represents a city.
 
-![lego table 1](/images/table1.png) ![lego table 2](/images/table2.png)
-![city3d render](/images/city3d.png)
+### Lego Table Setup 
+Sideview | Upperview
+:-------------------------:|:-------------------------:
+![lego table 1](/ongoing/City3D/images/table1.png) | ![lego table 2](/ongoing/City3D/images/table2.png)
+
+### City 3D Model
+![city3d render](/ongoing/City3D/images/city3d.png)
 
 The calibrations for color identification and image region of interest (ROI) can be changed and saved while running.
 
-![configuration](/images/config.png) ![configuration](/images/patterns.png)
+![configuration](/ongoing/City3D/images/config.png) ![configuration](/ongoing/City3D/images/patterns.png)
 
 ## **Contact Info**
 **Vanesa Alcántara**: v.alcantarapanta@alum.up.edu.pe | https://github.com/vaap1997 .
