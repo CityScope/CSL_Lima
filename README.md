@@ -23,6 +23,10 @@ Lego Table Setup | City 3D model
 
 3. **Emergency Relief Warehouse kits delivery optimization**
 
+Agent Based Simulation + Optimization of humanitarian help kits delivery in case of emergency.
+
+[TODO: ADD IMAGES HERE]
+
 <!--
 ![map](/ongoing/SimulationHL/images/map.png) ![beta_gif](/ongoing/SimulationHL/images/test.gif)
 -->
