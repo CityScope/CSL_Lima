@@ -1,11 +1,4 @@
 import processing.video.*;
-import gab.opencv.*;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
-import org.opencv.core.Size;
-import org.opencv.core.Mat;
-import org.opencv.core.CvType;
 import java.util.Collections;
 
 PGraphics canvas;
@@ -14,14 +7,12 @@ PGraphics canvasColor;
 
 int nblocks = 6;
 int sizeCanvas = 480;
-PImage colorImage;
-PImage imageWrapped;
+PImage imageWarped;
 float inc = 1;
 
 boolean warpMode = false;
 
 Capture cam;
-OpenCV opencv;
 WarpedPerspective warpedPerspective;
 Mesh mesh;
 Configuration config = new Configuration("data/calibrationParameters.json");
@@ -29,7 +20,7 @@ Simulation simulation;
 
 
 void settings() {
-  size(sizeCanvas, sizeCanvas);
+  size(sizeCanvas, sizeCanvas, P2D);
 }
 
 
@@ -40,11 +31,10 @@ void setup() {
     println("There are no cameras available for capture.");
     exit();
   } else {
-    canvas = createGraphics(sizeCanvas, sizeCanvas);
-    canvasOriginal = createGraphics(sizeCanvas, sizeCanvas);
+    canvas = createGraphics(sizeCanvas, sizeCanvas, P2D);
+    canvasOriginal = createGraphics(sizeCanvas, sizeCanvas, P2D);
     canvasColor = createGraphics(sizeCanvas, sizeCanvas);
-    colorImage = createImage(sizeCanvas, sizeCanvas, HSB);
-    imageWrapped = createImage(sizeCanvas, sizeCanvas, HSB);
+    imageWarped = createImage(sizeCanvas, sizeCanvas, HSB);
 
     config.loadConfiguration();
 
@@ -54,9 +44,6 @@ void setup() {
 
     cam = new Capture(this, 640, 480, cameras[0]);
     cam.start();
-
-    opencv = new OpenCV(this, cam);
-    opencv.useColor(HSB);
 
     String[] argsS = {"Simulation"};
     simulation = new Simulation(1000, 800);
@@ -74,15 +61,12 @@ void draw() {
   if (warpMode) image(canvasOriginal, 0, 0);
 
   //Filter colors with specific ranges
-  config.applyFilter(canvasOriginal, colorImage);
-
-  //canvas with the color processing and wrapped image
-  colorImage.updatePixels();
-  opencv.loadImage(colorImage);
-  opencv.toPImage(warpedPerspective.warpPerspective(sizeCanvas, sizeCanvas), imageWrapped);
+  imageWarped = warpedPerspective.applyPerspective(canvasOriginal);
+  //config.applyFilter(canvasOriginal, colorImage);
+  config.applyFilter(imageWarped);
 
   canvas.beginDraw();
-  canvas.image(imageWrapped, 0, 0);
+  canvas.image(imageWarped, 0, 0);
   mesh.getColors(canvas, config.colorLimits);
   mesh.draw(canvas, true);
   canvas.endDraw();

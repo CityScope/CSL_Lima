@@ -13,30 +13,28 @@ public class WarpedPerspective {
     selected = false;
   }
 
-  Mat getPerspectiveTransformation(ArrayList<PVector> inputPoints, int w, int h) {
-    Point[] canonicalPoints = new Point[4];
-    canonicalPoints[0] = new Point(w, 0);
-    canonicalPoints[1] = new Point(0, 0);
-    canonicalPoints[2] = new Point(0, h);
-    canonicalPoints[3] = new Point(w, h);
 
-    MatOfPoint2f canonicalMarker = new MatOfPoint2f();
-    canonicalMarker.fromArray(canonicalPoints);
+  /**
+   * Places the control points on an image to create a shape object from a part of it
+   * @param:   img     PGraphics object to be distorted
+   * @returns: PImage  Distorted portion of the PGraphics
+   */
+  public PImage applyPerspective(PGraphics img) {
+    img.beginDraw();
+    img.background(155);
+    img.pushMatrix();
+    img.noStroke();
+    img.beginShape();
+    img.texture(img);
+    img.vertex(0, 0, contour.get(0).x, contour.get(0).y);
+    img.vertex(img.width, 0, contour.get(1).x, contour.get(1).y);
+    img.vertex(img.width, img.height, contour.get(2).x, contour.get(2).y);
+    img.vertex(0, img.height, contour.get(3).x, contour.get(3).y);
+    img.endShape();
+    img.popMatrix();    
+    img.endDraw();
 
-    Point[] points = new Point[4];
-    for (int i = 0; i < 4; i++) {
-      points[i] = new Point(inputPoints.get(i).x, inputPoints.get(i).y);
-    }
-    MatOfPoint2f marker = new MatOfPoint2f(points);
-    return Imgproc.getPerspectiveTransform(marker, canonicalMarker);
-  }
-
-
-  Mat warpPerspective( int w, int h) {
-    Mat transform = getPerspectiveTransformation(this.contour, w, h);
-    Mat unWarpedMarker = new Mat(w, h, CvType.CV_8UC1);    
-    Imgproc.warpPerspective(opencv.getColor(), unWarpedMarker, transform, new Size(w, h));
-    return unWarpedMarker;
+    return img.get();
   }
 
 

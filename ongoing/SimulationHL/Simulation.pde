@@ -43,7 +43,7 @@ public class Simulation extends PApplet {
 
 
   public void settings() {
-    size(this.w, this.h);
+    size(this.w, this.h, P2D);
   }
 
 

@@ -54,11 +54,11 @@ public class Configuration {
    * Other Colors: comparing hue in a HSV scale
    * Specific parameters for white and Red
    */
-  public void applyFilter(PGraphics cam, PImage colorImage) {
-    for (int x = 0; x < cam.width; x++) {
-      for (int y = 0; y < cam.height; y++) {
-        int i = y * cam.width + x;
-        color actual = cam.pixels[i];   
+  public void applyFilter(PImage colorImage) {
+    for (int y = 0; y < colorImage.height; y++) {
+      for (int x = 0; x < colorImage.width; x++) {
+        int i = y * colorImage.width + x;
+        color actual = colorImage.pixels[i];   
 
         float hue = hue(actual);
         float brightness = brightness(actual);
@@ -74,7 +74,7 @@ public class Configuration {
               breakLoop = true;
               break;
             }
-          } else if (colorName.equals("black")) {
+          } else if (!breakLoop & colorName.equals("black")) {
             //if( brightness < colorL.briMax | ( (brightness < colorL.briMax2 ) & (saturation  < colorL.satMax ) )){
             if ( brightness < 25 | ( (brightness < 40 ) & (saturation  < 15 ) )) {  
               actual = colorL.getColor();
@@ -82,7 +82,7 @@ public class Configuration {
               break;
             }
           } else {
-            if ((hue < colorL.MAXHUE)) {
+            if (!breakLoop & (hue < colorL.MAXHUE)) {
               actual = colorL.getColor();
               breakLoop = true;
               break;

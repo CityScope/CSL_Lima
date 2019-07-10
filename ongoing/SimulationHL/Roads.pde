@@ -61,9 +61,14 @@ public class Roads extends Facade<Node> {
    * Asign an ID that is equals to the length of the items
    */
   public void add(Node node) {
-    if (node.getID() == -1) {
-      node.setID(items.size());
-      items.add(node);
+    try {
+      if (node.getID() == -1) {
+        node.setID(items.size());
+        items.add(node);
+      }
+    } 
+    catch (Exception e) {
+      println(e);
     }
   }
 
@@ -170,7 +175,6 @@ public class RoadFactory extends Factory<Node> {
 
       Node prevNode = null;
       ArrayList vertices = new ArrayList();
-
       for (int j = 0; j < points.size(); j++) {
         PVector point = roads.toXY(points.getJSONArray(j).getFloat(1), points.getJSONArray(j).getFloat(0));
         PTS.add(point);

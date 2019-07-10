@@ -1,4 +1,4 @@
-{"Calibration Points":{"0":[420,20],"1":[60,20],"2":[60,420],"3":[420,420]},
+{"Calibration Points":{"0":[60,20],"1":[420,20],"2":[420,420],"3":[60,420]},
 "Brightness":7,"Saturation":-2,
 "Color Limits":[
   {"standarHSV":[0,0,100],"acronym":"W","name":"white","maxHue":70,"id":0,"minHue":17,"maxSat":27,"minBri":60,"maxSat2":50},
