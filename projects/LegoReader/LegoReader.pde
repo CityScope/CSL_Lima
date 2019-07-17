@@ -83,7 +83,7 @@ void setup() {
 
     configuration.runSketches(patterns, colors, block);
 
-    cam = new Capture(this, canvasCamera.width, canvasCamera.height, cameras[0]);
+    cam = new Capture(this, 640, 480, cameras[cameras.length - 1]);
     cam.start();
   }
 }

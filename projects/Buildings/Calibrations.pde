@@ -75,7 +75,9 @@ public class Calibration extends PApplet {
 
       wrappedPerspective = new WrappedPerspective(config.contour);
 
-      cam = new Capture(this, canvas.width, canvas.height, cameras[0]);
+      //Capture width and height must match a supported camera resolution
+      //This does not work: cam = new Capture(this, canvas.width, canvas.height, cameras[0]);
+      cam = new Capture(this, 640, 480, cameras[cameras.length-1]);
       cam.start();
       
       
