@@ -18,6 +18,7 @@ Mesh mesh;
 Configuration config = new Configuration("data/calibrationParameters.json");
 Simulation simulation;
 
+// Press w to configure camera ROI 
 
 void settings() {
   size(sizeCanvas, sizeCanvas, P2D);
@@ -41,8 +42,8 @@ void setup() {
     mesh = new Mesh(nblocks, canvas.width);
 
     warpedPerspective = new WarpedPerspective(config.contour);
-
-    cam = new Capture(this, 640, 480, cameras[0]);
+    
+    cam = new Capture(this, 640, 480, cameras[cameras.length - 1]);
     cam.start();
 
     String[] argsS = {"Simulation"};
