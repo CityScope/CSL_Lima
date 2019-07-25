@@ -1,6 +1,15 @@
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.LinearConstraintSet;
+import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
+import org.apache.commons.math3.optim.linear.Relationship;
+import org.apache.commons.math3.optim.linear.SimplexSolver;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+
 /**
  * POIs - Facade to simplify manipulation of Points of Interest in simulation
- * @author        Marc Vilella & Javier Zarate
+ * @author        Marc Vilella & Javier Zárate
  * @version       1.1
  * @see           Facade
  */

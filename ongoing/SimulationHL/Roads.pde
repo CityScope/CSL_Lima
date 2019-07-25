@@ -1,6 +1,6 @@
 /**
  * Roads - Facade to simplify manipulation of the whole simulation
- * @author        Marc Vilella & Javier Zarate
+ * @author        Marc Vilella & Javier Zárate
  * @version       1.1
  * @see           Facade
  */

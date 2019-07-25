@@ -1,6 +1,6 @@
 /**
  * Path - Class defining the path an agent must follow to arrive to its destination. It's autocontained, and able to be updated and recalculated 
- * @author        Marc Vilella & Javier Zarate
+ * @author        Marc Vilella & Javier Zárate
  * @credits       aStar method inspired in Aaron Steed's Pathfinding class http://www.robotacid.com/PBeta/AILibrary/Pathfinder/index.html
  * @version       2.0
  * @see           Node, Lane

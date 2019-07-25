@@ -1,7 +1,7 @@
 /**
  * WarpedPerspective - Class to distort images according to control points
- * @author        Javier Zárate
- * @version       1.0
+ * @author        Jesús García
+ * @version       1.1
  */
 public class WarpedPerspective {
   ArrayList<PVector> contour = new ArrayList<PVector>();

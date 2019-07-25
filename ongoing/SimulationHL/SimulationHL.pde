@@ -1,69 +1,76 @@
+import java.util.*;
+import org.gicentre.utils.stat.*;
+import java.lang.Integer;
+import java.lang.Double;
 import processing.video.*;
 import java.util.Collections;
 
-PGraphics canvas;
-PGraphics canvasOriginal;
-PGraphics canvasColor;
+final String roadsPath = "mirafloresRoad.geojson";
+final String poiPath = "muestreoPOI.csv";
 
-int nblocks = 6;
-int sizeCanvas = 480;
+PGraphics canvas, canvasOriginal, simulation;
 PImage imageWarped;
+
+int nblocks = 6, sizeCanvas = 480;
 float inc = 1;
 
-boolean warpMode = false;
+boolean toggle = true, warpMode = false, result = false;
 
 Capture cam;
 WarpedPerspective warpedPerspective;
 Mesh mesh;
-Configuration config = new Configuration("data/calibrationParameters.json");
-Simulation simulation;
-
-// Press w to configure camera ROI 
-
-void settings() {
-  size(sizeCanvas, sizeCanvas, P2D);
-}
+Configuration config;
+WarpSurface surface;
+Roads roads;
+POIs pois;
 
 
 void setup() {
+  fullScreen(P3D);
   colorMode(HSB, 360, 100, 100);
+
   String[] cameras = Capture.list();
   if (cameras.length == 0) {
     println("There are no cameras available for capture.");
     exit();
   } else {
-    canvas = createGraphics(sizeCanvas, sizeCanvas, P2D);
-    canvasOriginal = createGraphics(sizeCanvas, sizeCanvas, P2D);
-    canvasColor = createGraphics(sizeCanvas, sizeCanvas);
+    canvas = createGraphics(sizeCanvas, sizeCanvas, P3D);
+    canvasOriginal = createGraphics(sizeCanvas, sizeCanvas, P3D);
+    simulation = createGraphics(1000, 800);
+
     imageWarped = createImage(sizeCanvas, sizeCanvas, HSB);
 
+    surface = new WarpSurface(this, simulation.width, simulation.height, 2, 2);
+    //surface.loadConfig("data/surface.xml");
+
+    config = new Configuration("data/calibrationParameters.json");
     config.loadConfiguration();
 
     mesh = new Mesh(nblocks, canvas.width);
 
     warpedPerspective = new WarpedPerspective(config.contour);
-    
+
+    roads = new Roads(roadsPath, simulation);
+    pois = new POIs();
+    pois.loadCSV(poiPath, roads);
+
     cam = new Capture(this, 640, 480, cameras[cameras.length - 1]);
     cam.start();
-
-    String[] argsS = {"Simulation"};
-    simulation = new Simulation(1000, 800);
-    PApplet.runSketch(argsS, simulation);
   }
 }
 
 
 void draw() {
+  background(0);
+
   canvasOriginal.beginDraw();
   config.flip(canvasOriginal, cam, true);
   config.SBCorrection(canvasOriginal);
   warpedPerspective.drawWarp(canvasOriginal);
   canvasOriginal.endDraw();
-  if (warpMode) image(canvasOriginal, 0, 0);
+  if (toggle & warpMode) image(canvasOriginal, 0, 0);
 
-  //Filter colors with specific ranges
   imageWarped = warpedPerspective.applyPerspective(canvasOriginal);
-  //config.applyFilter(canvasOriginal, colorImage);
   config.applyFilter(imageWarped);
 
   canvas.beginDraw();
@@ -71,7 +78,24 @@ void draw() {
   mesh.getColors(canvas, config.colorLimits);
   mesh.draw(canvas, true);
   canvas.endDraw();
-  if (!warpMode) image(canvas, 0, 0);
+  if (toggle & !warpMode) image(canvas, 0, 0);
+
+  if (!toggle) {
+    simulation.beginDraw();
+    simulation.background(255);
+    roads.draw(simulation, 1);
+    roads.readMesh(mesh.cells, canvas);
+    simulation.pushStyle();
+    simulation.fill(0);
+    simulation.textSize(25);
+    simulation.textAlign(LEFT);     
+    simulation.text("Objective function result:", 100, 650);
+    if (!result) simulation.text("No solution found!", 100, 680);
+    else simulation.text(String.valueOf(pois.MINIMUM), 100, 680);    
+    simulation.popStyle();
+    simulation.endDraw();
+    surface.draw(simulation);
+  }
 }
 
 
@@ -82,6 +106,26 @@ void captureEvent(Capture cam) {
 
 void keyPressed() {
   switch(key) {
+  case 'a':
+    pois.wrappedOptimization();
+    break;
+
+  case 'b':
+    pois.resetLanes();
+    break;
+
+  case 'c':
+    toggle = !toggle;
+    break;
+
+  case 'd':
+    surface.toggleCalibration();
+    break;
+
+  case 'e':
+    surface.saveConfig("data/surface.xml");
+    break;
+
   case 'w':
     warpMode = !warpMode;
     break;

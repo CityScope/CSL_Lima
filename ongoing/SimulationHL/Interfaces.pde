@@ -1,5 +1,5 @@
 /** 
- * @author        Marc Vilella & Javier Zarate
+ * @author        Marc Vilella & Javier Zárate
  * @version       1.1
  */
 public interface Placeable {
