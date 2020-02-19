@@ -2,7 +2,7 @@
 
 Repository used by University del Pacifico in Lima for the design, development and deployment of CityScope Project related project. See [wiki](https://github.com/CityScope/CSL_Lima/wiki) for detailed information.
 
-## Recent Projects
+## Recent Projects
 
 1. **Emergency Evacuation from School to Hospitals**
 
@@ -19,7 +19,7 @@ Build a 3D model of a simulated city using lego bricks.
 
 Lego Table Setup | City 3D model
 :-------------------------:|:-------------------------:
-<img src="/ongoing/City3D/images/table2.png" alt="drawing" width="750"/> | ![city3d render](/ongoing/City3D/images/city3d.png)
+<img src="/ongoing/CityMatrix/images/table2.png" alt="drawing" width="750"/> | ![city3d render](/ongoing/CityMatrix/images/city3d.png)
 
 3. **Emergency Relief Warehouse kits delivery optimization**
 
