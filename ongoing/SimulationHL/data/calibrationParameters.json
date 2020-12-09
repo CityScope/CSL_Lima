@@ -1,0 +1,10 @@
+{"Calibration Points":{"0":[60,20],"1":[420,20],"2":[420,420],"3":[60,420]},
+"Brightness":7,"Saturation":-2,
+"Color Limits":[
+  {"standarHSV":[0,0,100],"acronym":"W","name":"white","maxHue":70,"id":0,"minHue":17,"maxSat":27,"minBri":60,"maxSat2":50},
+  {"standarHSV":[0,0,0],"acronym":"BK","maxBri2":40,"name":"black","maxHue":361,"id":1,"maxBri":58,"maxSat":14},
+  {"standarHSV":[0,100,100],"acronym":"R","name":"red","maxHue":9,"id":2},
+  {"standarHSV":[61.17646789550781,100,100],"acronym":"Y","name":"yellow","maxHue":60,"id":3},
+  {"standarHSV":[110,100,80],"acronym":"G","name":"green","maxHue":175,"id":4},
+  {"standarHSV":[230.29412841796875,100,80],"acronym":"B","name":"blue","maxHue":233,"id":5}]
+}
