@@ -1,0 +1,38 @@
+{"Calibration Points":{
+  "0":[131,276],
+  "1":[287,294],
+  "2":[271,457],
+  "3":[133,449]},
+  "Brightness":19,
+  "resizeCanvas":{
+    "rHa":0,
+    "rWa":0},
+  "Saturation":-19,
+  "Color Range":{
+    "w":600,
+    "h":100},
+  "Canvas size":480,
+  "nblocks":16,
+  "Color Limits":[
+    {"standarHSV":[0,0,100],"acronym":"W","name":"white","maxHue":70,"id":0,"minHue":17,"maxSat":27,"minBri":60,"maxSat2":50},
+    {"standarHSV":[0,0,0],"acronym":"BK","maxBri2":40,"name":"black","maxHue":361,"id":1,"maxBri":58,"maxSat":14},
+    {"standarHSV":[0,100,100],"acronym":"R","name":"red","maxHue":9,"id":2},
+    {"standarHSV":[61.17646789550781,100,100],"acronym":"Y","name":"yellow","maxHue":60,"id":3},
+    {"standarHSV":[110,100,80],"acronym":"G","name":"green","maxHue":175,"id":4},
+    {"standarHSV":[230.29412841796875,100,80],"acronym":"B","name":"blue","maxHue":233,"id":5}],
+    "Patterns":{
+      "0":["black","white","red","white"],
+      "1":["red","black","white","white"],
+      "2":["white","red","white","white"],
+      "3":["red","black","white","black"],
+      "4":["white","red","black","black"],
+      "5":["black","red","white","white"]},
+    "Buildings":[
+      {"type":0,"acronym":"UB","col":"FFD56363","h":0},
+      {"type":1,"acronym":"RD","col":"FF42403F","h":0},
+      {"type":2,"acronym":"GA","col":"FF9EDA59","h":0},
+      {"type":3,"acronym":"SB","col":"FFF0DF36","h":40},
+      {"type":4,"acronym":"MB","col":"FFF09036","h":100},
+      {"type":5,"acronym":"LB","col":"FF3696F0","h":160},
+    ]
+    }
